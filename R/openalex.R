@@ -1,0 +1,95 @@
+.oa_type_to_citeproc <- function(oa_type, oa_location_type, oa_version) {
+  # first, deal with openalex specific types
+  oa_types <- c("article", "preprint", "paratext", "letter", "editorial", "erratum",
+                "libguides", "supplementary-materials", "review")
+  if (oa_type == "article") {
+    if (.this_or_empty_string(oa_version) == "submittedVersion") {
+      return("article")
+    } else if (oa_location_type == "journal") {
+      return("article-journal")
+    } else if (oa_location_type == "conference") {
+      return("paper-conference")
+    }
+  } else if (oa_type == "preprint") {
+    return("article")
+  } else if (oa_type == "paratext") {
+    return("document")
+  } else if (oa_type == "editorial") {
+    return("article-journal")
+  } else if (oa_type == "erratum") {
+    return("article-journal")
+  } else if (oa_type == "libguides") {
+    return("document")
+  } else if (oa_type == "supplementary-materials") {
+    return("document")
+  } else if (oa_type == "review") {
+    return("article-journal")
+  }
+
+  # then (per their documentation) if it not one of their types, it must be a crossref type,
+  # so deal with it as a crossref type
+  assertthat::assert_that(oa_type %in% names(crossref2csl),
+                          msg=glue::glue("'{oa_type}' is not a valid crossref type"))
+  csl_type <- crossref2csl[[oa_type]]
+  assertthat::assert_that(assertthat::noNA(csl_type),
+                          msg=glue::glue("could not find csl type for crossref type '{oa_type}'"))
+  csl_type
+}
+
+.oa_clean_pages <- function(first_page=NULL, last_page=NULL) {
+  if (.this_exists(last_page) && last_page != first_page) {
+    return(glue::glue("{first_page}-{last_page}"))
+  }
+  first_page
+}
+
+.oa_uninvert_abstract <- function(inverted_abstract) {
+  words <- vector(mode="character", length=max(unlist(inverted_abstract))+1 )
+  for (word in names(inverted_abstract)) {
+    positions <- unlist(inverted_abstract[[word]]) + 1
+    for (p in positions) {words[p] <- word}
+  }
+  paste(words, collapse=" ")
+}
+
+.oa_extract_authors <- function(oa_authorships) {
+  authors <- purrr::map_vec(oa_authorships, \(x) {x$author$display_name})
+  orcids  <- purrr::map_vec(oa_authorships, \(x) {.this_or_na(x$author$orcid)})
+  author_df <- humaniformat::parse_names(authors) |>
+    dplyr::mutate(first_name = dplyr::if_else(is.na(first_name), "", first_name)) |>
+    dplyr::mutate(middle_name = dplyr::if_else(is.na(middle_name), "", middle_name)) |>
+    dplyr::mutate(last_name = dplyr::if_else(is.na(last_name), "", last_name)) |>
+    dplyr::mutate(given = stringr::str_trim(stringr::str_c(first_name, middle_name, sep=" "))) |>
+    dplyr::select(given, last_name, suffix) |>
+    dplyr::rename(family = last_name) |>
+    dplyr::mutate(orcid = orcids)
+  author_list <- apply(author_df, 1, as.list)
+  author_list
+}
+
+openalex2cp <- function(this_json, format="list") {
+  res <- list(
+    item = list(
+      type = .oa_type_to_citeproc(this_json$type,
+                                  this_json$primary_location$source$type,
+                                  this_json$primary_location$version),
+      language = this_json$language,
+      DOI = .clean_doi(this_json$doi),
+      volume = this_json$biblio$volume,
+      issue = this_json$biblio$issue,
+      container_title = this_json$primary_location$source$display_name,
+      issued = lubridate::ymd(this_json$publication_date),
+      page_first = this_json$biblio$first_page,
+      page = .oa_clean_pages(this_json$biblio$first_page, this_json$biblio$last_page),
+      title = this_json$title,
+      abstract= ifelse(.this_exists(this_json$abstract_inverted_index),
+                       .oa_uninvert_abstract(this_json$abstract_inverted_index),
+                       NA
+      )
+    ),
+    author = .oa_extract_authors(this_json$authorships)
+  )
+
+  res
+}
+
