@@ -1,0 +1,745 @@
+{
+  "indexed": {
+    "date-parts": [
+      [2024, 11, 19]
+    ],
+    "date-time": "2024-11-19T16:09:00Z",
+    "timestamp": 1732032540141
+  },
+  "reference-count": 59,
+  "publisher": "Springer Science and Business Media LLC",
+  "issue": "7164",
+  "license": [
+    {
+      "start": {
+        "date-parts": [
+          [2007, 10, 1]
+        ],
+        "date-time": "2007-10-01T00:00:00Z",
+        "timestamp": 1191196800000
+      },
+      "content-version": "tdm",
+      "delay-in-days": 0,
+      "URL": "http://www.springer.com/tdm"
+    }
+  ],
+  "content-domain": {
+    "domain": [],
+    "crossmark-restriction": false
+  },
+  "published-print": {
+    "date-parts": [
+      [2007, 10]
+    ]
+  },
+  "DOI": "10.1038/nature06258",
+  "type": "journal-article",
+  "created": {
+    "date-parts": [
+      [2007, 10, 17]
+    ],
+    "date-time": "2007-10-17T17:29:15Z",
+    "timestamp": 1192642155000
+  },
+  "page": "851-861",
+  "source": "Crossref",
+  "is-referenced-by-count": 3662,
+  "title": "A second generation human haplotype map of over 3.1 million SNPs",
+  "prefix": "10.1038",
+  "volume": "449",
+  "author": [
+    {
+      "name": "The International HapMap Consortium",
+      "sequence": "first",
+      "affiliation": []
+    }
+  ],
+  "member": "297",
+  "reference": [
+    {
+      "key": "BFnature06258_CR1",
+      "doi-asserted-by": "crossref",
+      "unstructured": "The International HapMap Consortium. Integrating ethics and science in the International HapMap Project. Nature Rev. Genet. 5, 467–475 (2004)",
+      "DOI": "10.1038/nrg1351"
+    },
+    {
+      "key": "BFnature06258_CR2",
+      "doi-asserted-by": "crossref",
+      "unstructured": "The International HapMap Consortium. The International HapMap Project. Nature 426, 789–796 (2003)",
+      "DOI": "10.1038/nature02168"
+    },
+    {
+      "key": "BFnature06258_CR3",
+      "doi-asserted-by": "crossref",
+      "unstructured": "The International HapMap Consortium. A haplotype map of the human genome. Nature 437, 1299–1320 (2005)",
+      "DOI": "10.1038/nature04226"
+    },
+    {
+      "key": "BFnature06258_CR4",
+      "doi-asserted-by": "publisher",
+      "unstructured": "Bowcock, A. M. Genomics: guilt by association. Nature 447, 645–646 (2007)",
+      "DOI": "10.1038/447645a",
+      "first-page": "645",
+      "volume": "447",
+      "author": "AM Bowcock",
+      "year": "2007",
+      "journal-title": "Nature"
+    },
+    {
+      "key": "BFnature06258_CR5",
+      "doi-asserted-by": "publisher",
+      "unstructured": "Altshuler, D. & Daly, M. Guilt beyond a reasonable doubt. Nature Genet. 39, 813–815 (2007)",
+      "DOI": "10.1038/ng0707-813",
+      "first-page": "813",
+      "volume": "39",
+      "author": "D Altshuler",
+      "year": "2007",
+      "journal-title": "Nature Genet."
+    },
+    {
+      "key": "BFnature06258_CR6",
+      "doi-asserted-by": "publisher",
+      "unstructured": "Myers, S., Bottolo, L., Freeman, C., McVean, G. & Donnelly, P. A fine-scale map of recombination rates and hotspots across the human genome. Science 310, 321–324 (2005)",
+      "DOI": "10.1126/science.1117196",
+      "first-page": "321",
+      "volume": "310",
+      "author": "S Myers",
+      "year": "2005",
+      "journal-title": "Science"
+    },
+    {
+      "key": "BFnature06258_CR7",
+      "doi-asserted-by": "publisher",
+      "unstructured": "McCarroll, S. A. et al. Common deletion polymorphisms in the human genome. Nature Genet. 38, 86–92 (2006)",
+      "DOI": "10.1038/ng1696",
+      "first-page": "86",
+      "volume": "38",
+      "author": "SA McCarroll",
+      "year": "2006",
+      "journal-title": "Nature Genet."
+    },
+    {
+      "key": "BFnature06258_CR8",
+      "doi-asserted-by": "publisher",
+      "unstructured": "Conrad, D. F., Andrews, T. D., Carter, N. P., Hurles, M. E. & Pritchard, J. K. A high-resolution survey of deletion polymorphism in the human genome. Nature Genet. 38, 75–81 (2006)",
+      "DOI": "10.1038/ng1697",
+      "first-page": "75",
+      "volume": "38",
+      "author": "DF Conrad",
+      "year": "2006",
+      "journal-title": "Nature Genet."
+    },
+    {
+      "key": "BFnature06258_CR9",
+      "doi-asserted-by": "publisher",
+      "unstructured": "Voight, B. F., Kudaravalli, S., Wen, X. & Pritchard, J. K. A map of recent positive selection in the human genome. PLoS Biol. 4, e72 (2006)",
+      "DOI": "10.1371/journal.pbio.0040072",
+      "first-page": "e72",
+      "volume": "4",
+      "author": "BF Voight",
+      "year": "2006",
+      "journal-title": "PLoS Biol."
+    },
+    {
+      "key": "BFnature06258_CR10",
+      "doi-asserted-by": "publisher",
+      "unstructured": "Redon, R. et al. Global variation in copy number in the human genome. Nature 444, 444–454 (2006)",
+      "DOI": "10.1038/nature05329",
+      "first-page": "444",
+      "volume": "444",
+      "author": "R Redon",
+      "year": "2006",
+      "journal-title": "Nature"
+    },
+    {
+      "key": "BFnature06258_CR11",
+      "doi-asserted-by": "publisher",
+      "unstructured": "de Bakker, P. I. et al. A high-resolution HLA and SNP haplotype map for disease association studies in the extended human MHC. Nature Genet. 38, 1166–1172 (2006)",
+      "DOI": "10.1038/ng1885",
+      "first-page": "1166",
+      "volume": "38",
+      "author": "PI de Bakker",
+      "year": "2006",
+      "journal-title": "Nature Genet."
+    },
+    {
+      "key": "BFnature06258_CR12",
+      "doi-asserted-by": "publisher",
+      "unstructured": "Pastinen, T. et al. Mapping common regulatory variants to human haplotypes. Hum. Mol. Genet. 14, 3963–3971 (2005)",
+      "DOI": "10.1093/hmg/ddi420",
+      "first-page": "3963",
+      "volume": "14",
+      "author": "T Pastinen",
+      "year": "2005",
+      "journal-title": "Hum. Mol. Genet."
+    },
+    {
+      "key": "BFnature06258_CR13",
+      "doi-asserted-by": "publisher",
+      "unstructured": "Stranger, B. E. et al. Genome-wide associations of gene expression variation in humans. PLoS Genet. 1, e78 (2005)",
+      "DOI": "10.1371/journal.pgen.0010078",
+      "first-page": "e78",
+      "volume": "1",
+      "author": "BE Stranger",
+      "year": "2005",
+      "journal-title": "PLoS Genet."
+    },
+    {
+      "key": "BFnature06258_CR14",
+      "doi-asserted-by": "publisher",
+      "unstructured": "Cheung, V. G. et al. Mapping determinants of human gene expression by regional and genome-wide association. Nature 437, 1365–1369 (2005)",
+      "DOI": "10.1038/nature04244",
+      "first-page": "1365",
+      "volume": "437",
+      "author": "VG Cheung",
+      "year": "2005",
+      "journal-title": "Nature"
+    },
+    {
+      "key": "BFnature06258_CR15",
+      "doi-asserted-by": "publisher",
+      "unstructured": "Hinds, D. A. et al. Whole-genome patterns of common DNA variation in three human populations. Science 307, 1072–1079 (2005)",
+      "DOI": "10.1126/science.1105436",
+      "first-page": "1072",
+      "volume": "307",
+      "author": "DA Hinds",
+      "year": "2005",
+      "journal-title": "Science"
+    },
+    {
+      "key": "BFnature06258_CR16",
+      "doi-asserted-by": "publisher",
+      "unstructured": "de Bakker, P. I. et al. Efficiency and power in genetic association studies. Nature Genet. 37, 1217–1223 (2005)",
+      "DOI": "10.1038/ng1669",
+      "first-page": "1217",
+      "volume": "37",
+      "author": "PI de Bakker",
+      "year": "2005",
+      "journal-title": "Nature Genet."
+    },
+    {
+      "key": "BFnature06258_CR17",
+      "doi-asserted-by": "publisher",
+      "unstructured": "Pe'er, I. et al. Evaluating and improving power in whole-genome association studies using fixed marker sets. Nature Genet. 38, 663–667 (2006)",
+      "DOI": "10.1038/ng1816",
+      "first-page": "663",
+      "volume": "38",
+      "author": "I Pe'er",
+      "year": "2006",
+      "journal-title": "Nature Genet."
+    },
+    {
+      "key": "BFnature06258_CR18",
+      "doi-asserted-by": "publisher",
+      "unstructured": "Barrett, J. C. & Cardon, L. R. Evaluating coverage of genome-wide association studies. Nature Genet. 38, 659–662 (2006)",
+      "DOI": "10.1038/ng1801",
+      "first-page": "659",
+      "volume": "38",
+      "author": "JC Barrett",
+      "year": "2006",
+      "journal-title": "Nature Genet."
+    },
+    {
+      "key": "BFnature06258_CR19",
+      "doi-asserted-by": "publisher",
+      "unstructured": "Burdick, J. T., Chen, W. M., Abecasis, G. R. & Cheung, V. G. In silico method for inferring genotypes in pedigrees. Nature Genet. 38, 1002–1004 (2006)",
+      "DOI": "10.1038/ng1863",
+      "first-page": "1002",
+      "volume": "38",
+      "author": "JT Burdick",
+      "year": "2006",
+      "journal-title": "Nature Genet."
+    },
+    {
+      "key": "BFnature06258_CR20",
+      "doi-asserted-by": "publisher",
+      "unstructured": "Servin, B. R. & Stephens, M. Imputation-based analysis of association studies: candidate regions and quantitative traits. PLoS Genet. 3, e114 (2007)",
+      "DOI": "10.1371/journal.pgen.0030114",
+      "first-page": "e114",
+      "volume": "3",
+      "author": "BR Servin",
+      "year": "2007",
+      "journal-title": "PLoS Genet."
+    },
+    {
+      "key": "BFnature06258_CR21",
+      "doi-asserted-by": "crossref",
+      "unstructured": "The Wellcome Trust Case Control Consortium. Genome-wide association study of 14,000 cases of seven common diseases and 3,000 shared controls. Nature 447, 661–668 (2007)",
+      "DOI": "10.1038/nature05911"
+    },
+    {
+      "key": "BFnature06258_CR22",
+      "doi-asserted-by": "publisher",
+      "unstructured": "Scott, L. J. et al. A genome-wide association study of type 2 diabetes in Finns detects multiple susceptibility variants. Science 316, 1341–1345 (2007)",
+      "DOI": "10.1126/science.1142382",
+      "first-page": "1341",
+      "volume": "316",
+      "author": "LJ Scott",
+      "year": "2007",
+      "journal-title": "Science"
+    },
+    {
+      "key": "BFnature06258_CR23",
+      "doi-asserted-by": "publisher",
+      "unstructured": "Marchini, J., Howie, B., Myers, S., McVean, G. & Donnelly, P. A new multipoint method for genome-wide association studies via imputation of genotypes. Nature Genet. 39, 906–913 (2007)",
+      "DOI": "10.1038/ng2088",
+      "first-page": "906",
+      "volume": "39",
+      "author": "J Marchini",
+      "year": "2007",
+      "journal-title": "Nature Genet."
+    },
+    {
+      "key": "BFnature06258_CR24",
+      "doi-asserted-by": "publisher",
+      "unstructured": "Chapman, J. M., Cooper, J. D., Todd, J. A. & Clayton, D. G. Detecting disease associations due to linkage disequilibrium using haplotype tags: a class of tests and the determinants of statistical power. Hum. Hered. 56, 18–31 (2003)",
+      "DOI": "10.1159/000073729",
+      "first-page": "18",
+      "volume": "56",
+      "author": "JM Chapman",
+      "year": "2003",
+      "journal-title": "Hum. Hered."
+    },
+    {
+      "key": "BFnature06258_CR25",
+      "doi-asserted-by": "publisher",
+      "unstructured": "Paabo, S. The mosaic that is our genome. Nature 421, 409–412 (2003)",
+      "DOI": "10.1038/nature01400",
+      "first-page": "409",
+      "volume": "421",
+      "author": "S Paabo",
+      "year": "2003",
+      "journal-title": "Nature"
+    },
+    {
+      "key": "BFnature06258_CR26",
+      "doi-asserted-by": "publisher",
+      "unstructured": "McVean, G., Spencer, C. C. & Chaix, R. Perspectives on human genetic variation from the HapMap Project. PLoS Genet. 1, e54 (2005)",
+      "DOI": "10.1371/journal.pgen.0010054",
+      "first-page": "e54",
+      "volume": "1",
+      "author": "G McVean",
+      "year": "2005",
+      "journal-title": "PLoS Genet."
+    },
+    {
+      "key": "BFnature06258_CR27",
+      "doi-asserted-by": "publisher",
+      "unstructured": "Purcell, S. et al. PLINK: a toolset for whole-genome association and population-based linkage analysis. Am. J. Hum. Genet. 81, 559–575 (2007)",
+      "DOI": "10.1086/519795",
+      "first-page": "559",
+      "volume": "81",
+      "author": "S Purcell",
+      "year": "2007",
+      "journal-title": "Am. J. Hum. Genet."
+    },
+    {
+      "key": "BFnature06258_CR28",
+      "doi-asserted-by": "publisher",
+      "unstructured": "Broman, K. W. & Weber, J. L. Long homozygous chromosomal segments in reference families from the centre d’Etude du polymorphisme humain. Am. J. Hum. Genet. 65, 1493–1500 (1999)",
+      "DOI": "10.1086/302661",
+      "first-page": "1493",
+      "volume": "65",
+      "author": "KW Broman",
+      "year": "1999",
+      "journal-title": "Am. J. Hum. Genet."
+    },
+    {
+      "key": "BFnature06258_CR29",
+      "doi-asserted-by": "publisher",
+      "unstructured": "Gibson, J., Morton, N. E. & Collins, A. Extended tracts of homozygosity in outbred human populations. Hum. Mol. Genet. 15, 789–795 (2006)",
+      "DOI": "10.1093/hmg/ddi493",
+      "first-page": "789",
+      "volume": "15",
+      "author": "J Gibson",
+      "year": "2006",
+      "journal-title": "Hum. Mol. Genet."
+    },
+    {
+      "key": "BFnature06258_CR30",
+      "doi-asserted-by": "publisher",
+      "unstructured": "Lander, E. S. & Botstein, D. Homozygosity mapping: a way to map human recessive traits with the DNA of inbred children. Science 236, 1567–1570 (1987)",
+      "DOI": "10.1126/science.2884728",
+      "first-page": "1567",
+      "volume": "236",
+      "author": "ES Lander",
+      "year": "1987",
+      "journal-title": "Science"
+    },
+    {
+      "key": "BFnature06258_CR31",
+      "doi-asserted-by": "publisher",
+      "unstructured": "Leutenegger, A. L. et al. Using genomic inbreeding coefficient estimates for homozygosity mapping of rare recessive traits: application to Taybi-Linder syndrome. Am. J. Hum. Genet. 79, 62–66 (2006)",
+      "DOI": "10.1086/504640",
+      "first-page": "62",
+      "volume": "79",
+      "author": "AL Leutenegger",
+      "year": "2006",
+      "journal-title": "Am. J. Hum. Genet."
+    },
+    {
+      "key": "BFnature06258_CR32",
+      "doi-asserted-by": "publisher",
+      "unstructured": "Te Meerman, G. J., Van der Meulen, M. A. & Sandkuijl, L. A. Perspectives of identity by descent (IBD) mapping in founder populations. Clin. Exp. Allergy 25 (Suppl 2). 97–102 (1995)",
+      "DOI": "10.1111/j.1365-2222.1995.tb00433.x",
+      "first-page": "97",
+      "volume": "25",
+      "author": "GJ Te Meerman",
+      "year": "1995",
+      "journal-title": "Clin. Exp. Allergy"
+    },
+    {
+      "key": "BFnature06258_CR33",
+      "doi-asserted-by": "publisher",
+      "unstructured": "Houwen, R. H. et al. Genome screening by searching for shared segments: mapping a gene for benign recurrent intrahepatic cholestasis. Nature Genet. 8, 380–386 (1994)",
+      "DOI": "10.1038/ng1294-380",
+      "first-page": "380",
+      "volume": "8",
+      "author": "RH Houwen",
+      "year": "1994",
+      "journal-title": "Nature Genet."
+    },
+    {
+      "key": "BFnature06258_CR34",
+      "doi-asserted-by": "publisher",
+      "unstructured": "Durham, L. K. & Feingold, E. Genome scanning for segments shared identical by descent among distant relatives in isolated populations. Am. J. Hum. Genet. 61, 830–842 (1997)",
+      "DOI": "10.1086/514891",
+      "first-page": "830",
+      "volume": "61",
+      "author": "LK Durham",
+      "year": "1997",
+      "journal-title": "Am. J. Hum. Genet."
+    },
+    {
+      "key": "BFnature06258_CR35",
+      "doi-asserted-by": "publisher",
+      "unstructured": "Jeffreys, A. J. & May, C. A. Intense and highly localized gene conversion activity in human meiotic crossover hot spots. Nature Genet. 36, 151–156 (2004)",
+      "DOI": "10.1038/ng1287",
+      "first-page": "151",
+      "volume": "36",
+      "author": "AJ Jeffreys",
+      "year": "2004",
+      "journal-title": "Nature Genet."
+    },
+    {
+      "key": "BFnature06258_CR36",
+      "doi-asserted-by": "publisher",
+      "unstructured": "McVean, G. A. et al. The fine-scale structure of recombination rate variation in the human genome. Science 304, 581–584 (2004)",
+      "DOI": "10.1126/science.1092500",
+      "first-page": "581",
+      "volume": "304",
+      "author": "GA McVean",
+      "year": "2004",
+      "journal-title": "Science"
+    },
+    {
+      "key": "BFnature06258_CR37",
+      "doi-asserted-by": "publisher",
+      "unstructured": "Myers, S. et al. The distribution and causes of meiotic recombination in the human genome. Biochem. Soc. Trans. 34, 526–530 (2006)",
+      "DOI": "10.1042/BST0340526",
+      "first-page": "526",
+      "volume": "34",
+      "author": "S Myers",
+      "year": "2006",
+      "journal-title": "Biochem. Soc. Trans."
+    },
+    {
+      "key": "BFnature06258_CR38",
+      "doi-asserted-by": "publisher",
+      "unstructured": "Spencer, C. C. et al. The influence of recombination on human genetic diversity. PLoS Genet. 2, e148 (2006)",
+      "DOI": "10.1371/journal.pgen.0020148",
+      "first-page": "e148",
+      "volume": "2",
+      "author": "CC Spencer",
+      "year": "2006",
+      "journal-title": "PLoS Genet."
+    },
+    {
+      "key": "BFnature06258_CR39",
+      "doi-asserted-by": "publisher",
+      "unstructured": "Petes, T. D. Meiotic recombination hot spots and cold spots. Nature Rev. Genet. 2, 360–369 (2001)",
+      "DOI": "10.1038/35072078",
+      "first-page": "360",
+      "volume": "2",
+      "author": "TD Petes",
+      "year": "2001",
+      "journal-title": "Nature Rev. Genet."
+    },
+    {
+      "key": "BFnature06258_CR40",
+      "doi-asserted-by": "publisher",
+      "unstructured": "Smith, A. V., Thomas, D. J., Munro, H. M. & Abecasis, G. R. Sequence features in regions of weak and strong linkage disequilibrium. Genome Res. 15, 1519–1534 (2005)",
+      "DOI": "10.1101/gr.4421405",
+      "first-page": "1519",
+      "volume": "15",
+      "author": "AV Smith",
+      "year": "2005",
+      "journal-title": "Genome Res."
+    },
+    {
+      "key": "BFnature06258_CR41",
+      "doi-asserted-by": "publisher",
+      "unstructured": "Thomas, P. D. et al. PANTHER: a library of protein families and subfamilies indexed by function. Genome Res. 13, 2129–2141 (2003)",
+      "DOI": "10.1101/gr.772403",
+      "first-page": "2129",
+      "volume": "13",
+      "author": "PD Thomas",
+      "year": "2003",
+      "journal-title": "Genome Res."
+    },
+    {
+      "key": "BFnature06258_CR42",
+      "doi-asserted-by": "publisher",
+      "unstructured": "Winckler, W. et al. Comparison of fine-scale recombination rates in humans and chimpanzees. Science 308, 107–111 (2005)",
+      "DOI": "10.1126/science.1105322",
+      "first-page": "107",
+      "volume": "308",
+      "author": "W Winckler",
+      "year": "2005",
+      "journal-title": "Science"
+    },
+    {
+      "key": "BFnature06258_CR43",
+      "doi-asserted-by": "publisher",
+      "unstructured": "Ptak, S. E. et al. Fine-scale recombination patterns differ between chimpanzees and humans. Nature Genet. 37, 429–434 (2005)",
+      "DOI": "10.1038/ng1529",
+      "first-page": "429",
+      "volume": "37",
+      "author": "SE Ptak",
+      "year": "2005",
+      "journal-title": "Nature Genet."
+    },
+    {
+      "key": "BFnature06258_CR44",
+      "doi-asserted-by": "publisher",
+      "unstructured": "Sabeti, P. C. et al. Detecting recent positive selection in the human genome from haplotype structure. Nature 419, 832–837 (2002)",
+      "DOI": "10.1038/nature01140",
+      "first-page": "832",
+      "volume": "419",
+      "author": "PC Sabeti",
+      "year": "2002",
+      "journal-title": "Nature"
+    },
+    {
+      "key": "BFnature06258_CR45",
+      "doi-asserted-by": "crossref",
+      "unstructured": "Sabeti, P. C. et al. Genome-wide detection and characterization of positive selection in human populations. Nature doi:10.1038/nature06250 (this issue).",
+      "DOI": "10.1038/nature06250"
+    },
+    {
+      "key": "BFnature06258_CR46",
+      "doi-asserted-by": "publisher",
+      "unstructured": "Bustamante, C. D. et al. Natural selection on protein-coding genes in the human genome. Nature 437, 1153–1157 (2005)",
+      "DOI": "10.1038/nature04240",
+      "first-page": "1153",
+      "volume": "437",
+      "author": "CD Bustamante",
+      "year": "2005",
+      "journal-title": "Nature"
+    },
+    {
+      "key": "BFnature06258_CR47",
+      "doi-asserted-by": "publisher",
+      "unstructured": "Cargill, M. et al. Characterization of single-nucleotide polymorphisms in coding regions of human genes. Nature Genet. 22, 231–238 (1999)",
+      "DOI": "10.1038/10290",
+      "first-page": "231",
+      "volume": "22",
+      "author": "M Cargill",
+      "year": "1999",
+      "journal-title": "Nature Genet."
+    },
+    {
+      "key": "BFnature06258_CR48",
+      "doi-asserted-by": "publisher",
+      "unstructured": "Akey, J. M., Zhang, G., Zhang, K., Jin, L. & Shriver, M. D. Interrogating a high-density SNP map for signatures of natural selection. Genome Res. 12, 1805–1814 (2002)",
+      "DOI": "10.1101/gr.631202",
+      "first-page": "1805",
+      "volume": "12",
+      "author": "JM Akey",
+      "year": "2002",
+      "journal-title": "Genome Res."
+    },
+    {
+      "key": "BFnature06258_CR49",
+      "doi-asserted-by": "publisher",
+      "unstructured": "Sabeti, P. C. et al. Positive natural selection in the human lineage. Science 312, 1614–1620 (2006)",
+      "DOI": "10.1126/science.1124309",
+      "first-page": "1614",
+      "volume": "312",
+      "author": "PC Sabeti",
+      "year": "2006",
+      "journal-title": "Science"
+    },
+    {
+      "key": "BFnature06258_CR50",
+      "doi-asserted-by": "publisher",
+      "unstructured": "de Bakker, P. I. et al. Transferability of tag SNPs in genetic association studies in multiple populations. Nature Genet. 38, 1298–1303 (2006)",
+      "DOI": "10.1038/ng1899",
+      "first-page": "1298",
+      "volume": "38",
+      "author": "PI de Bakker",
+      "year": "2006",
+      "journal-title": "Nature Genet."
+    },
+    {
+      "key": "BFnature06258_CR51",
+      "doi-asserted-by": "publisher",
+      "unstructured": "Conrad, D. F. et al. A worldwide survey of haplotype variation and linkage disequilibrium in the human genome. Nature Genet. 38, 1251–1260 (2006)",
+      "DOI": "10.1038/ng1911",
+      "first-page": "1251",
+      "volume": "38",
+      "author": "DF Conrad",
+      "year": "2006",
+      "journal-title": "Nature Genet."
+    },
+    {
+      "key": "BFnature06258_CR52",
+      "doi-asserted-by": "publisher",
+      "unstructured": "Service, S., Sabatti, C. & Freimer, N. Tag SNPs chosen from HapMap perform well in several population isolates. Genet. Epidemiol. 31, 189–194 (2007)",
+      "DOI": "10.1002/gepi.20201",
+      "first-page": "189",
+      "volume": "31",
+      "author": "S Service",
+      "year": "2007",
+      "journal-title": "Genet. Epidemiol."
+    },
+    {
+      "key": "BFnature06258_CR53",
+      "doi-asserted-by": "publisher",
+      "unstructured": "Lim, J. et al. Comparative study of the linkage disequilibrium of an ENCODE region, chromosome 7p15, in Korean, Japanese, and Han Chinese samples. Genomics 87, 392–398 (2006)",
+      "DOI": "10.1016/j.ygeno.2005.11.002",
+      "first-page": "392",
+      "volume": "87",
+      "author": "J Lim",
+      "year": "2006",
+      "journal-title": "Genomics"
+    },
+    {
+      "key": "BFnature06258_CR54",
+      "doi-asserted-by": "publisher",
+      "unstructured": "Rabbee, N. & Speed, T. P. A genotype calling algorithm for affymetrix SNP arrays. Bioinformatics 22, 7–12 (2006)",
+      "DOI": "10.1093/bioinformatics/bti741",
+      "first-page": "7",
+      "volume": "22",
+      "author": "N Rabbee",
+      "year": "2006",
+      "journal-title": "Bioinformatics"
+    },
+    {
+      "key": "BFnature06258_CR55",
+      "doi-asserted-by": "publisher",
+      "unstructured": "Purcell, S. et al. PLINK: a tool set for whole-genome association and population-based linkage analyses. Am. J. Hum. Genet. 81, 559–575 (2007)",
+      "DOI": "10.1086/519795",
+      "first-page": "559",
+      "volume": "81",
+      "author": "S Purcell",
+      "year": "2007",
+      "journal-title": "Am. J. Hum. Genet."
+    },
+    {
+      "key": "BFnature06258_CR56",
+      "doi-asserted-by": "publisher",
+      "unstructured": "Price, A. L. et al. Principal components analysis corrects for stratification in genome-wide association studies. Nature Genet. 38, 904–909 (2006)",
+      "DOI": "10.1038/ng1847",
+      "first-page": "904",
+      "volume": "38",
+      "author": "AL Price",
+      "year": "2006",
+      "journal-title": "Nature Genet."
+    },
+    {
+      "key": "BFnature06258_CR57",
+      "doi-asserted-by": "crossref",
+      "unstructured": "Smith, R. A., Ho, P. J., Clegg, J. B., Kidd, J. R. & Thein, S. L. Recombination breakpoints in the human β-globin gene cluster. Blood 92, 4415–4421 (1998)",
+      "DOI": "10.1182/blood.V92.11.4415",
+      "first-page": "4415",
+      "volume": "92",
+      "author": "RA Smith",
+      "year": "1998",
+      "journal-title": "Blood"
+    },
+    {
+      "key": "BFnature06258_CR58",
+      "doi-asserted-by": "publisher",
+      "unstructured": "Holloway, K., Lawson, V. E. & Jeffreys, A. J. Allelic recombination and de novo deletions in sperm in the human β-globin gene region. Hum. Mol. Genet. 15, 1099–1111 (2006)",
+      "DOI": "10.1093/hmg/ddl025",
+      "first-page": "1099",
+      "volume": "15",
+      "author": "K Holloway",
+      "year": "2006",
+      "journal-title": "Hum. Mol. Genet."
+    },
+    {
+      "key": "BFnature06258_CR59",
+      "unstructured": "Weir, B. S. & Cockerham, C. C. Estimating F-statistics for the analysis of population structure. Evolution 38, 1358–1370 (1984)",
+      "first-page": "1358",
+      "volume": "38",
+      "author": "BS Weir",
+      "year": "1984",
+      "journal-title": "Evolution"
+    }
+  ],
+  "container-title": "Nature",
+  "original-title": [],
+  "language": "en",
+  "link": [
+    {
+      "URL": "http://www.nature.com/articles/nature06258.pdf",
+      "content-type": "application/pdf",
+      "content-version": "vor",
+      "intended-application": "text-mining"
+    },
+    {
+      "URL": "http://www.nature.com/articles/nature06258",
+      "content-type": "text/html",
+      "content-version": "vor",
+      "intended-application": "text-mining"
+    },
+    {
+      "URL": "http://www.nature.com/articles/nature06258.pdf",
+      "content-type": "application/pdf",
+      "content-version": "vor",
+      "intended-application": "similarity-checking"
+    }
+  ],
+  "deposited": {
+    "date-parts": [
+      [2023, 5, 18]
+    ],
+    "date-time": "2023-05-18T18:10:51Z",
+    "timestamp": 1684433451000
+  },
+  "score": 1,
+  "resource": {
+    "primary": {
+      "URL": "https://www.nature.com/articles/nature06258"
+    }
+  },
+  "subtitle": [],
+  "short-title": [],
+  "issued": {
+    "date-parts": [
+      [2007, 10]
+    ]
+  },
+  "references-count": 59,
+  "journal-issue": {
+    "issue": "7164",
+    "published-print": {
+      "date-parts": [
+        [2007, 10]
+      ]
+    }
+  },
+  "alternative-id": "BFnature06258",
+  "URL": "http://dx.doi.org/10.1038/nature06258",
+  "relation": {},
+  "ISSN": ["0028-0836", "1476-4687"],
+  "subject": [],
+  "container-title-short": "Nature",
+  "published": {
+    "date-parts": [
+      [2007, 10]
+    ]
+  }
+}

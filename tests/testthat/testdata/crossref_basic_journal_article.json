@@ -1,0 +1,826 @@
+{
+  "indexed": {
+    "date-parts": [
+      [2024, 12, 4]
+    ],
+    "date-time": "2024-12-04T17:05:44Z",
+    "timestamp": 1733331944865,
+    "version": "3.30.1"
+  },
+  "update-to": [
+    {
+      "updated": {
+        "date-parts": [
+          [2023, 2, 27]
+        ],
+        "date-time": "2023-02-27T00:00:00Z",
+        "timestamp": 1677456000000
+      },
+      "DOI": "10.1371/journal.pcbi.1009061",
+      "type": "new_version",
+      "source": "publisher",
+      "label": "New version"
+    }
+  ],
+  "reference-count": 73,
+  "publisher": "Public Library of Science (PLoS)",
+  "issue": "1",
+  "license": [
+    {
+      "start": {
+        "date-parts": [
+          [2023, 1, 19]
+        ],
+        "date-time": "2023-01-19T00:00:00Z",
+        "timestamp": 1674086400000
+      },
+      "content-version": "vor",
+      "delay-in-days": 0,
+      "URL": "http://creativecommons.org/licenses/by/4.0/"
+    }
+  ],
+  "funder": [
+    {
+      "DOI": "10.13039/100000001",
+      "name": "National Science Foundation",
+      "doi-asserted-by": "publisher",
+      "award": "award number BCS-0925734",
+      "id": [
+        {
+          "id": "10.13039/100000001",
+          "id-type": "DOI",
+          "asserted-by": "publisher"
+        }
+      ]
+    }
+  ],
+  "content-domain": {
+    "domain": "www.ploscompbiol.org",
+    "crossmark-restriction": false
+  },
+  "abstract": "<jats:p>The methods of geometric morphometrics are commonly used to quantify morphology in a broad range of biological sciences. The application of these methods to large datasets is constrained by manual landmark placement limiting the number of landmarks and introducing observer bias. To move the field forward, we need to automate morphological phenotyping in ways that capture comprehensive representations of morphological variation with minimal observer bias. Here, we present Morphological Variation Quantifier (morphVQ), a shape analysis pipeline for quantifying, analyzing, and exploring shape variation in the functional domain. morphVQ uses descriptor learning to estimate the functional correspondence between whole triangular meshes in lieu of landmark configurations. With functional maps between pairs of specimens in a dataset we can analyze and explore shape variation. morphVQ uses Consistent ZoomOut refinement to improve these functional maps and produce a new representation of shape variation, area-based and conformal (angular) latent shape space differences (LSSDs). We compare this new representation of shape variation to shape variables obtained via manual digitization and auto3DGM, an existing approach to automated morphological phenotyping. We find that LSSDs compare favorably to modern 3DGM and auto3DGM while being more computationally efficient. By characterizing whole surfaces, our method incorporates more morphological detail in shape analysis. We can classify known biological groupings, such as Genus affiliation with comparable accuracy. The shape spaces produced by our method are similar to those produced by modern 3DGM and to auto3DGM, and distinctiveness functions derived from LSSDs show us how shape variation differs between groups. morphVQ can capture shape in an automated fashion while avoiding the limitations of manually digitized landmarks, and thus represents a novel and computationally efficient addition to the geometric morphometrics toolkit.<\/jats:p>",
+  "DOI": "10.1371/journal.pcbi.1009061",
+  "type": "journal-article",
+  "created": {
+    "date-parts": [
+      [2023, 1, 19]
+    ],
+    "date-time": "2023-01-19T18:39:58Z",
+    "timestamp": 1674153598000
+  },
+  "page": "e1009061",
+  "update-policy": "https://doi.org/10.1371/journal.pcbi.corrections_policy",
+  "source": "Crossref",
+  "is-referenced-by-count": 8,
+  "title": "Automated morphological phenotyping using learned shape descriptors and functional maps: A novel approach to geometric morphometrics",
+  "prefix": "10.1371",
+  "volume": "19",
+  "author": [
+    {
+      "ORCID": "https://orcid.org/0000-0003-3500-5445",
+      "authenticated-orcid": true,
+      "given": "Oshane O.",
+      "family": "Thomas",
+      "sequence": "first",
+      "affiliation": []
+    },
+    {
+      "ORCID": "https://orcid.org/0000-0001-7620-805X",
+      "authenticated-orcid": true,
+      "given": "Hongyu",
+      "family": "Shen",
+      "sequence": "additional",
+      "affiliation": []
+    },
+    {
+      "ORCID": "https://orcid.org/0000-0003-4723-5475",
+      "authenticated-orcid": true,
+      "given": "Ryan L.",
+      "family": "Raaum",
+      "sequence": "additional",
+      "affiliation": []
+    },
+    {
+      "given": "William E. H.",
+      "family": "Harcourt-Smith",
+      "sequence": "additional",
+      "affiliation": []
+    },
+    {
+      "given": "John D.",
+      "family": "Polk",
+      "sequence": "additional",
+      "affiliation": []
+    },
+    {
+      "given": "Mark",
+      "family": "Hasegawa-Johnson",
+      "sequence": "additional",
+      "affiliation": []
+    }
+  ],
+  "member": "340",
+  "published-online": {
+    "date-parts": [
+      [2023, 1, 19]
+    ]
+  },
+  "reference": [
+    {
+      "issue": "1",
+      "key": "pcbi.1009061.ref001",
+      "doi-asserted-by": "crossref",
+      "first-page": "33",
+      "DOI": "10.1007/BF02291478",
+      "article-title": "Generalized procrustes analysis",
+      "volume": "40",
+      "author": "JC Gower",
+      "year": "1975",
+      "journal-title": "Psychometrika"
+    },
+    {
+      "key": "pcbi.1009061.ref002",
+      "author": "IL Dryden",
+      "year": "1991",
+      "volume-title": "Statistical shape analysis: with applications in R"
+    },
+    {
+      "issue": "2",
+      "key": "pcbi.1009061.ref003",
+      "doi-asserted-by": "crossref",
+      "first-page": "235",
+      "DOI": "10.1007/s11692-009-9055-x",
+      "article-title": "Advances in Geometric Morphometrics",
+      "volume": "36",
+      "author": "P Mitteroecker",
+      "year": "2009",
+      "journal-title": "Evolutionary Biology"
+    },
+    {
+      "issue": "24",
+      "key": "pcbi.1009061.ref004",
+      "first-page": "7",
+      "article-title": "A field comes of age: geometric morphometrics in the 21 century Introduction",
+      "volume": "1",
+      "author": "DC Adams",
+      "year": "2012",
+      "journal-title": "Italian Journal of Mammalogy"
+    },
+    {
+      "key": "pcbi.1009061.ref005",
+      "author": "DE Slice",
+      "year": "2006",
+      "volume-title": "Springer Science & Business Media"
+    },
+    {
+      "issue": "1",
+      "key": "pcbi.1009061.ref006",
+      "first-page": "40",
+      "article-title": "Extensions of the Procrustes Method for the Optimal Superimposition of Landmarks",
+      "volume": "39",
+      "author": "FJ Rohlf",
+      "year": "1990",
+      "journal-title": "Systematic Biology"
+    },
+    {
+      "issue": "24",
+      "key": "pcbi.1009061.ref007",
+      "first-page": "5",
+      "article-title": "On growth and form in the “computer era”: from geometric to biological morphometrics",
+      "volume": "1",
+      "author": "A Cardini",
+      "year": "2013",
+      "journal-title": "Italian Journal of Mammalogy"
+    },
+    {
+      "key": "pcbi.1009061.ref008",
+      "doi-asserted-by": "crossref",
+      "first-page": "561",
+      "DOI": "10.1016/bs.ctdb.2015.09.003",
+      "article-title": "Morphometrics, 3D Imaging, and Craniofacial Development",
+      "volume": "115",
+      "author": "B Hallgrimsson",
+      "year": "2015",
+      "journal-title": "Current Topics in Developmental Biology"
+    },
+    {
+      "key": "pcbi.1009061.ref009",
+      "doi-asserted-by": "crossref",
+      "DOI": "10.1142/9789813225701_0008",
+      "unstructured": "Macleod N. On the Use of Machine Learning in Morphometric Analysis. 4th International Symposium on Biological Shape Analysis (ISBSA). 2017; p. 134–171."
+    },
+    {
+      "issue": "1",
+      "key": "pcbi.1009061.ref010",
+      "doi-asserted-by": "crossref",
+      "first-page": "249",
+      "DOI": "10.1002/ar.23084",
+      "article-title": "A New Fully Automated Approach for Aligning and Comparing Shapes",
+      "volume": "298",
+      "author": "DM Boyer",
+      "year": "2014",
+      "journal-title": "The Anatomical Record: Advances in Integrative Anatomy and Evolutionary Biology"
+    },
+    {
+      "issue": "7312",
+      "key": "pcbi.1009061.ref011",
+      "doi-asserted-by": "crossref",
+      "first-page": "154",
+      "DOI": "10.1038/467154a",
+      "article-title": "Time to automate identification",
+      "volume": "467",
+      "author": "N MacLeod",
+      "year": "2010",
+      "journal-title": "Nature"
+    },
+    {
+      "issue": "12",
+      "key": "pcbi.1009061.ref012",
+      "doi-asserted-by": "crossref",
+      "first-page": "855",
+      "DOI": "10.1038/nrg2897",
+      "article-title": "Phenomics: the next challenge",
+      "volume": "11",
+      "author": "D Houle",
+      "year": "2010",
+      "journal-title": "Nature reviews Genetics"
+    },
+    {
+      "issue": "4",
+      "key": "pcbi.1009061.ref013",
+      "doi-asserted-by": "crossref",
+      "first-page": "607",
+      "DOI": "10.1111/joa.12576",
+      "article-title": "Rapid automated landmarking for morphometric analysis of three-dimensional facial scans",
+      "volume": "230",
+      "author": "M Li",
+      "year": "2017",
+      "journal-title": "Journal of anatomy"
+    },
+    {
+      "key": "pcbi.1009061.ref014",
+      "doi-asserted-by": "crossref",
+      "DOI": "10.1101/2019.12.11.873182",
+      "unstructured": "Devine J, Aponte JD, Katz DC, Liu W, Vercio LDL, Forkert ND, et al. A Registration and Deep Learning Approach to Automated Landmark Detection for Geometric Morphometrics. bioRxiv. 2019; p. 2019.12.11.873182."
+    },
+    {
+      "key": "pcbi.1009061.ref015",
+      "doi-asserted-by": "crossref",
+      "DOI": "10.1101/2020.09.18.303891",
+      "unstructured": "Porto A, Rolfe SM, Maga AM. ALPACA: a fast and accurate approach for automated landmarking of three-dimensional biological structures. bioRxiv. 2020; p. 2020.09.18.303891."
+    },
+    {
+      "issue": "18",
+      "key": "pcbi.1009061.ref016",
+      "doi-asserted-by": "crossref",
+      "DOI": "10.1242/dev.188631",
+      "article-title": "A landmark-free morphometrics pipeline for high-resolution phenotyping: application to a mouse model of Down syndrome",
+      "volume": "148",
+      "author": "N Toussaint",
+      "year": "2021",
+      "journal-title": "Development"
+    },
+    {
+      "issue": "3",
+      "key": "pcbi.1009061.ref017",
+      "doi-asserted-by": "crossref",
+      "first-page": "433",
+      "DOI": "10.1111/joa.12645",
+      "article-title": "A population level atlas of Mus musculus craniofacial skeleton and automated image-based shape analysis",
+      "volume": "231",
+      "author": "AM Maga",
+      "year": "2017",
+      "journal-title": "Journal of Anatomy"
+    },
+    {
+      "issue": "1",
+      "key": "pcbi.1009061.ref018",
+      "doi-asserted-by": "crossref",
+      "first-page": "14438",
+      "DOI": "10.1038/s41598-021-93490-4",
+      "article-title": "Unveiling the third dimension in morphometry with automated quantitative volumetric computations",
+      "volume": "11",
+      "author": "LR Frank",
+      "year": "2021",
+      "journal-title": "Scientific Reports"
+    },
+    {
+      "key": "pcbi.1009061.ref019",
+      "unstructured": "Puente J. Distances and algorithms to compare sets of shapes for automated biological morphometrics; 2013."
+    },
+    {
+      "issue": "4",
+      "key": "pcbi.1009061.ref020",
+      "doi-asserted-by": "crossref",
+      "first-page": "30",
+      "DOI": "10.1145/2185520.2185526",
+      "article-title": "Functional maps: a flexible representation of maps between shapes",
+      "volume": "31",
+      "author": "M Ovsjanikov",
+      "year": "2012",
+      "journal-title": "ACM Transactions on Graphics (TOG)"
+    },
+    {
+      "key": "pcbi.1009061.ref021",
+      "doi-asserted-by": "crossref",
+      "DOI": "10.1145/2988458.2988494",
+      "unstructured": "Ovsjanikov M, Corman E, Bronstein M, Rodolà E, Ben-Chen M, Guibas L, et al. Computing and processing correspondences with functional maps. 2016; p. 9."
+    },
+    {
+      "key": "pcbi.1009061.ref022",
+      "doi-asserted-by": "crossref",
+      "DOI": "10.1145/3084873.3084877",
+      "unstructured": "Ovsjanikov M, Corman E, Bronstein M, Rodolà E, Ben-Chen M, Guibas L, et al. Computing and processing correspondences with functional maps. 2017; p. 5."
+    },
+    {
+      "key": "pcbi.1009061.ref023",
+      "author": "M Ovsjanikov",
+      "year": "2017",
+      "volume-title": "Functional View of Geometry Processing: Operator-based Techniques for Shape Analysis"
+    },
+    {
+      "issue": "9",
+      "key": "pcbi.1009061.ref024",
+      "doi-asserted-by": "crossref",
+      "first-page": "2546",
+      "DOI": "10.1109/TVCG.2017.2751473",
+      "article-title": "Joint Graph Layouts for Visualizing Collections of Segmented Meshes",
+      "volume": "24",
+      "author": "J Ren",
+      "year": "2017",
+      "journal-title": "IEEE Transactions on Visualization and Computer Graphics"
+    },
+    {
+      "issue": "6",
+      "key": "pcbi.1009061.ref025",
+      "first-page": "248",
+      "article-title": "Continuous and orientation-preserving correspondences via functional maps",
+      "volume": "37",
+      "author": "J Ren",
+      "year": "2019",
+      "journal-title": "ACM Transactions on Graphics (TOG)"
+    },
+    {
+      "issue": "5",
+      "key": "pcbi.1009061.ref026",
+      "doi-asserted-by": "crossref",
+      "first-page": "187",
+      "DOI": "10.1111/cgf.13799",
+      "article-title": "Limit Shapes—A Tool for Understanding Shape Differences and Variability in 3D Model Collections",
+      "volume": "38",
+      "author": "R Huang",
+      "year": "2019",
+      "journal-title": "Computer Graphics Forum"
+    },
+    {
+      "key": "pcbi.1009061.ref027",
+      "doi-asserted-by": "crossref",
+      "DOI": "10.1109/ICCV.2019.00868",
+      "unstructured": "Huang R, Rakotosaona MJ, Achlioptas P, Guibas LJ, Ovsjanikov M. Operatornet: Recovering 3d shapes from difference operators. In: Proceedings of the IEEE/CVF International Conference on Computer Vision; 2019. p. 8588–8597."
+    },
+    {
+      "key": "pcbi.1009061.ref028",
+      "doi-asserted-by": "crossref",
+      "DOI": "10.1145/3355089.3356524",
+      "unstructured": "Melzi S, Ren J, Rodola E, Sharma A, Wonka P, Ovsjanikov M. Zoomout: Spectral upsampling for efficient shape correspondence. arXiv preprint arXiv:190407865. 2019;."
+    },
+    {
+      "issue": "4",
+      "key": "pcbi.1009061.ref029",
+      "doi-asserted-by": "crossref",
+      "first-page": "72",
+      "DOI": "10.1145/2461912.2461959",
+      "article-title": "Map-based exploration of intrinsic shape differences and variability",
+      "volume": "32",
+      "author": "RM Rustamov",
+      "year": "2013",
+      "journal-title": "ACM Transactions on Graphics (TOG)"
+    },
+    {
+      "key": "pcbi.1009061.ref030",
+      "author": "L Aiello",
+      "year": "1990",
+      "volume-title": "An Introduction to Human Evolutionary Anatomy"
+    },
+    {
+      "issue": "Pt 3",
+      "key": "pcbi.1009061.ref031",
+      "first-page": "527",
+      "article-title": "The joints of the evolving foot. Part I. The ankle joint",
+      "volume": "130",
+      "author": "OJ Lewis",
+      "year": "1980",
+      "journal-title": "Journal of Anatomy"
+    },
+    {
+      "issue": "Pt 2",
+      "key": "pcbi.1009061.ref032",
+      "first-page": "275",
+      "article-title": "The joints of the evolving foot. Part III. The fossil evidence",
+      "volume": "131",
+      "author": "OJ Lewis",
+      "year": "1980",
+      "journal-title": "Journal of Anatomy"
+    },
+    {
+      "issue": "Pt 4",
+      "key": "pcbi.1009061.ref033",
+      "first-page": "833",
+      "article-title": "The joints of the evolving foot. Part II. The intrinsic joints",
+      "volume": "130",
+      "author": "OJ Lewis",
+      "year": "1980",
+      "journal-title": "Journal of Anatomy"
+    },
+    {
+      "issue": "4",
+      "key": "pcbi.1009061.ref034",
+      "doi-asserted-by": "crossref",
+      "first-page": "305",
+      "DOI": "10.1002/ajpa.1330050409",
+      "article-title": "Evolution of the human foot I",
+      "volume": "V",
+      "author": "DJ Morton",
+      "year": "1922",
+      "journal-title": "American Journal of Physical Anthropology"
+    },
+    {
+      "issue": "1",
+      "key": "pcbi.1009061.ref035",
+      "doi-asserted-by": "crossref",
+      "first-page": "1",
+      "DOI": "10.1002/ajpa.1330070114",
+      "article-title": "Evolution of the human foot II",
+      "volume": "7",
+      "author": "DJ Morton",
+      "year": "1924",
+      "journal-title": "American Journal of Physical Anthropology"
+    },
+    {
+      "issue": "5",
+      "key": "pcbi.1009061.ref036",
+      "doi-asserted-by": "crossref",
+      "first-page": "403",
+      "DOI": "10.1111/j.0021-8782.2004.00296.x",
+      "article-title": "Fossils, feet and the evolution of human bipedal locomotion",
+      "volume": "204",
+      "author": "WEH Harcourt-Smith",
+      "year": "2004",
+      "journal-title": "Journal of Anatomy"
+    },
+    {
+      "issue": "Pt 1",
+      "key": "pcbi.1009061.ref037",
+      "first-page": "165",
+      "article-title": "Calcaneocuboid joint and stability of the longitudinal arch of the foot at high and low gear push off",
+      "volume": "129",
+      "author": "F Bojsen-Møller",
+      "year": "1979",
+      "journal-title": "Journal of Anatomy"
+    },
+    {
+      "issue": "2",
+      "key": "pcbi.1009061.ref038",
+      "doi-asserted-by": "crossref",
+      "first-page": "245",
+      "DOI": "10.1002/ajpa.21140",
+      "article-title": "Revisiting the “midtarsal break”",
+      "volume": "141",
+      "author": "JM DeSilva",
+      "year": "2010",
+      "journal-title": "American Journal of Physical Anthropology"
+    },
+    {
+      "issue": "3",
+      "key": "pcbi.1009061.ref039",
+      "doi-asserted-by": "crossref",
+      "first-page": "495",
+      "DOI": "10.1002/ajpa.22287",
+      "article-title": "Brief communication: A midtarsal (midfoot) break in the human foot",
+      "volume": "151",
+      "author": "JM DeSilva",
+      "year": "2013",
+      "journal-title": "American Journal of Physical Anthropology"
+    },
+    {
+      "key": "pcbi.1009061.ref040",
+      "unstructured": "Harcourt-Smith WEH. Form and function in the hominoid tarsal skeleton. University of London, University College London (United Kingdom); 2002."
+    },
+    {
+      "key": "pcbi.1009061.ref041",
+      "unstructured": "Sharma A, Ovsjanikov M. Weakly supervised deep functional map for shape matching. arXiv preprint arXiv:200913339. 2020;."
+    },
+    {
+      "key": "pcbi.1009061.ref042",
+      "doi-asserted-by": "crossref",
+      "DOI": "10.1109/ICCV.2019.00170",
+      "unstructured": "Roufosse JM, Sharma A, Ovsjanikov M. Unsupervised deep learning for structured shape matching. In: Proceedings of the IEEE/CVF International Conference on Computer Vision; 2019. p. 1617–1627."
+    },
+    {
+      "issue": "4",
+      "key": "pcbi.1009061.ref043",
+      "doi-asserted-by": "crossref",
+      "DOI": "10.1145/3386569.3392437",
+      "article-title": "CNNs on surfaces using rotation-equivariant features",
+      "volume": "39",
+      "author": "R Wiersma",
+      "year": "2020",
+      "journal-title": "ACM Transactions on Graphics"
+    },
+    {
+      "key": "pcbi.1009061.ref044",
+      "doi-asserted-by": "crossref",
+      "DOI": "10.1109/3DV.2017.00065",
+      "unstructured": "Vestner M, Lähner Z, Boyarski A, Litany O, Slossberg R, Remez T, et al. Efficient deformable shape correspondence via kernel matching. In: 2017 International Conference on 3D Vision (3DV). IEEE; 2017. p. 517–526."
+    },
+    {
+      "issue": "5",
+      "key": "pcbi.1009061.ref045",
+      "doi-asserted-by": "crossref",
+      "first-page": "265",
+      "DOI": "10.1111/cgf.14084",
+      "article-title": "Consistent ZoomOut: Efficient Spectral Map Synchronization",
+      "volume": "39",
+      "author": "R Huang",
+      "year": "2020",
+      "journal-title": "Computer Graphics Forum"
+    },
+    {
+      "key": "pcbi.1009061.ref046",
+      "doi-asserted-by": "crossref",
+      "DOI": "10.1109/CVPR42600.2020.00862",
+      "unstructured": "Donati N, Sharma A, Ovsjanikov M. Deep geometric functional maps: Robust feature learning for shape correspondence. In: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition; 2020. p. 8592–8601."
+    },
+    {
+      "key": "pcbi.1009061.ref047",
+      "doi-asserted-by": "crossref",
+      "DOI": "10.1109/ICCVW.2011.6130444",
+      "unstructured": "Aubry M, Schlickewei U, Cremers D. The Wave Kernel Signature: A Quantum Mechanical Approach to Shape Analysis. 2011 IEEE International Conference on Computer Vision Workshops (ICCV Workshops). 2011;1:1626–1633."
+    },
+    {
+      "issue": "5",
+      "key": "pcbi.1009061.ref048",
+      "doi-asserted-by": "crossref",
+      "first-page": "1383",
+      "DOI": "10.1111/j.1467-8659.2009.01515.x",
+      "article-title": "A Concise and Provably Informative Multi-Scale Signature Based on Heat Diffusion",
+      "volume": "28",
+      "author": "J Sun",
+      "year": "2009",
+      "journal-title": "Computer Graphics Forum"
+    },
+    {
+      "issue": "1",
+      "key": "pcbi.1009061.ref049",
+      "doi-asserted-by": "crossref",
+      "first-page": "171",
+      "DOI": "10.1109/TPAMI.2013.148",
+      "article-title": "Learning Spectral Descriptors for Deformable Shape Correspondence",
+      "volume": "36",
+      "author": "R Litman",
+      "year": "2014",
+      "journal-title": "IEEE Transactions on Pattern Analysis and Machine Intelligence"
+    },
+    {
+      "issue": "Suppl 1",
+      "key": "pcbi.1009061.ref050",
+      "doi-asserted-by": "crossref",
+      "first-page": "1793",
+      "DOI": "10.1073/pnas.0906195106",
+      "article-title": "Colloquium papers: Numbering the hairs on our heads: the shared challenge and promise of phenomics",
+      "volume": "107",
+      "author": "D Houle",
+      "year": "2010",
+      "journal-title": "Proceedings of the National Academy of Sciences of the United States of America"
+    },
+    {
+      "issue": "3",
+      "key": "pcbi.1009061.ref051",
+      "doi-asserted-by": "crossref",
+      "first-page": "e0150368",
+      "DOI": "10.1371/journal.pone.0150368",
+      "article-title": "A Landmark-Free Method for Three-Dimensional Shape Analysis",
+      "volume": "11",
+      "author": "BJ Pomidor",
+      "year": "2016",
+      "journal-title": "PLOS ONE"
+    },
+    {
+      "key": "pcbi.1009061.ref052",
+      "doi-asserted-by": "crossref",
+      "DOI": "10.1073/pnas.1112822108",
+      "unstructured": "Boyer DM, Lipman Y, Clair ES. Algorithms to automatically quantify the geometric similarity of anatomical surfaces. Proceedings of the National Academy of Science; 2011."
+    },
+    {
+      "key": "pcbi.1009061.ref053",
+      "article-title": "Rapid surfacing reconstruction based on Geomagic Studio software",
+      "volume": "1",
+      "author": "Sy Cheng",
+      "year": "2011",
+      "journal-title": "Modern Manufacturing Engineering"
+    },
+    {
+      "key": "pcbi.1009061.ref054",
+      "unstructured": "Loop CT. Smooth Subdivision surfaces based on triangles; 1987."
+    },
+    {
+      "key": "pcbi.1009061.ref055",
+      "doi-asserted-by": "crossref",
+      "DOI": "10.1145/258734.258849",
+      "unstructured": "Garland M, Heckbert PS. Surface simplification using quadric error metrics. Proceedings of the 24th annual conference on Computer graphics and interactive techniques. 1997; p. 209–216."
+    },
+    {
+      "issue": "5",
+      "key": "pcbi.1009061.ref056",
+      "doi-asserted-by": "crossref",
+      "first-page": "474",
+      "DOI": "10.1002/wics.1224",
+      "article-title": "Visualization toolkit software: Visualization toolkit software",
+      "volume": "4",
+      "author": "G Wills",
+      "year": "2012",
+      "journal-title": "Wiley Interdisciplinary Reviews: Computational Statistics"
+    },
+    {
+      "key": "pcbi.1009061.ref057",
+      "unstructured": "Thomas O, Shen H, Rauum RL, Harcourt-Smith WEH, Polk JD, Hasegawa-Johnson M. PyTorch geometric datasets for morphVQ models; 2022. Available from: https://datadryad.org/stash/dataset/."
+    },
+    {
+      "key": "pcbi.1009061.ref058",
+      "unstructured": "Stratovan. Stratovan Checkpoint; 2018. Available from: https://www.stratovan.com/products/checkpoint."
+    },
+    {
+      "key": "pcbi.1009061.ref059",
+      "unstructured": "Collyer ML, Adams DC. RRPP: Linear Model Evaluation with Randomized Residuals in a Permutation Procedure, R package version 0.5.2. 2020;."
+    },
+    {
+      "key": "pcbi.1009061.ref060",
+      "unstructured": "Zelditch ML, Swiderski DL, Sheets HD. Geometric morphometrics for biologists: a primer; 2012."
+    },
+    {
+      "key": "pcbi.1009061.ref061",
+      "doi-asserted-by": "crossref",
+      "DOI": "10.1007/978-3-662-05105-4_2",
+      "unstructured": "Meyer M, Desbrun M, Schröder P, Barr AH. Discrete Differential-Geometry Operators for Triangulated 2-Manifolds. In: Visualization and Mathematics III. Berlin, Heidelberg: Springer Berlin Heidelberg; 2003. p. 35–57."
+    },
+    {
+      "key": "pcbi.1009061.ref062",
+      "unstructured": "Bronstein AM. Spectral descriptors for deformable shapes. arXiv preprint arXiv:11105015. 2011;."
+    },
+    {
+      "key": "pcbi.1009061.ref063",
+      "unstructured": "Melzi S. Local Geometry Processing for Deformations of Non-Rigid 3D Shapes; 2018."
+    },
+    {
+      "issue": "4",
+      "key": "pcbi.1009061.ref064",
+      "doi-asserted-by": "crossref",
+      "first-page": "18",
+      "DOI": "10.1109/MSP.2017.2693418",
+      "article-title": "Geometric deep learning: going beyond euclidean data",
+      "volume": "34",
+      "author": "MM Bronstein",
+      "year": "2017",
+      "journal-title": "IEEE Signal Processing Magazine"
+    },
+    {
+      "key": "pcbi.1009061.ref065",
+      "doi-asserted-by": "crossref",
+      "DOI": "10.1109/CVPR.2019.00450",
+      "unstructured": "Halimi O, Litany O, Rodolà E, Bronstein A, Kimmel R. Self-supervised learning of dense shape correspondence. arXiv preprint arXiv:181202415. 2018;."
+    },
+    {
+      "key": "pcbi.1009061.ref066",
+      "doi-asserted-by": "crossref",
+      "DOI": "10.1109/ICCV.2017.603",
+      "unstructured": "Litany O, Remez T, Rodolà E, Bronstein AM, Bronstein MM. Deep Functional Maps: Structured Prediction for Dense Shape Correspondence. 2017;."
+    },
+    {
+      "issue": "6",
+      "key": "pcbi.1009061.ref067",
+      "doi-asserted-by": "crossref",
+      "first-page": "1",
+      "DOI": "10.1145/3272127.3275102",
+      "article-title": "Multi-directional geodesic neural networks via equivariant convolution",
+      "volume": "37",
+      "author": "A Poulenard",
+      "year": "2018",
+      "journal-title": "ACM Transactions on Graphics (TOG)"
+    },
+    {
+      "key": "pcbi.1009061.ref068",
+      "unstructured": "Kipf TN, Welling M. Semi-supervised classification with graph convolutional networks. arXiv preprint arXiv:160902907. 2016;."
+    },
+    {
+      "issue": "99",
+      "key": "pcbi.1009061.ref069",
+      "first-page": "1",
+      "article-title": "Spherical Kernel for Efficient Graph Convolution on 3D Point Clouds",
+      "volume": "PP",
+      "author": "H Lei",
+      "year": "2020",
+      "journal-title": "IEEE Transactions on Pattern Analysis and Machine Intelligence"
+    },
+    {
+      "key": "pcbi.1009061.ref070",
+      "doi-asserted-by": "crossref",
+      "DOI": "10.1109/ICCV.2019.00651",
+      "unstructured": "Thomas H, Qi CR, Deschaud JE, Marcotegui B, Goulette F, Guibas LJ. Kpconv: Flexible and deformable convolution for point clouds. In: Proceedings of the IEEE/CVF International Conference on Computer Vision; 2019. p. 6411–6420."
+    },
+    {
+      "key": "pcbi.1009061.ref071",
+      "doi-asserted-by": "crossref",
+      "DOI": "10.1017/CBO9780511623783",
+      "unstructured": "Rosenberg S, Steven R. The Laplacian on a Riemannian manifold: an introduction to analysis on manifolds. 31. Cambridge University Press; 1997."
+    },
+    {
+      "key": "pcbi.1009061.ref072",
+      "unstructured": "Fey M, Lenssen JE. Fast Graph Representation Learning with PyTorch Geometric. In: ICLR Workshop on Representation Learning on Graphs and Manifolds; 2019."
+    },
+    {
+      "key": "pcbi.1009061.ref073",
+      "unstructured": "Kingma DP, Ba J. Adam: A method for stochastic optimization. arXiv preprint arXiv:14126980. 2014;."
+    }
+  ],
+  "updated-by": [
+    {
+      "updated": {
+        "date-parts": [
+          [2023, 2, 27]
+        ],
+        "date-time": "2023-02-27T00:00:00Z",
+        "timestamp": 1677456000000
+      },
+      "DOI": "10.1371/journal.pcbi.1009061",
+      "type": "new_version",
+      "source": "publisher",
+      "label": "New version"
+    }
+  ],
+  "container-title": "PLOS Computational Biology",
+  "original-title": [],
+  "language": "en",
+  "link": [
+    {
+      "URL": "https://dx.plos.org/10.1371/journal.pcbi.1009061",
+      "content-type": "unspecified",
+      "content-version": "vor",
+      "intended-application": "similarity-checking"
+    }
+  ],
+  "deposited": {
+    "date-parts": [
+      [2023, 12, 5]
+    ],
+    "date-time": "2023-12-05T02:04:53Z",
+    "timestamp": 1701741893000
+  },
+  "score": 1,
+  "resource": {
+    "primary": {
+      "URL": "https://dx.plos.org/10.1371/journal.pcbi.1009061"
+    }
+  },
+  "subtitle": [],
+  "editor": [
+    {
+      "given": "Min",
+      "family": "Xu",
+      "sequence": "first",
+      "affiliation": []
+    }
+  ],
+  "short-title": [],
+  "issued": {
+    "date-parts": [
+      [2023, 1, 19]
+    ]
+  },
+  "references-count": 73,
+  "journal-issue": {
+    "issue": "1",
+    "published-online": {
+      "date-parts": [
+        [2023, 1, 19]
+      ]
+    }
+  },
+  "URL": "http://dx.doi.org/10.1371/journal.pcbi.1009061",
+  "relation": {
+    "has-preprint": [
+      {
+        "id-type": "doi",
+        "id": "10.1101/2021.05.18.444628",
+        "asserted-by": "object"
+      }
+    ]
+  },
+  "ISSN": "1553-7358",
+  "subject": [],
+  "container-title-short": "PLoS Comput Biol",
+  "published": {
+    "date-parts": [
+      [2023, 1, 19]
+    ]
+  }
+}
