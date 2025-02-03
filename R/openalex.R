@@ -53,12 +53,17 @@
 }
 
 .oa_extract_authors <- function(oa_authorships) {
+  # Stupid hack to avoid complaint about undeclared global variables in `check`
+  ## These are never used; just here as code check misdirection for the column
+  ## names used in the dplyr chain below
+  first_name <- middle_name <- last_name <- given <- suffix <- NULL
+  # on to actual body of function
   authors <- purrr::map_vec(oa_authorships, \(x) {x$author$display_name})
   orcids  <- purrr::map_vec(oa_authorships, \(x) {.this_or_na(x$author$orcid)})
   author_df <- humaniformat::parse_names(authors) |>
-    dplyr::mutate(first_name = dplyr::if_else(is.na(first_name), "", first_name)) |>
-    dplyr::mutate(middle_name = dplyr::if_else(is.na(middle_name), "", middle_name)) |>
-    dplyr::mutate(last_name = dplyr::if_else(is.na(last_name), "", last_name)) |>
+    dplyr::mutate(first_name = .this_or_empty_string(first_name)) |>
+    dplyr::mutate(middle_name = .this_or_empty_string(middle_name)) |>
+    dplyr::mutate(last_name = .this_or_empty_string(last_name)) |>
     dplyr::mutate(given = stringr::str_trim(stringr::str_c(first_name, middle_name, sep=" "))) |>
     dplyr::select(given, last_name, suffix) |>
     dplyr::rename(family = last_name) |>

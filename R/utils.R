@@ -7,8 +7,12 @@
   length(unique(x)) == 1
 }
 
-.this_or_empty_string <- function(x) {
+.this_or_empty_string <- Vectorize(function(x) {
   ifelse(.this_exists(x), x, "")
+})
+
+.this_or_na <- function(x) {
+  ifelse(.this_exists(x), x, NA)
 }
 
 .xml_text_or_null <- function(x) {
