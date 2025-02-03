@@ -93,27 +93,44 @@
   }
 }
 
-crossref2cp <- function(this_json, format="list") {
+#' Convert crossref to citeproc csl-data
+#'
+#' @param this_data The data from crossref
+#' @param format The format of the data from crossref, currently accepting only
+#' the list format prepared by the [rcrossref] package.
+#'
+#' @returns A list with an `item` element and probably an `author` (or other creator)
+#' element(s) (i.e. `editor`, `director`, etc.). Often could have `affiliation` and
+#' `identifier` elements.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' cr_data <- rcrossref::cr_cn(dois = "10.1371/journal.pcbi.1009061",
+#'                             format = "citeproc-json")
+#' crossref2cp(cr_data)
+#' }
+crossref2cp <- function(this_data, format="list") {
   res <- list(
     item = list(
-      type = .crossref_type_to_citeproc(this_json$type),
-      language = .convert_language(this_json$language),
-      abstract = ifelse(.this_exists(this_json$abstract),
-                        this_json$abstract |> xml2::read_html() |> xml2::xml_text(),
+      type = .crossref_type_to_citeproc(this_data$type),
+      language = .convert_language(this_data$language),
+      abstract = ifelse(.this_exists(this_data$abstract),
+                        this_data$abstract |> xml2::read_html() |> xml2::xml_text(),
                         NA
       ),
-      DOI = this_json$DOI,
-      volume = this_json$volume,
-      issue = this_json$issue,
-      container_title = this_json$`container-title`,
-      container_title_short = this_json$`container-title-short`,
-      issued = .crossref_date(this_json),
-      page = this_json$page,
-      title = this_json$title
+      DOI = this_data$DOI,
+      volume = this_data$volume,
+      issue = this_data$issue,
+      container_title = this_data$`container-title`,
+      container_title_short = this_data$`container-title-short`,
+      issued = .crossref_date(this_data),
+      page = this_data$page,
+      title = this_data$title
     ),
-    author = .crossref_author_data(this_json$author),
-    affiliation = .crossref_affiliation_data(this_json$author),
-    identifier = .crossref_identifier_data(this_json$author)
+    author = .crossref_author_data(this_data$author),
+    affiliation = .crossref_affiliation_data(this_data$author),
+    identifier = .crossref_identifier_data(this_data$author)
   )
 
   res
