@@ -10,7 +10,7 @@ crossref2cp(this_data, format = "list")
 \item{this_data}{The data from crossref}
 
 \item{format}{The format of the data from crossref, currently accepting only
-the list format prepared by the \link{rcrossref} package.}
+the list format prepared by the \code{rcrossref} package.}
 }
 \value{
 A list with an \code{item} element and probably an \code{author} (or other creator)

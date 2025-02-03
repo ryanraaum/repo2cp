@@ -97,7 +97,7 @@
 #'
 #' @param this_data The data from crossref
 #' @param format The format of the data from crossref, currently accepting only
-#' the list format prepared by the [rcrossref] package.
+#' the list format prepared by the `rcrossref` package.
 #'
 #' @returns A list with an `item` element and probably an `author` (or other creator)
 #' element(s) (i.e. `editor`, `director`, etc.). Often could have `affiliation` and
