@@ -62,3 +62,32 @@
   if (length(x) == 0) { return(NULL) }
   xml2::xml_text(x)
 }
+
+
+.edb2csl <- function(l) {
+  assertthat::assert_that(.this_exists(l$item))
+  res <- l$item
+  creators <- intersect(csl_creator_types_clean, names(l))
+  for (creator in creators) {
+    res[[creator]] <- l[[creator]]
+  }
+  res
+}
+
+.unclean_csl_list <- function(l) {
+  # l needs to be in the csl-data layout
+  res <- l
+  unclean_names <- clean2csl[names(l)]
+  assertthat::are_equal(length(res), length(unclean_names))
+  names(res) <- unclean_names
+
+  creators <- intersect(csl_creator_types, names(res))
+  for (creator in creators) {
+    for (i in seq_along(res[[creator]])) {
+      unclean_names <- clean2csl[names(res[[creator]][[i]])]
+      assertthat::are_equal(length(res[[creator]][[i]]), length(unclean_names))
+      names(res[[creator]][[i]]) <- unclean_names
+    }
+  }
+  res
+}
