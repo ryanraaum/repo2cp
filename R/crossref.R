@@ -134,5 +134,14 @@ crossref2cp <- function(this_data, format="citeproc-json") {
   )
 
   if (format == "edb-list") { return(res) }
-  stop("citeproc-json return not implemented")
+
+  if (format %in% c("citeproc-json", "citeproc-list")) {
+    citeproc_list <- .unclean_csldata_list(.edb2csl(res))
+    if (format == "citeproc-list") { return(citeproc_list) }
+
+    citeproc_json <- jsonlite::toJSON(citeproc_list, auto_unbox = TRUE, pretty = TRUE)
+    return(citeproc_json)
+  }
+
+  stop(glue::glue("unknown format '{format}'"))
 }
