@@ -51,9 +51,22 @@ crossref2csl <- .create_crossref_to_csl_type_mapping()
 
 ## ---
 .create_language_mapping <- function() {
+  # start with the "T" codes
   language3to2 <- ISOcodes::ISO_639_2$Alpha_2
-  names(language3to2) <- ISOcodes::ISO_639_2$Alpha_3_B
+  names3 <- ISOcodes::ISO_639_2$Alpha_3_T
+
+  # find the 20 legacy "B" codes not in the "T" list
+  bcode_indices <- which(ISOcodes::ISO_639_2$Alpha_3_B != ISOcodes::ISO_639_2$Alpha_3_T)
+  language3to2 <- c(language3to2, ISOcodes::ISO_639_2$Alpha_2[bcode_indices])
+  names3 <- c(names3, ISOcodes::ISO_639_2$Alpha_3_B[bcode_indices])
+
+  # put the 3 letter codes on the 2 letter codes as names
+  names(language3to2) <- names3
+
+  # clean it up
   language3to2 <- language3to2[!is.na(language3to2)]
+
+  #send it out
   language3to2
 }
 
