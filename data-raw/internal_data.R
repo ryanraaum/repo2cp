@@ -18,6 +18,14 @@ csl_creator_types <- purrr::keep(csl_properties,
                               !is.null(x$items$`$ref`)) |>
   names()
 
+csl_creator_types_clean <- janitor::make_clean_names(csl_creator_types)
+
+ctypes2clean <- csl_creator_types_clean
+names(ctypes2clean) <- csl_creator_types
+
+clean2ctypes <- csl_creator_types
+names(clean2ctypes) <- csl_creator_types_clean
+
 # all csl properties that are about the item and not about the creators
 csl_core <- setdiff(names(csl_properties), csl_creators)
 csl_core_clean <- janitor::make_clean_names(csl_core)
@@ -38,6 +46,9 @@ names(creator2clean) <- csl_creator
 
 clean2creator <- csl_creator
 names(clean2creator) <- csl_creator_clean
+
+csl2clean <- c(core2clean, ctypes2clean, creator2clean)
+clean2csl <- c(clean2core, clean2ctypes, clean2creator)
 
 ## ---
 .create_crossref_to_csl_type_mapping <- function() {
@@ -77,7 +88,9 @@ language3to2 <- .create_language_mapping()
 usethis::use_data(csl_core, csl_core_clean,
                   core2clean, clean2core,
                   csl_creator_types,
+                  ctypes2clean, clean2ctypes,
                   csl_creator, csl_creator_clean,
                   creator2clean, clean2creator,
+                  csl2clean, clean2csl,
                   crossref2csl, language3to2,
                   internal=TRUE, overwrite = TRUE)
