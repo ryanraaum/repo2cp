@@ -14,7 +14,7 @@
   xml2::xml_find_all(one_xml, ".//Affiliation") |> .xml_text_or_null()
 }
 
-pubmed2cp <- function(this_xml, format="xml") {
+pubmed2cp <- function(this_xml, format="citeproc-json") {
 
   this_journal_issn <-
     xml2::xml_find_all(this_xml, ".//Journal//ISSN") |>
@@ -159,9 +159,9 @@ pubmed2cp <- function(this_xml, format="xml") {
       type = "article-journal",
       language = .convert_language(this_article_language),
       abstract = this_article_abstract,
-      DOI = this_doi,
-      PMID = this_pmid,
-      PMCID = this_article_pmcid,
+      doi = this_doi,
+      pmid = this_pmid,
+      pmcid = this_article_pmcid,
       volume = this_journal_volume,
       issue = this_journal_issue,
       container_title = this_journal_title,
@@ -175,5 +175,6 @@ pubmed2cp <- function(this_xml, format="xml") {
     author_affiliation = purrr::map(this_authors, .pubmed_one_affiliation_data)
   )
 
-  res
+  if (format == "edb-list") { return(res) }
+  stop("citeproc-json return not implemented")
 }
