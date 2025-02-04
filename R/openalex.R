@@ -59,27 +59,30 @@
   first_name <- middle_name <- last_name <- given <- suffix <- NULL
   # on to actual body of function
   authors <- purrr::map_vec(oa_authorships, \(x) {x$author$display_name})
-  orcids  <- purrr::map_vec(oa_authorships, \(x) {.this_or_na(x$author$orcid)})
   author_df <- humaniformat::parse_names(authors) |>
     dplyr::mutate(first_name = .this_or_empty_string(first_name)) |>
     dplyr::mutate(middle_name = .this_or_empty_string(middle_name)) |>
     dplyr::mutate(last_name = .this_or_empty_string(last_name)) |>
     dplyr::mutate(given = stringr::str_trim(stringr::str_c(first_name, middle_name, sep=" "))) |>
     dplyr::select(given, last_name, suffix) |>
-    dplyr::rename(family = last_name) |>
-    dplyr::mutate(orcid = orcids)
+    dplyr::rename(family = last_name)
   author_list <- apply(author_df, 1, as.list)
   author_list
 }
 
-openalex2cp <- function(this_json, format="list") {
+.oa_extract_identifiers <- function(oa_authorships) {
+  orcids  <- purrr::map(oa_authorships, \(x) {list(orcid=.this_or_na(x$author$orcid))})
+  orcids
+}
+
+openalex2cp <- function(this_json, format="citeproc-json") {
   res <- list(
     item = list(
       type = .oa_type_to_citeproc(this_json$type,
                                   this_json$primary_location$source$type,
                                   this_json$primary_location$version),
       language = this_json$language,
-      DOI = .clean_doi(this_json$doi),
+      doi = .clean_doi(this_json$doi),
       volume = this_json$biblio$volume,
       issue = this_json$biblio$issue,
       container_title = this_json$primary_location$source$display_name,
@@ -92,9 +95,11 @@ openalex2cp <- function(this_json, format="list") {
                        NA
       )
     ),
-    author = .oa_extract_authors(this_json$authorships)
+    author = .oa_extract_authors(this_json$authorships),
+    author_identifier = .oa_extract_identifiers(this_json$authorships)
   )
 
-  res
+  if (format == "edb-list") { return(res) }
+  stop("citeproc-json return not implemented")
 }
 
