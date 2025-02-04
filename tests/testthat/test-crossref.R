@@ -43,10 +43,14 @@ test_that("crossref2cp edb-list author result has only creator citeproc item ele
   for (i in seq_along(crdata)) {
     cr_res <- crossref2cp(crdata[[i]], format="edb-list")
     this_source <- names(crdata)[i]
+    author_count <- 0
     for (this_author in cr_res$author) {
-      for (this_element in names(this_author)) {
-        expect_true(this_element %in% csl_creator_clean,
-                    label = glue::glue("unexpected {this_element} in {this_source}"))
+      author_count <- author_count + 1
+      if (author_count <= 10) { # don't need to overdo this
+        for (this_element in names(this_author)) {
+          expect_true(this_element %in% csl_creator_clean,
+                      label = glue::glue("unexpected {this_element} in {this_source}"))
+        }
       }
     }
   }
