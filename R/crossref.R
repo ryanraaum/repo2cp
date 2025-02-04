@@ -110,7 +110,7 @@
 #'                             format = "citeproc-json")
 #' crossref2cp(cr_data)
 #' }
-crossref2cp <- function(this_data, format="list") {
+crossref2cp <- function(this_data, format="citeproc-json") {
   res <- list(
     item = list(
       type = .crossref_type_to_citeproc(this_data$type),
@@ -119,7 +119,7 @@ crossref2cp <- function(this_data, format="list") {
                         this_data$abstract |> xml2::read_html() |> xml2::xml_text(),
                         NA
       ),
-      DOI = this_data$DOI,
+      doi = this_data$DOI,
       volume = this_data$volume,
       issue = this_data$issue,
       container_title = this_data$`container-title`,
@@ -129,9 +129,10 @@ crossref2cp <- function(this_data, format="list") {
       title = this_data$title
     ),
     author = .crossref_author_data(this_data$author),
-    affiliation = .crossref_affiliation_data(this_data$author),
-    identifier = .crossref_identifier_data(this_data$author)
+    author_affiliation = .crossref_affiliation_data(this_data$author),
+    author_identifier = .crossref_identifier_data(this_data$author)
   )
 
-  res
+  if (format == "edb-list") { return(res) }
+  stop("citeproc-json return not implemented")
 }
