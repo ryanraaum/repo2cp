@@ -91,3 +91,18 @@
   }
   res
 }
+
+## exported
+
+#' Convert citeproc-list data to citeproc-json
+#'
+#' @param l A list with citeproc formatted data
+#'
+#' @returns A JSON document
+#' @export
+#'
+#' @examples
+#' cplist2json(list(title="Hello"))
+cplist2json <- function(l) {
+  jsonlite::toJSON(l, auto_unbox = TRUE, pretty = TRUE)
+}
