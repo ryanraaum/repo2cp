@@ -28,3 +28,4 @@ Imports:
     xml2
 Depends: 
     R (>= 3.5)
+LazyData: true
