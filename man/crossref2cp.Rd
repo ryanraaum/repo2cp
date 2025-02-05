@@ -4,7 +4,7 @@
 \alias{crossref2cp}
 \title{Convert crossref to citeproc csl-data}
 \usage{
-crossref2cp(this_data, format = "list")
+crossref2cp(this_data, format = "citeproc-json")
 }
 \arguments{
 \item{this_data}{The data from crossref}
