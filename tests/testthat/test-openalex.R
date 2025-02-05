@@ -1,6 +1,6 @@
 
 oadata <- list(
-  simple_item_rda = readRDS(test_path("testdata", "openalex_basic_journal_article.rda")),
+  simple_item_rda = oa_journal_article,
   institutional_item_rda = readRDS(test_path("testdata", "openalex_institutional_author_journal_article.rda"))
 )
 

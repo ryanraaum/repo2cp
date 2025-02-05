@@ -1,5 +1,5 @@
 crdata <- list(
-  simple_item_rda = readRDS(test_path("testdata", "crossref_basic_journal_article.rda")),
+  simple_item_rda = cr_journal_article,
   institutional_item_rda = readRDS(test_path("testdata", "crossref_institutional_author_journal_article.rda")),
   simple_item_json = jsonlite::read_json(test_path("testdata", "crossref_basic_journal_article.json"),
                                          simplifyVector = TRUE),

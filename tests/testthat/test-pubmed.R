@@ -1,6 +1,6 @@
 
 pmdata <- list(
-  simple_item_xml = xml2::read_xml(test_path("testdata", "pubmed_basic_journal_article.xml")),
+  simple_item_xml = xml2::read_xml(pm_journal_article_xmltext),
   institutional_item_xml = xml2::read_xml(test_path("testdata", "pubmed_institutional_author_journal_article.xml"))
 )
 
