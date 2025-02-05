@@ -27,7 +27,7 @@ clean2ctypes <- csl_creator_types
 names(clean2ctypes) <- csl_creator_types_clean
 
 # all csl properties that are about the item and not about the creators
-csl_core <- setdiff(names(csl_properties), csl_creators)
+csl_core <- setdiff(names(csl_properties), csl_creator_types)
 csl_core_clean <- janitor::make_clean_names(csl_core)
 
 # be able to convert back and forth between valid R/SQL names and the CSL names
@@ -87,7 +87,7 @@ language3to2 <- .create_language_mapping()
 
 usethis::use_data(csl_core, csl_core_clean,
                   core2clean, clean2core,
-                  csl_creator_types,
+                  csl_creator_types, csl_creator_types_clean,
                   ctypes2clean, clean2ctypes,
                   csl_creator, csl_creator_clean,
                   creator2clean, clean2creator,
