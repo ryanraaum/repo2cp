@@ -106,3 +106,35 @@
 cplist2json <- function(l) {
   jsonlite::toJSON(l, auto_unbox = TRUE, pretty = TRUE)
 }
+
+
+#' Combine JSON elements
+#'
+#' @param ... Either several JSON items or one list of JSON items
+#'
+#' @returns A JSON array
+#' @export
+#'
+#' @examples
+#' a <- crossref2cp(cr_journal_article)
+#' b <- crossref2cp(cr_journal_article)
+#' cjson(a, b)
+#'
+#' cjson(list(a, b))
+cjson <- function(...) {
+  these_args <- list(...)
+  if (length(these_args) == 1) {
+    if (is.list(these_args[[1]])) {
+      these_args <- these_args[[1]]
+    }
+  }
+  all_are_json <- all(unlist(purrr::map(these_args, \(x) class(x) == "json")))
+  these_args <- purrr::map(these_args, \(x) {stringr::str_replace_all(x, "\n", "\n  ")})
+  these_args <- purrr::map(these_args, \(x) {stringr::str_replace(x, "\\{", "  \\{")})
+  if (!all_are_json) {stop("can only combine `json` elements")}
+  res <- paste0("[\n",
+         paste(these_args, collapse=",\n"),
+         "\n]")
+  class(res) <- "json"
+  res
+}
