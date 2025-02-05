@@ -5,9 +5,10 @@ Authors@R:
     person("Ryan", "Raaum", , "ryan.raaum@lehman.cuny.edu", role = c("aut", "cre"),
            comment = c(ORCID = "https://orcid.org/0000-0003-4723-5475"))
 Description: Tools for processing bibliographic item data from online 
-              publication, citation, and scholarship databases into an R
-              list format that is a direct match to citeproc-json. Includes 
-              tools to process listings from Pubmed (XML) and Openalex.
+              publication, citation, and scholarship databases into citeproc-json, 
+              an R list format that is a direct match, and a more database
+              compatible list format. Includes tools to process listings from 
+              PubMed (XML), Crossref, and OpenAlex.
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
