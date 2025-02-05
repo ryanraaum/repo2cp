@@ -21,6 +21,7 @@ Imports:
     glue,
     humaniformat,
     janitor,
+    jsonlite,
     lubridate,
     purrr,
     stringr,
