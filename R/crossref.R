@@ -139,7 +139,7 @@ crossref2cp <- function(this_data, format="citeproc-json") {
     citeproc_list <- .unclean_csl_list(.edb2csl(res))
     if (format == "citeproc-list") { return(citeproc_list) }
 
-    citeproc_json <- jsonlite::toJSON(citeproc_list, auto_unbox = TRUE, pretty = TRUE)
+    citeproc_json <- cplist2json(citeproc_list)
     return(citeproc_json)
   }
 
