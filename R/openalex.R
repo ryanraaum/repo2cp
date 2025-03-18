@@ -75,6 +75,22 @@
   orcids
 }
 
+#' Convert openalex json to citeproc csl-data
+#'
+#' @param this_json The json data from openalex.
+#' @param format The format for return of the processed data.
+#'
+#' @returns A object of the selected return `format`.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' these_results <- oa_query(entity = "works", doi = "10.1371/journal.pcbi.1009061") |>
+#'                   oa_request()
+#' this_result <- these_results[[1]]
+#'
+#' openalex2cp(this_result)
+#' }
 openalex2cp <- function(this_json, format="citeproc-json") {
   res <- list(
     item = list(

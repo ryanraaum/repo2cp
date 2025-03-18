@@ -7,15 +7,12 @@
 crossref2cp(this_data, format = "citeproc-json")
 }
 \arguments{
-\item{this_data}{The data from crossref}
+\item{this_data}{The data from crossref.}
 
-\item{format}{The format of the data from crossref, currently accepting only
-the list format prepared by the \code{rcrossref} package.}
+\item{format}{The format for return of the processed data.}
 }
 \value{
-A list with an \code{item} element and probably an \code{author} (or other creator)
-element(s) (i.e. \code{editor}, \code{director}, etc.). Often could have \code{affiliation} and
-\code{identifier} elements.
+A object of the selected return \code{format}.
 }
 \description{
 Convert crossref to citeproc csl-data

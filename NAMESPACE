@@ -3,3 +3,5 @@
 export(cjson)
 export(cplist2json)
 export(crossref2cp)
+export(openalex2cp)
+export(pubmed2cp)

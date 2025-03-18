@@ -95,13 +95,10 @@
 
 #' Convert crossref to citeproc csl-data
 #'
-#' @param this_data The data from crossref
-#' @param format The format of the data from crossref, currently accepting only
-#' the list format prepared by the `rcrossref` package.
+#' @param this_data The data from crossref.
+#' @param format The format for return of the processed data.
 #'
-#' @returns A list with an `item` element and probably an `author` (or other creator)
-#' element(s) (i.e. `editor`, `director`, etc.). Often could have `affiliation` and
-#' `identifier` elements.
+#' @returns A object of the selected return `format`.
 #' @export
 #'
 #' @examples

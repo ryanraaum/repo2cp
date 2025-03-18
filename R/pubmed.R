@@ -14,6 +14,23 @@
   xml2::xml_find_all(one_xml, ".//Affiliation") |> .xml_text_or_null()
 }
 
+#' Convert pubmed xml to citeproc csl-data
+#'
+#' @param this_xml The xml data from pubmed.
+#' @param format The format for return of the processed data.
+#'
+#' @returns A object of the selected return `format`.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' this_res <- entrez_search("pubmed", term="10.1371/journal.pcbi.1009061")
+#' this_pmid <- this_res$ids[1]
+#' this_record <- entrez_fetch("pubmed", id=this_pmid, rettype="xml")
+#' this_xml <- read_xml(this_record)
+#'
+#' pubmed2cp(this_xml)
+#' }
 pubmed2cp <- function(this_xml, format="citeproc-json") {
 
   this_journal_issn <-
