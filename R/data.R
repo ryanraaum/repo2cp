@@ -35,6 +35,25 @@
 "oa_journal_article"
 
 
+#' A single journal article in a special volume from openalex
+#'
+#' An R list with the openalex data for a single journal article.
+#' It is included here for trial and testing purposes to avoid repeatedly hitting
+#' openalex servers for no good reason.
+#' It could be accessed directly using
+#' \preformatted{
+#' openalexR::oa_query(entity = "works",
+#'                     doi = "10.1090/conm/355/06452") |>
+#'            openalexR::oa_request()
+#' }
+#'
+#' @format
+#' A list with 50 elements.
+#'
+#' @source <https://www.openalex.org>
+"oa_special_volume_article"
+
+
 #' A single journal article from pubmed
 #'
 #' XML text with the pubmed data for a single journal article.
