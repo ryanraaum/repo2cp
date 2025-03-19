@@ -6,7 +6,7 @@
 }
 
 .this_is_singular <- function(x) {
-  if (any(is.na(x)) || any(is.null(x))) { return(NA) }
+  if (any(is.na(x)) || any(is.null(x))) { return(FALSE) }
   length(unique(x)) == 1
 }
 

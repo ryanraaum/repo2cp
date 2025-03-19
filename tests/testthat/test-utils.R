@@ -28,9 +28,9 @@ test_that(".this_is_singular finds false things", {
 })
 
 test_that(".this_is_singular handles missing and null", {
-  # and by "handles", we're going with: returns NA
-  expect_true(is.na(.this_is_singular(NA)))
-  expect_true(is.na(.this_is_singular(NULL)))
+  # and by "handles", we're going with: returns FALSE
+  expect_false(.this_is_singular(NA))
+  expect_false(.this_is_singular(NULL))
 })
 
 test_that(".this_or_empty_string returns this", {
