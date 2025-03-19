@@ -5,10 +5,12 @@
   if (oa_type == "article") {
     if (.this_or_empty_string(oa_version) == "submittedVersion") {
       return("article")
-    } else if (oa_location_type == "journal") {
+    } else if (.this_exists(oa_location_type) && oa_location_type == "journal") {
       return("article-journal")
-    } else if (oa_location_type == "conference") {
+    } else if (.this_exists(oa_location_type) && oa_location_type == "conference") {
       return("paper-conference")
+    } else {
+      return("unknown")
     }
   } else if (oa_type == "preprint") {
     return("article")
