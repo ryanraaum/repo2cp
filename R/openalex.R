@@ -26,17 +26,19 @@
     return("document")
   } else if (oa_type == "review") {
     return("article-journal")
-  } else if (oa_type == "other" && oa_location_type == "journal") {
+  } else if (oa_type == "other" && .this_exists(oa_location_type) && oa_location_type == "journal") {
     return("article-journal")
   }
 
   # then (per their documentation) if it not one of their types, it must be a crossref type,
   # so deal with it as a crossref type
-  assertthat::assert_that(oa_type %in% names(crossref2csl),
-                          msg=glue::glue("'{oa_type}' is not a valid crossref type"))
+  if (!(assertthat::assert_that(oa_type %in% names(crossref2csl)))) {
+    return("unknown")
+  }
   csl_type <- crossref2csl[[oa_type]]
-  assertthat::assert_that(assertthat::noNA(csl_type),
-                          msg=glue::glue("could not find csl type for crossref type '{oa_type}'"))
+  if (is.na(csl_type)) {
+    return("unknown")
+  }
   csl_type
 }
 
