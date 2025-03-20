@@ -12,6 +12,8 @@
     } else {
       return("unknown")
     }
+  } else if (oa_type == "letter" && .this_or_empty_string(oa_location_type) == "journal") {
+    return("article-journal")
   } else if (oa_type == "preprint") {
     return("article")
   } else if (oa_type == "paratext") {
