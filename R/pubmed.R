@@ -1,9 +1,9 @@
 
 .pubmed_one_author_data <- function(one_xml) {
   one_au <- list(
-    given = xml2::xml_find_all(one_xml, ".//ForeName") |> .xml_text_or_null(),
-    family = xml2::xml_find_all(one_xml, ".//LastName") |> .xml_text_or_null(),
-    literal = xml2::xml_find_all(one_xml, ".//CollectiveName") |> .xml_text_or_null()
+    given = xml2::xml_find_all(one_xml, ".//ForeName") |> xml_text_or_null(),
+    family = xml2::xml_find_all(one_xml, ".//LastName") |> xml_text_or_null(),
+    literal = xml2::xml_find_all(one_xml, ".//CollectiveName") |> xml_text_or_null()
     # initials = xml_find_all(one_xml, ".//Initials") |> xml_text(),
     # affiliation = xml_find_all(one_xml, ".//Affiliation") |> xml_text_or_null()
   )
@@ -11,7 +11,7 @@
 }
 
 .pubmed_one_affiliation_data <- function(one_xml) {
-  xml2::xml_find_all(one_xml, ".//Affiliation") |> .xml_text_or_null()
+  xml2::xml_find_all(one_xml, ".//Affiliation") |> xml_text_or_null()
 }
 
 #' Convert pubmed xml to citeproc csl-data
@@ -35,70 +35,70 @@ pubmed2cp <- function(this_xml, format="citeproc-json") {
 
   this_journal_issn <-
     xml2::xml_find_all(this_xml, ".//Journal//ISSN") |>
-    .xml_text_or_null()
+    xml_text_or_null()
   this_journal_volume <-
     xml2::xml_find_all(this_xml, ".//Journal//Volume") |>
-    .xml_text_or_null()
+    xml_text_or_null()
   this_journal_issue <-
     xml2::xml_find_all(this_xml, ".//Journal//Issue") |>
-    .xml_text_or_null()
+    xml_text_or_null()
   this_journal_year <-
     xml2::xml_find_all(this_xml, ".//Journal//PubDate//Year") |>
-    .xml_text_or_null()
+    xml_text_or_null()
   this_journal_month <-
     xml2::xml_find_all(this_xml, ".//Journal//PubDate//Month") |>
-    .xml_text_or_null()
+    xml_text_or_null()
   this_journal_day <-
     xml2::xml_find_all(this_xml, ".//Journal//PubDate//Day") |>
-    .xml_text_or_null()
+    xml_text_or_null()
   this_journal_title <-
     xml2::xml_find_all(this_xml, ".//Journal//Title") |>
-    .xml_text_or_null()
+    xml_text_or_null()
   this_journal_abbreviation <-
     xml2::xml_find_all(this_xml, ".//Journal//ISOAbbreviation") |>
-    .xml_text_or_null()
+    xml_text_or_null()
   this_article_year <-
     xml2::xml_find_all(this_xml, ".//Article//ArticleDate//Year") |>
-    .xml_text_or_null()
+    xml_text_or_null()
   this_article_month <-
     xml2::xml_find_all(this_xml, ".//Article//ArticleDate//Month") |>
-    .xml_text_or_null()
+    xml_text_or_null()
   this_article_day <-
     xml2::xml_find_all(this_xml, ".//Article//ArticleDate//Day") |>
-    .xml_text_or_null()
+    xml_text_or_null()
   this_article_title <-
     xml2::xml_find_all(this_xml, ".//Article//ArticleTitle") |>
-    .xml_text_or_null()
+    xml_text_or_null()
   this_article_startpage <-
     xml2::xml_find_all(this_xml, ".//Article//Pagination//StartPage") |>
-    .xml_text_or_null()
+    xml_text_or_null()
   this_article_endpage <-
     xml2::xml_find_all(this_xml, ".//Article//Pagination//EndPage") |>
-    .xml_text_or_null()
+    xml_text_or_null()
   this_article_abstract <-
     xml2::xml_find_all(this_xml, ".//Article//Abstract//AbstractText") |>
-    .xml_text_or_null()
+    xml_text_or_null()
   # need to convert language from 3-letter to 2-letter?
   # - or go to 3-letter elsewhere?
   # - or just not worry about it?
   this_article_language <-
     xml2::xml_find_all(this_xml, ".//Article//Language") |>
-    .xml_text_or_null()
+    xml_text_or_null()
   this_article_aid_doi <-
     xml2::xml_find_all(this_xml, ".//PubmedData/ArticleIdList//ArticleId[@IdType='doi']") |>
-    .xml_text_or_null()
+    xml_text_or_null()
   this_article_eid_doi <-
     xml2::xml_find_all(this_xml, ".//Article//ELocationID[@EIdType='doi']") |>
-    .xml_text_or_null()
+    xml_text_or_null()
   this_article_pmid <-
     xml2::xml_find_all(this_xml, ".//PubmedData/ArticleIdList//ArticleId[@IdType='pubmed']") |>
-    .xml_text_or_null()
+    xml_text_or_null()
   this_article_pmcid <-
     xml2::xml_find_all(this_xml, ".//PubmedData/ArticleIdList//ArticleId[@IdType='pmc']") |>
-    .xml_text_or_null()
+    xml_text_or_null()
   this_entry_pmid <-
     xml2::xml_find_all(this_xml, ".//PMID") |>
-    .xml_text_or_null()
+    xml_text_or_null()
 
   # sometimes the abstract has several disconnected sentences (instead of being one block of text)
   if (length(this_article_abstract) > 1) {

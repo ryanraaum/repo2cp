@@ -24,16 +24,16 @@ test_that(".convert_language throws errors for improper input", {
   expect_error(.convert_language("ikx")) # ISOcodes data doesn't have all languages (ikx = Ik)
 })
 
-test_that(".xml_text_or_null extracts text from xml elements", {
+test_that("xml_text_or_null extracts text from xml elements", {
   xml_doc <- xml2::read_xml(xml2::xml2_example("cd_catalog.xml"))
   nodeset <- xml2::xml_find_all(xml_doc, ".//TITLE")
-  expect_true(is.character(.xml_text_or_null(nodeset)))
+  expect_true(is.character(xml_text_or_null(nodeset)))
 })
 
-test_that(".xml_text_or_null returns null for empty xml nodesets", {
+test_that("xml_text_or_null returns null for empty xml nodesets", {
   xml_doc <- xml2::read_xml(xml2::xml2_example("cd_catalog.xml"))
   nodeset <- xml2::xml_find_all(xml_doc, ".//HORSES")
-  expect_true(is.null(.xml_text_or_null(nodeset)))
+  expect_true(is.null(xml_text_or_null(nodeset)))
 })
 
 

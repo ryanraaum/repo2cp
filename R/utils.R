@@ -21,16 +21,6 @@
   unlist(stringr::str_extract_all(doi_string, "10\\.\\S+"))
 }
 
-## sort-of vectorized, sort-of not
-##- returns a vector of text when appropriate
-##- but if nodeset is empty, returns a single NULL
-
-.xml_text_or_null <- function(x) {
-  if (length(x) == 0) { return(NULL) }
-  xml2::xml_text(x)
-}
-
-
 .edb2csl <- function(l) {
   assertthat::assert_that(aidr::this_exists(l$item))
   res <- l$item
@@ -105,3 +95,23 @@ cjson <- function(...) {
   class(res) <- "json"
   res
 }
+
+## sort-of vectorized, sort-of not
+##- returns a vector of text when appropriate
+##- but if nodeset is empty, returns a single NULL
+
+#' Extract text from XML nodeset or return NULL for empty nodeset
+#'
+#' @param x An xml2 nodeset
+#'
+#' @returns Either text or NULL
+#' @export
+#'
+#' @examples
+#' x <- xml2::read_xml("<p>This is some text. This is <b>bold!</b></p>")
+#' xml_text_or_null(x)
+xml_text_or_null <- function(x) {
+  if (length(x) == 0) { return(NULL) }
+  xml2::xml_text(x)
+}
+
