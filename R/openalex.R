@@ -3,16 +3,16 @@
   oa_types <- c("article", "preprint", "paratext", "letter", "editorial", "erratum",
                 "libguides", "supplementary-materials", "review")
   if (oa_type == "article") {
-    if (.this_or_empty_string(oa_version) == "submittedVersion") {
+    if (aidr::this_or_empty_string(oa_version) == "submittedVersion") {
       return("article")
-    } else if (.this_exists(oa_location_type) && oa_location_type == "journal") {
+    } else if (aidr::this_exists(oa_location_type) && oa_location_type == "journal") {
       return("article-journal")
-    } else if (.this_exists(oa_location_type) && oa_location_type == "conference") {
+    } else if (aidr::this_exists(oa_location_type) && oa_location_type == "conference") {
       return("paper-conference")
     } else {
       return("unknown")
     }
-  } else if (oa_type == "letter" && .this_or_empty_string(oa_location_type) == "journal") {
+  } else if (oa_type == "letter" && aidr::this_or_empty_string(oa_location_type) == "journal") {
     return("article-journal")
   } else if (oa_type == "preprint") {
     return("article")
@@ -28,7 +28,7 @@
     return("document")
   } else if (oa_type == "review") {
     return("article-journal")
-  } else if (oa_type == "other" && .this_exists(oa_location_type) && oa_location_type == "journal") {
+  } else if (oa_type == "other" && aidr::this_exists(oa_location_type) && oa_location_type == "journal") {
     return("article-journal")
   }
 
@@ -45,7 +45,7 @@
 }
 
 .oa_clean_pages <- function(first_page=NULL, last_page=NULL) {
-  if (.this_exists(last_page) && last_page != first_page) {
+  if (aidr::this_exists(last_page) && last_page != first_page) {
     return(glue::glue("{first_page}-{last_page}"))
   }
   first_page
@@ -68,9 +68,9 @@
   # on to actual body of function
   authors <- purrr::map_vec(oa_authorships, \(x) {x$author$display_name})
   author_df <- humaniformat::parse_names(authors) |>
-    dplyr::mutate(first_name = .this_or_empty_string(first_name)) |>
-    dplyr::mutate(middle_name = .this_or_empty_string(middle_name)) |>
-    dplyr::mutate(last_name = .this_or_empty_string(last_name)) |>
+    dplyr::mutate(first_name = aidr::this_or_empty_string(first_name)) |>
+    dplyr::mutate(middle_name = aidr::this_or_empty_string(middle_name)) |>
+    dplyr::mutate(last_name = aidr::this_or_empty_string(last_name)) |>
     dplyr::mutate(given = stringr::str_trim(stringr::str_c(first_name, middle_name, sep=" "))) |>
     dplyr::select(given, last_name, suffix) |>
     dplyr::rename(family = last_name)
@@ -79,7 +79,7 @@
 }
 
 .oa_extract_identifiers <- function(oa_authorships) {
-  orcids  <- purrr::map(oa_authorships, \(x) {list(orcid=.this_or_na(x$author$orcid))})
+  orcids  <- purrr::map(oa_authorships, \(x) {list(orcid=aidr::this_or_na(x$author$orcid))})
   orcids
 }
 
@@ -114,7 +114,7 @@ openalex2cp <- function(this_json, format="citeproc-json") {
       page_first = this_json$biblio$first_page,
       page = .oa_clean_pages(this_json$biblio$first_page, this_json$biblio$last_page),
       title = this_json$title,
-      abstract= ifelse(.this_exists(this_json$abstract_inverted_index),
+      abstract= ifelse(aidr::this_exists(this_json$abstract_inverted_index),
                        .oa_uninvert_abstract(this_json$abstract_inverted_index),
                        NA
       )

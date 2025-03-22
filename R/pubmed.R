@@ -109,17 +109,17 @@ pubmed2cp <- function(this_xml, format="citeproc-json") {
   this_authors <- xml2::xml_find_all(this_xml, ".//Author")
 
   this_doi <- c()
-  if (.this_exists(this_article_aid_doi)) {
+  if (aidr::this_exists(this_article_aid_doi)) {
     this_doi <- c(this_doi, this_article_aid_doi)
   }
-  if (.this_exists(this_article_eid_doi)) {
+  if (aidr::this_exists(this_article_eid_doi)) {
     this_doi <- c(this_doi, this_article_eid_doi)
   }
 
   # NOTE: This is fragile.
-  if (.this_is_singular(this_doi)) {
+  if (aidr::this_is_singular(this_doi)) {
     this_doi <- unique(this_doi)
-  } else if (.this_exists(this_article_aid_doi) && length(this_article_aid_doi) == 1) {
+  } else if (aidr::this_exists(this_article_aid_doi) && length(this_article_aid_doi) == 1) {
     this_doi <- this_article_aid_doi
   } else if (is.null(this_article_aid_doi) && is.null(this_article_eid_doi)) {
     this_doi <- NA
@@ -128,44 +128,44 @@ pubmed2cp <- function(this_xml, format="citeproc-json") {
   }
 
   this_pmid <- c()
-  if (.this_exists(this_entry_pmid)) {
+  if (aidr::this_exists(this_entry_pmid)) {
     this_pmid <- c(this_pmid, this_entry_pmid)
   }
-  if (.this_exists(this_article_pmid)) {
+  if (aidr::this_exists(this_article_pmid)) {
     this_pmid <- c(this_pmid, this_article_pmid)
   }
 
   # NOTE: This is fragile.
-  if (.this_is_singular(this_pmid)) {
+  if (aidr::this_is_singular(this_pmid)) {
     this_pmid <- unique(this_pmid)
-  } else if (.this_exists(this_article_pmid) && length(this_article_pmid) == 1) {
+  } else if (aidr::this_exists(this_article_pmid) && length(this_article_pmid) == 1) {
     this_pmid <- this_article_pmid
   } else {
     stop("Incompatible PMID values")
   }
 
-  this_year <- ifelse(.this_exists(this_article_year),
+  this_year <- ifelse(aidr::this_exists(this_article_year),
                       this_article_year, this_journal_year)
   this_month <- "01"
   if (!(is.null(this_article_month) && is.null(this_journal_month))) {
-    this_month <- ifelse(.this_exists(this_article_month),
+    this_month <- ifelse(aidr::this_exists(this_article_month),
                          this_article_month, this_journal_month)
   }
   this_day <- "01"
   if (!(is.null(this_article_day) && is.null(this_journal_day))) {
-    this_day <- ifelse(.this_exists(this_article_day),
+    this_day <- ifelse(aidr::this_exists(this_article_day),
                        this_article_day, this_journal_day)
   }
 
-  if (!.this_exists(this_year) ||
-      !.this_exists(this_month) ||
-      !.this_exists(this_day)) {
+  if (!aidr::this_exists(this_year) ||
+      !aidr::this_exists(this_month) ||
+      !aidr::this_exists(this_day)) {
     stop("problem with date in pubmed article")
   }
 
-  if (.this_exists(this_article_startpage) && .this_exists(this_article_endpage)) {
+  if (aidr::this_exists(this_article_startpage) && aidr::this_exists(this_article_endpage)) {
     article_pages <- glue::glue("{this_article_startpage}-{this_article_endpage}")
-  } else if (.this_exists(this_article_startpage)) {
+  } else if (aidr::this_exists(this_article_startpage)) {
     article_pages <- this_article_startpage
   } else {
     article_pages <- NULL

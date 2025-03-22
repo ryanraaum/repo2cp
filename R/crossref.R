@@ -70,11 +70,11 @@
 
 .crossref_date <- function(this_cr_json) {
   this_cr_date <- list()
-  if (.this_exists(this_cr_json$issued)) {
+  if (aidr::this_exists(this_cr_json$issued)) {
     this_cr_date <- this_cr_json$issued
-  } else if (.this_exists(this_cr_json$published)) {
+  } else if (aidr::this_exists(this_cr_json$published)) {
     this_cr_date <- this_cr_json$published
-  } else if (.this_exists(this_cr_json$`published-print`)) {
+  } else if (aidr::this_exists(this_cr_json$`published-print`)) {
     this_cr_date <- this_cr_json$`published-print`
   }
   if ("date-parts" %in% names(this_cr_date)) {
@@ -112,7 +112,7 @@ crossref2cp <- function(this_data, format="citeproc-json") {
     item = list(
       type = .crossref_type_to_citeproc(this_data$type),
       language = .convert_language(this_data$language),
-      abstract = ifelse(.this_exists(this_data$abstract),
+      abstract = ifelse(aidr::this_exists(this_data$abstract),
                         this_data$abstract |> xml2::read_html() |> xml2::xml_text(),
                         NA
       ),
