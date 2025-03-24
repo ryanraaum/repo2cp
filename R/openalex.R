@@ -34,7 +34,7 @@
 
   # then (per their documentation) if it not one of their types, it must be a crossref type,
   # so deal with it as a crossref type
-  if (!(assertthat::assert_that(oa_type %in% names(crossref2csl)))) {
+  if (!(oa_type %in% names(crossref2csl))) {
     return("unknown")
   }
   csl_type <- crossref2csl[[oa_type]]
