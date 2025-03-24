@@ -1,15 +1,6 @@
 
 ## these are not vectorized; they always return a single value
 
-.this_exists <- function(x) {
-  !(all(is.na(x)) || all(is.null(x)) || length(x) == 0)
-}
-
-.this_is_singular <- function(x) {
-  if (any(is.na(x)) || any(is.null(x))) { return(FALSE) }
-  length(unique(x)) == 1
-}
-
 .convert_language <- function(langcode) {
   if (nchar(langcode) == 2 && langcode %in% language3to2) {
     return(langcode)
@@ -26,46 +17,12 @@
 
 ## these are vectorized; they return a value for each entry in a input vector
 
-.singular_this_or_empty_string <- function(x) {
-  if(.this_exists(x)) { return(x) }
-  ""
-}
-
-.vectorized_this_or_empty_string <- Vectorize(.singular_this_or_empty_string,
-                                              USE.NAMES = FALSE)
-
-.this_or_empty_string <- function(x) {
-  if (length(x) > 1) { return(.vectorized_this_or_empty_string(x))}
-  .singular_this_or_empty_string(x)
-}
-
-.singular_this_or_na <- function(x) {
-  ifelse(.this_exists(x), x, NA)
-}
-
-.vectorized_this_or_na <- Vectorize(.singular_this_or_na, USE.NAMES=FALSE)
-
-.this_or_na <- function(x) {
-  if (length(x) > 1) { return(.vectorized_this_or_na(x)) }
-  .singular_this_or_na(x)
-}
-
 .clean_doi <- function(doi_string) {
   unlist(stringr::str_extract_all(doi_string, "10\\.\\S+"))
 }
 
-## sort-of vectorized, sort-of not
-##- returns a vector of text when appropriate
-##- but if nodeset is empty, returns a single NULL
-
-.xml_text_or_null <- function(x) {
-  if (length(x) == 0) { return(NULL) }
-  xml2::xml_text(x)
-}
-
-
 .edb2csl <- function(l) {
-  assertthat::assert_that(.this_exists(l$item))
+  assertthat::assert_that(aidr::this_exists(l$item))
   res <- l$item
   creators <- intersect(csl_creator_types_clean, names(l))
   for (creator in creators) {
@@ -138,3 +95,23 @@ cjson <- function(...) {
   class(res) <- "json"
   res
 }
+
+## sort-of vectorized, sort-of not
+##- returns a vector of text when appropriate
+##- but if nodeset is empty, returns a single NULL
+
+#' Extract text from XML nodeset or return NULL for empty nodeset
+#'
+#' @param x An xml2 nodeset
+#'
+#' @returns Either text or NULL
+#' @export
+#'
+#' @examples
+#' x <- xml2::read_xml("<p>This is some text. This is <b>bold!</b></p>")
+#' xml_text_or_null(x)
+xml_text_or_null <- function(x) {
+  if (length(x) == 0) { return(NULL) }
+  xml2::xml_text(x)
+}
+
