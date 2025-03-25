@@ -83,6 +83,17 @@ crossref2csl <- .create_crossref_to_csl_type_mapping()
 
 language3to2 <- .create_language_mapping()
 
+## bibtex to csl mapping from:
+## https://tug.ctan.org/biblio/citation-style-language/citeproc-bibtex-data.lua
+.create_bibtex_to_csl_mapping <- function() {
+  bibtex2csl_data <- readr::read_csv("data-raw/bibtex2csldata.csv", col_types="ccc")
+  bibtex2csl <- bibtex2csl_data$csl
+  names(bibtex2csl) <- bibtex2csl_data$bibtex
+  bibtex2csl
+}
+
+bibtex2csl <- .create_bibtex_to_csl_mapping()
+
 ## --- save everything for internal data use
 
 usethis::use_data(csl_core, csl_core_clean,
@@ -93,4 +104,5 @@ usethis::use_data(csl_core, csl_core_clean,
                   creator2clean, clean2creator,
                   csl2clean, clean2csl,
                   crossref2csl, language3to2,
+                  bibtex2csl,
                   internal=TRUE, overwrite = TRUE)
