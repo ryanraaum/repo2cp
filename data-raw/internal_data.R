@@ -94,6 +94,14 @@ language3to2 <- .create_language_mapping()
 
 bibtex2csl <- .create_bibtex_to_csl_mapping()
 
+.create_bibtex_to_csl_withsubtypes_list <- function() {
+  bibtex2csl_data <- readr::read_csv("data-raw/bibtex2csldata.csv", col_types="ccc") |>
+    dplyr::filter(!is.na(subtypes))
+  bibtex2csl_data$bibtex
+}
+
+bibtex2csl_withsubtypes <- .create_bibtex_to_csl_withsubtypes_list()
+
 ## --- save everything for internal data use
 
 usethis::use_data(csl_core, csl_core_clean,
@@ -104,5 +112,5 @@ usethis::use_data(csl_core, csl_core_clean,
                   creator2clean, clean2creator,
                   csl2clean, clean2csl,
                   crossref2csl, language3to2,
-                  bibtex2csl,
+                  bibtex2csl, bibtex2csl_withsubtypes,
                   internal=TRUE, overwrite = TRUE)
