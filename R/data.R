@@ -15,6 +15,17 @@
 #' @source <https://www.crossref.org>
 "cr_journal_article"
 
+#' A single journal article as a bibentry object
+#'
+#' A base R bibentry object with the data for a single journal article.
+#' It is included here for trial and testing purposes.
+#' It could be accessed directly using
+#'
+#' @format
+#' A bibentry object.
+#'
+#' @source <https://www.openalex.org>
+"be_journal_article"
 
 #' A single journal article from openalex
 #'

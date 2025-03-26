@@ -14,3 +14,6 @@ pm_journal_article_file_size <- file.info(pm_journal_article_file)$size
 pm_journal_article_xmltext <- readChar(pm_journal_article_file,
                                        pm_journal_article_file_size)
 usethis::use_data(pm_journal_article_xmltext, overwrite = TRUE)
+
+be_journal_article <- bibtex::read.bib("data-raw/basic_journal_article.bib")
+usethis::use_data(be_journal_article, overwrite = TRUE)
