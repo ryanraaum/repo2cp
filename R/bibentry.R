@@ -57,10 +57,18 @@
 }
 
 .bibentry_container_title <- function(this_bibentry) {
-  possible_titles <- c(aidr::this_or_na(this_bibentry$journal),
+  possible_titles <- c(aidr::this_or_na(this_bibentry$fjournal),
+                       aidr::this_or_na(this_bibentry$journal),
     aidr::this_or_na(this_bibentry$booktitle))
   possible_titles <- possible_titles[!is.na(possible_titles)]
   aidr::this_or_na(possible_titles[1])
+}
+
+.bibentry_container_title_short <- function(this_bibentry) {
+  if (aidr::this_exists(this_bibentry$fjournal)) {
+    return(aidr::this_or_na(this_bibentry$journal))
+  }
+  return(NA)
 }
 
 .bibentry_extract <- function(this_bibentry, creator_type) {
@@ -108,6 +116,7 @@ bibentry2cp <- function(this_bibentry, format="citeproc-json") {
       volume = aidr::this_or_na(this_bibentry$volume),
       issue = aidr::this_or_na(this_bibentry$number),
       container_title = .bibentry_container_title(this_bibentry),
+      container_title_short = .bibentry_container_title_short(this_bibentry),
       issued = .bibentry_date(this_bibentry),
       page_first = .bibentry_first_page(this_bibentry),
       page = aidr::this_or_na(this_bibentry$pages),
