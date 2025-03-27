@@ -84,7 +84,7 @@
   for (i in seq_along(people)) {
     extracted_people[[i]] = list(
       given = paste(people[i]$given, collapse=" "),
-      family = people[i]$family
+      family = paste(people[i]$family, collapse=" ")
     )
   }
   if (aidr::this_exists(extracted_people)) {

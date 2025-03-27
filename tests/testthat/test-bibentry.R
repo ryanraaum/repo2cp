@@ -7,6 +7,15 @@ article_bibentry <- bibentry(
   pages="1-50"
 )
 
+multiple_family_name_bibentry <- bibentry(
+  bibtype="Article",
+  title="Test Article",
+  author=person(given="Georg", family=c("von", "Trapp")),
+  journal="J Testing",
+  year="2025",
+  pages="1-50"
+)
+
 book_bibentry <- bibentry(
   bibtype="Book",
   title="Book Title",
@@ -35,6 +44,13 @@ test_that(".bibentry_first_page has basic functionality", {
 })
 
 test_that(".bibentry_extract has basic functionality", {
+  article_authors <- expect_no_error(.bibentry_extract(multiple_family_name_bibentry, "author"))
+  expect_equal(length(article_authors), 1)
+  expect_equal(article_authors[[1]]$given, "Georg")
+  expect_equal(article_authors[[1]]$family, "von Trapp")
+})
+
+test_that(".bibentry_extract combines family names into single string", {
   article_authors <- expect_no_error(.bibentry_extract(article_bibentry, "author"))
   expect_equal(length(article_authors), 1)
   expect_equal(article_authors[[1]]$given, "John")
