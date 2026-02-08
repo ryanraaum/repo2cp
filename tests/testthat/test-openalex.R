@@ -58,7 +58,9 @@ test_that("openalex2cp handles missing DOI", {
   test_data <- oa_journal_article
   test_data$doi <- NULL
   result <- openalex2cp(test_data, format="edb-list")
-  expect_true(is.null(result$item$doi))
+  # After bug fix, .clean_doi() returns character(0) instead of NULL
+  expect_equal(length(result$item$doi), 0)
+  expect_true(is.character(result$item$doi))
 })
 
 test_that(".oa_uninvert_abstract reconstructs text correctly", {
@@ -155,4 +157,43 @@ test_that(".oa_type_to_citeproc handles crossref fallback types", {
   expect_equal(.oa_type_to_citeproc("dissertation", NULL, NULL), "thesis")
   expect_equal(.oa_type_to_citeproc("dataset", NULL, NULL), "dataset")
   expect_equal(.oa_type_to_citeproc("posted-content", NULL, NULL), "post")
+})
+
+# Task 10: Test .oa_uninvert_abstract() edge cases
+
+test_that(".oa_uninvert_abstract handles empty inverted index", {
+  # Empty inverted index should produce empty result
+  empty_inverted <- list()
+  result <- .oa_uninvert_abstract(empty_inverted)
+  # With empty list, max(unlist(list())) is -Inf, +1 gives 0, creates zero-length vector
+  expect_true(is.character(result))
+  expect_equal(result, "")
+})
+
+test_that(".oa_uninvert_abstract handles gaps in position sequence", {
+  # Positions 0, 2, 5 (missing 1, 3, 4)
+  inverted <- list(
+    "first" = list(0),
+    "third" = list(2),
+    "sixth" = list(5)
+  )
+  result <- .oa_uninvert_abstract(inverted)
+  # Should create empty strings for missing positions
+  expect_true(is.character(result))
+  # Empty positions will be empty strings in the vector, collapsed with spaces
+  expect_true(grepl("first", result))
+  expect_true(grepl("third", result))
+  expect_true(grepl("sixth", result))
+})
+
+test_that(".oa_uninvert_abstract handles words at multiple positions", {
+  # Word appearing multiple times (duplicate positions for same word)
+  inverted <- list(
+    "the" = list(0, 3),
+    "quick" = list(1),
+    "brown" = list(2),
+    "fox" = list(4)
+  )
+  result <- .oa_uninvert_abstract(inverted)
+  expect_equal(result, "the quick brown the fox")
 })

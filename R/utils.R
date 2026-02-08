@@ -18,7 +18,12 @@
 ## these are vectorized; they return a value for each entry in a input vector
 
 .clean_doi <- function(doi_string) {
-  unlist(stringr::str_extract_all(doi_string, "10\\.\\S+"))
+  result <- unlist(stringr::str_extract_all(doi_string, "10\\.\\S+"))
+  # Ensure we always return a character vector, not NULL
+  if (is.null(result)) {
+    return(character(0))
+  }
+  result
 }
 
 .edb2csl <- function(l) {

@@ -52,6 +52,10 @@
 }
 
 .oa_uninvert_abstract <- function(inverted_abstract) {
+  # Handle empty inverted index
+  if (length(inverted_abstract) == 0) {
+    return("")
+  }
   words <- vector(mode="character", length=max(unlist(inverted_abstract))+1 )
   for (word in names(inverted_abstract)) {
     positions <- unlist(inverted_abstract[[word]]) + 1

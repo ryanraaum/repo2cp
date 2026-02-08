@@ -163,4 +163,38 @@ test_that("cjson handles single JSON object", {
   expect_equal(length(parsed), 1)
 })
 
+# Task 11: Test utility function edge cases
+
+test_that(".clean_doi handles empty vector", {
+  result <- .clean_doi(character(0))
+  expect_equal(length(result), 0)
+  expect_true(is.character(result))
+})
+
+test_that(".clean_doi handles vector of all NA values", {
+  result <- .clean_doi(c(NA, NA, NA))
+  # str_extract_all on NA returns NA, unlist gives logical(0) or NA
+  expect_true(all(is.na(result)))
+})
+
+test_that(".clean_doi handles mixed valid and invalid strings", {
+  mixed <- c("10.1234/valid", "not a doi", "10.5678/another", "invalid", "10.9999/third")
+  result <- .clean_doi(mixed)
+  # Should extract only valid DOI patterns
+  expect_equal(length(result), 3)
+  expect_equal(result[1], "10.1234/valid")
+  expect_equal(result[2], "10.5678/another")
+  expect_equal(result[3], "10.9999/third")
+})
+
+test_that(".convert_language throws error for NULL input", {
+  # nchar(NULL) should cause an error
+  expect_error(.convert_language(NULL))
+})
+
+test_that(".convert_language throws error for empty string", {
+  # nchar("") returns 0, which is neither 2 nor 3
+  expect_error(.convert_language(""), "language code is neither 2 nor three letters")
+})
+
 
