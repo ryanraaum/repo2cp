@@ -269,3 +269,41 @@ test_that("bibentry2cp handles missing authors with Misc type", {
   # Should handle gracefully, author list may be empty or NULL
   expect_true(length(result$author) == 0 || is.null(result$author))
 })
+
+# Task 15: Test name parsing edge cases (BibTeX)
+
+test_that(".bibentry_extract handles names with suffixes in given name", {
+  # Note: person() doesn't have a suffix parameter, so we include it in the name
+  # Test that suffixes embedded in names are preserved
+  suffix_entry <- bibentry(
+    bibtype = "Article",
+    title = "Test Article",
+    author = person(given = "John Jr.", family = "Smith"),
+    journal = "Test Journal",
+    year = "2025"
+  )
+  result <- .bibentry_extract(suffix_entry, "author")
+  expect_equal(length(result), 1)
+  # Names should be extracted correctly
+  expect_equal(result[[1]]$given, "John Jr.")
+  expect_equal(result[[1]]$family, "Smith")
+})
+
+test_that(".bibentry_extract handles particle names (from earlier test)", {
+  # This was already tested earlier, but let's verify it explicitly here
+  particle_entry <- bibentry(
+    bibtype = "Article",
+    title = "Test Article",
+    author = c(
+      person(given = "Ludwig", family = c("van", "Beethoven")),
+      person(given = "Vincent", family = c("van", "Gogh"))
+    ),
+    journal = "Test Journal",
+    year = "2025"
+  )
+  result <- .bibentry_extract(particle_entry, "author")
+  expect_equal(length(result), 2)
+  # Multiple family name parts should be collapsed with space
+  expect_equal(result[[1]]$family, "van Beethoven")
+  expect_equal(result[[2]]$family, "van Gogh")
+})

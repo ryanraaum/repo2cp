@@ -214,3 +214,31 @@ test_that("openalex2cp handles NULL primary_location", {
   # Should still complete without error, but may have missing container info
   expect_true("item" %in% names(result))
 })
+
+# Task 15: Test name parsing edge cases (OpenAlex)
+
+test_that(".oa_extract_authors handles names with suffixes", {
+  authorships <- list(
+    list(author = list(display_name = "John Smith Jr.")),
+    list(author = list(display_name = "Jane Doe III"))
+  )
+  result <- .oa_extract_authors(authorships)
+  expect_equal(length(result), 2)
+  # humaniformat should parse suffixes into the suffix field
+  # Check that parsing completed without error
+  expect_true("family" %in% names(result[[1]]))
+  expect_true("given" %in% names(result[[1]]))
+})
+
+test_that(".oa_extract_authors handles mononyms (single names)", {
+  authorships <- list(
+    list(author = list(display_name = "Madonna")),
+    list(author = list(display_name = "Plato"))
+  )
+  result <- .oa_extract_authors(authorships)
+  expect_equal(length(result), 2)
+  # With single names, humaniformat should put them in family field
+  # At least one name field should be populated for each author
+  expect_true(nchar(result[[1]]$family) > 0 || nchar(result[[1]]$given) > 0)
+  expect_true(nchar(result[[2]]$family) > 0 || nchar(result[[2]]$given) > 0)
+})
