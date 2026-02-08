@@ -8,52 +8,23 @@ crdata <- list(
 )
 
 test_that("crossref2cp edb-list return finishes without error and returns list", {
-  for (i in seq_along(crdata)) {
-    expect_no_failure(cr_res <- crossref2cp(crdata[[i]], format="edb-list"))
-    expect_true(is.list(cr_res),
-                label = glue::glue("data source {names(crdata)[i]}"))
-  }
+  .test_converter_returns_list(crossref2cp, crdata, "crossref2cp")
 })
-
 
 test_that("crossref2cp edb-list result has the right top level entries", {
-  for (i in seq_along(crdata)) {
-    cr_res <- crossref2cp(crdata[[i]], format="edb-list")
-    this_source <- names(crdata)[i]
-    for (this_element in c("item", "author", "author_identifier", "author_affiliation")) {
-      expect_true(this_element %in% names(cr_res),
-                  label=glue::glue("'{this_element}' in {this_source}"))
-    }
-  }
+  .test_converter_top_level_structure(
+    crossref2cp, crdata,
+    c("item", "author", "author_identifier", "author_affiliation"),
+    "crossref2cp"
+  )
 })
 
-
 test_that("crossref2cp edb-list item result has only core citeproc item elements", {
-  for (i in seq_along(crdata)) {
-    cr_res <- crossref2cp(crdata[[i]], format="edb-list")
-    this_source <- names(crdata)[i]
-    for (this_element in names(cr_res$item)) {
-      expect_true(this_element %in% csl_core_clean,
-                  label = glue::glue("unexpected {this_element} in {this_source}"))
-    }
-  }
+  .test_converter_item_elements(crossref2cp, crdata, "crossref2cp")
 })
 
 test_that("crossref2cp edb-list author result has only creator citeproc item elements", {
-  for (i in seq_along(crdata)) {
-    cr_res <- crossref2cp(crdata[[i]], format="edb-list")
-    this_source <- names(crdata)[i]
-    author_count <- 0
-    for (this_author in cr_res$author) {
-      author_count <- author_count + 1
-      if (author_count <= 10) { # don't need to overdo this
-        for (this_element in names(this_author)) {
-          expect_true(this_element %in% csl_creator_clean,
-                      label = glue::glue("unexpected {this_element} in {this_source}"))
-        }
-      }
-    }
-  }
+  .test_converter_author_elements(crossref2cp, crdata, "crossref2cp")
 })
 
 # Edge case and error handling tests
