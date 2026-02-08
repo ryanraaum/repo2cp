@@ -168,3 +168,27 @@ test_that(".crossref_process_author converts institutional name to literal", {
   expect_false("given" %in% names(result))
   expect_false("family" %in% names(result))
 })
+
+# Task 7: Test Crossref type diversity
+
+test_that(".crossref_type_to_citeproc handles diverse Crossref types", {
+  # Test various common types beyond journal-article
+  expect_equal(.crossref_type_to_citeproc("book"), "book")
+  expect_equal(.crossref_type_to_citeproc("book-chapter"), "chapter")
+  expect_equal(.crossref_type_to_citeproc("monograph"), "book")
+  expect_equal(.crossref_type_to_citeproc("dissertation"), "thesis")
+  expect_equal(.crossref_type_to_citeproc("dataset"), "dataset")
+  expect_equal(.crossref_type_to_citeproc("proceedings-article"), "paper-conference")
+  expect_equal(.crossref_type_to_citeproc("posted-content"), "post")
+})
+
+test_that("crossref2cp processes book-chapter type correctly", {
+  # Integration test with full book-chapter object
+  book_chapter_data <- crdata$simple_item_rda
+  book_chapter_data$type <- "book-chapter"
+  book_chapter_data$`container-title` <- "Handbook of Testing"
+
+  result <- crossref2cp(book_chapter_data, format="edb-list")
+  expect_equal(result$item$type, "chapter")
+  expect_equal(result$item$container_title, "Handbook of Testing")
+})

@@ -116,3 +116,43 @@ test_that(".oa_extract_authors handles names with particles", {
   expect_true("family" %in% names(result[[1]]))
   expect_true("family" %in% names(result[[2]]))
 })
+
+# Task 9: Test OpenAlex type diversity
+
+test_that(".oa_type_to_citeproc handles OpenAlex-specific types", {
+  # preprint
+  expect_equal(.oa_type_to_citeproc("preprint", NULL, NULL), "article")
+
+  # editorial in journal
+  expect_equal(.oa_type_to_citeproc("editorial", "journal", NULL), "article-journal")
+
+  # review in journal
+  expect_equal(.oa_type_to_citeproc("review", "journal", NULL), "article-journal")
+
+  # letter in journal
+  expect_equal(.oa_type_to_citeproc("letter", "journal", NULL), "article-journal")
+
+  # erratum in journal
+  expect_equal(.oa_type_to_citeproc("erratum", "journal", NULL), "article-journal")
+
+  # paratext
+  expect_equal(.oa_type_to_citeproc("paratext", NULL, NULL), "document")
+
+  # libguides
+  expect_equal(.oa_type_to_citeproc("libguides", NULL, NULL), "document")
+
+  # supplementary-materials
+  expect_equal(.oa_type_to_citeproc("supplementary-materials", NULL, NULL), "document")
+
+  # other with journal location
+  expect_equal(.oa_type_to_citeproc("other", "journal", NULL), "article-journal")
+})
+
+test_that(".oa_type_to_citeproc handles crossref fallback types", {
+  # When OA type is not in their special list, should use crossref mapping
+  expect_equal(.oa_type_to_citeproc("book", NULL, NULL), "book")
+  expect_equal(.oa_type_to_citeproc("book-chapter", NULL, NULL), "chapter")
+  expect_equal(.oa_type_to_citeproc("dissertation", NULL, NULL), "thesis")
+  expect_equal(.oa_type_to_citeproc("dataset", NULL, NULL), "dataset")
+  expect_equal(.oa_type_to_citeproc("posted-content", NULL, NULL), "post")
+})

@@ -167,3 +167,80 @@ test_that(".bibentry_container_title handles multiple sources", {
   result2 <- .bibentry_container_title(journal_only_bibentry)
   expect_equal(result2, "Journal Name")
 })
+
+# Task 8: Test BibTeX type diversity and subtypes
+
+test_that(".bibentry_type_to_citeproc handles article subtypes", {
+  # article-magazine subtype
+  magazine_entry <- bibentry(
+    bibtype = "Article",
+    entrysubtype = "article-magazine",
+    title = "Magazine Article",
+    author = person("Test", "Author"),
+    journal = "Popular Science",
+    year = "2025"
+  )
+  expect_equal(.bibentry_type_to_citeproc(magazine_entry), "article-magazine")
+
+  # article-newspaper subtype (note: typo in bibtex2csldata.csv - "newpaper")
+  newspaper_entry <- bibentry(
+    bibtype = "Article",
+    entrysubtype = "article-newpaper",
+    title = "News Article",
+    author = person("Test", "Author"),
+    journal = "The Times",
+    year = "2025"
+  )
+  expect_equal(.bibentry_type_to_citeproc(newspaper_entry), "article-newspaper")
+})
+
+test_that(".bibentry_type_to_citeproc handles diverse base types", {
+  # Book
+  book_entry <- bibentry(
+    bibtype = "Book",
+    title = "Book Title",
+    author = person("Book", "Author"),
+    publisher = "Publisher",
+    year = "2025"
+  )
+  expect_equal(.bibentry_type_to_citeproc(book_entry), "book")
+
+  # PhdThesis
+  thesis_entry <- bibentry(
+    bibtype = "PhdThesis",
+    title = "Thesis Title",
+    author = person("PhD", "Student"),
+    school = "University",
+    year = "2025"
+  )
+  expect_equal(.bibentry_type_to_citeproc(thesis_entry), "thesis")
+
+  # InBook (should map to chapter) - requires chapter and publisher fields
+  inbook_entry <- bibentry(
+    bibtype = "InBook",
+    title = "Chapter Title",
+    author = person("Chapter", "Author"),
+    chapter = "3",
+    booktitle = "Book Title",
+    publisher = "Publisher",
+    year = "2025",
+    pages = "1-10"
+  )
+  expect_equal(.bibentry_type_to_citeproc(inbook_entry), "chapter")
+
+  # Manual (maps to report)
+  manual_entry <- bibentry(
+    bibtype = "Manual",
+    title = "Software Manual",
+    year = "2025"
+  )
+  expect_equal(.bibentry_type_to_citeproc(manual_entry), "report")
+
+  # Misc (maps to document)
+  misc_entry <- bibentry(
+    bibtype = "Misc",
+    title = "Miscellaneous Document",
+    year = "2025"
+  )
+  expect_equal(.bibentry_type_to_citeproc(misc_entry), "document")
+})
