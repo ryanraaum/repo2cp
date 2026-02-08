@@ -307,3 +307,11 @@ test_that(".bibentry_extract handles particle names (from earlier test)", {
   expect_equal(result[[1]]$family, "van Beethoven")
   expect_equal(result[[2]]$family, "van Gogh")
 })
+
+# Task 16: Test format parameter validation
+
+test_that("bibentry2cp throws error for non-edb-list format", {
+  test_entry <- article_bibentry
+  expect_error(bibentry2cp(test_entry, format="citeproc-json"),
+               "citeproc-json return not implemented")
+})

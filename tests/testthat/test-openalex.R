@@ -242,3 +242,11 @@ test_that(".oa_extract_authors handles mononyms (single names)", {
   expect_true(nchar(result[[1]]$family) > 0 || nchar(result[[1]]$given) > 0)
   expect_true(nchar(result[[2]]$family) > 0 || nchar(result[[2]]$given) > 0)
 })
+
+# Task 16: Test format parameter validation
+
+test_that("openalex2cp throws error for non-edb-list format", {
+  test_data <- oadata$simple_item_rda
+  expect_error(openalex2cp(test_data, format="citeproc-json"),
+               "citeproc-json return not implemented")
+})

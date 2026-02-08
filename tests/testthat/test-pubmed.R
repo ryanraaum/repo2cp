@@ -201,3 +201,11 @@ test_that("pubmed2cp handles matching PMID from multiple sources", {
   result <- expect_no_error(pubmed2cp(matching_pmid_xml, format="edb-list"))
   expect_equal(result$item$pmid, "12345678")
 })
+
+# Task 16: Test format parameter validation
+
+test_that("pubmed2cp throws error for non-edb-list format", {
+  test_xml <- pmdata$simple_item_xml
+  expect_error(pubmed2cp(test_xml, format="citeproc-json"),
+               "citeproc-json return not implemented")
+})

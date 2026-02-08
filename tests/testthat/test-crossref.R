@@ -208,3 +208,11 @@ test_that("crossref2cp handles NULL title", {
   result <- expect_no_error(crossref2cp(test_data, format="edb-list"))
   expect_true(is.null(result$item$title) || is.na(result$item$title))
 })
+
+# Task 16: Test format parameter validation
+
+test_that("crossref2cp throws error for invalid format parameter", {
+  test_data <- crdata$simple_item_rda
+  expect_error(crossref2cp(test_data, format="invalid-format"),
+               "unknown format 'invalid-format'")
+})
