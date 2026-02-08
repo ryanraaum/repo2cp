@@ -76,3 +76,94 @@ test_that("bibentry2cp edb-list format has basic functionality", {
   expect_true("item" %in% names(be_journal_article_data))
   expect_true("author" %in% names(be_journal_article_data))
 })
+
+# Edge case and error handling tests
+
+test_that(".bibentry_type_to_citeproc handles known types correctly", {
+  # Test that Misc maps to document (a known mapping)
+  misc_bibentry <- bibentry(
+    bibtype="Misc",
+    title="Miscellaneous Item",
+    year="2025"
+  )
+  result <- .bibentry_type_to_citeproc(misc_bibentry)
+  expect_equal(result, "document")
+
+  # Test Manual maps to report
+  manual_bibentry <- bibentry(
+    bibtype="Manual",
+    title="Manual Title",
+    year="2025"
+  )
+  result2 <- .bibentry_type_to_citeproc(manual_bibentry)
+  expect_equal(result2, "report")
+})
+
+test_that("bibentry2cp throws error for multiple entries", {
+  multi_entry <- c(article_bibentry, book_bibentry)
+  expect_error(bibentry2cp(multi_entry, format="edb-list"),
+               "Can only parse one bibentry at a time")
+})
+
+test_that(".bibentry_date handles missing month with default", {
+  # bibentry with year only (no month specified)
+  year_only_bibentry <- bibentry(
+    bibtype="Article",
+    title="Test",
+    author=person("Test", "Author"),
+    journal="Test Journal",
+    year="2024"
+  )
+  result <- .bibentry_date(year_only_bibentry)
+  expect_equal(result, as.Date("2024-01-01"))
+})
+
+test_that("bibentry2cp handles missing DOI", {
+  # Article without DOI
+  no_doi_bibentry <- bibentry(
+    bibtype="Article",
+    title="Article Without DOI",
+    author=person("No", "DOI"),
+    journal="Test Journal",
+    year="2025"
+  )
+  result <- bibentry2cp(no_doi_bibentry, format="edb-list")
+  expect_true(is.na(result$item$doi))
+})
+
+test_that("bibentry2cp handles missing abstract", {
+  # Article without abstract (most common case)
+  result <- bibentry2cp(article_bibentry, format="edb-list")
+  expect_true(is.na(result$item$abstract))
+})
+
+test_that(".bibentry_extract returns NULL for missing editors", {
+  # Article with no editors
+  result <- .bibentry_extract(article_bibentry, "editor")
+  expect_null(result)
+})
+
+test_that(".bibentry_container_title handles multiple sources", {
+  # Test with fjournal present
+  fjournal_bibentry <- bibentry(
+    bibtype="Article",
+    title="Test",
+    author=person("Test", "Author"),
+    fjournal="Full Journal Name",
+    journal="J Short",
+    year="2025"
+  )
+  result <- .bibentry_container_title(fjournal_bibentry)
+  expect_equal(result, "Full Journal Name")
+
+  # Test with only journal
+  journal_only_bibentry <- bibentry(
+    bibtype="Article",
+    title="Test",
+    author=person("Test", "Author"),
+    journal="Journal Name",
+    year="2025"
+  )
+  result2 <- .bibentry_container_title(journal_only_bibentry)
+  expect_equal(result2, "Journal Name")
+})
