@@ -36,4 +36,131 @@ test_that("xml_text_or_null returns null for empty xml nodesets", {
   expect_true(is.null(xml_text_or_null(nodeset)))
 })
 
+# Tests for cplist2json()
+
+test_that("cplist2json converts simple list to JSON", {
+  simple_list <- list(title = "Test Article", type = "article-journal")
+  result <- cplist2json(simple_list)
+  expect_s3_class(result, "json")
+  expect_true(grepl("\"title\": \"Test Article\"", result))
+  expect_true(grepl("\"type\": \"article-journal\"", result))
+})
+
+test_that("cplist2json produces valid JSON that can be parsed", {
+  test_list <- list(
+    title = "Sample Title",
+    volume = "42",
+    page = "123-456"
+  )
+  result <- cplist2json(test_list)
+  # Parse it back to verify it's valid JSON
+  parsed <- jsonlite::fromJSON(result)
+  expect_equal(parsed$title, "Sample Title")
+  expect_equal(parsed$volume, "42")
+  expect_equal(parsed$page, "123-456")
+})
+
+test_that("cplist2json handles nested structures with authors", {
+  nested_list <- list(
+    title = "Article with Authors",
+    author = list(
+      list(given = "John", family = "Doe"),
+      list(given = "Jane", family = "Smith")
+    )
+  )
+  result <- cplist2json(nested_list)
+  expect_s3_class(result, "json")
+  parsed <- jsonlite::fromJSON(result)
+  expect_equal(length(parsed$author), 2)
+  expect_equal(parsed$author$given[1], "John")
+  expect_equal(parsed$author$family[2], "Smith")
+})
+
+test_that("cplist2json handles various data types correctly", {
+  mixed_list <- list(
+    title = "Test",
+    volume = 42,
+    page = "100-110",
+    issued = as.Date("2023-01-15")
+  )
+  result <- cplist2json(mixed_list)
+  parsed <- jsonlite::fromJSON(result)
+  expect_equal(parsed$title, "Test")
+  expect_equal(parsed$volume, 42)
+  expect_equal(parsed$page, "100-110")
+})
+
+test_that("cplist2json uses auto_unbox for scalar values", {
+  test_list <- list(title = "Single Value", volume = "1")
+  result <- cplist2json(test_list)
+  # Should not have array brackets around scalar values
+  expect_true(grepl("\"title\": \"Single Value\"", result))
+  expect_false(grepl("\"title\": \\[\"Single Value\"\\]", result))
+})
+
+test_that("cplist2json produces pretty-printed JSON", {
+  test_list <- list(title = "Test", type = "article")
+  result <- cplist2json(test_list)
+  # Pretty-printed JSON should have newlines and indentation
+  expect_true(grepl("\n", result))
+  expect_true(grepl("  ", result))
+})
+
+# Tests for cjson()
+
+test_that("cjson combines multiple JSON objects with comma syntax", {
+  json1 <- cplist2json(list(title = "Article 1"))
+  json2 <- cplist2json(list(title = "Article 2"))
+  result <- cjson(json1, json2)
+  expect_s3_class(result, "json")
+  expect_true(grepl("\"Article 1\"", result))
+  expect_true(grepl("\"Article 2\"", result))
+  expect_true(grepl("^\\[", result))  # Starts with [
+  expect_true(grepl("\\]$", result))  # Ends with ]
+})
+
+test_that("cjson combines multiple JSON objects with list syntax", {
+  json1 <- cplist2json(list(title = "Article 1"))
+  json2 <- cplist2json(list(title = "Article 2"))
+  json3 <- cplist2json(list(title = "Article 3"))
+  result <- cjson(list(json1, json2, json3))
+  expect_s3_class(result, "json")
+  expect_true(grepl("\"Article 1\"", result))
+  expect_true(grepl("\"Article 2\"", result))
+  expect_true(grepl("\"Article 3\"", result))
+})
+
+test_that("cjson produces valid JSON array structure", {
+  json1 <- cplist2json(list(title = "First", volume = "1"))
+  json2 <- cplist2json(list(title = "Second", volume = "2"))
+  result <- cjson(json1, json2)
+  # Parse the result to verify it's a valid JSON array
+  parsed <- jsonlite::fromJSON(result)
+  expect_equal(length(parsed), 2)
+  expect_equal(parsed$title[1], "First")
+  expect_equal(parsed$title[2], "Second")
+})
+
+test_that("cjson properly formats nested JSON in array", {
+  json1 <- cplist2json(list(title = "Test"))
+  result <- cjson(json1)
+  expect_true(grepl("\\[\\n  \\{", result))  # Array with indented object
+  expect_true(grepl("\\n\\]$", result))      # Closing bracket on new line
+})
+
+test_that("cjson throws error for non-JSON inputs", {
+  json1 <- cplist2json(list(title = "Valid"))
+  not_json <- "just a string"
+  expect_error(cjson(json1, not_json), "can only combine `json` elements")
+})
+
+test_that("cjson handles single JSON object", {
+  json1 <- cplist2json(list(title = "Single Article"))
+  result <- cjson(json1)
+  expect_s3_class(result, "json")
+  expect_true(grepl("\"Single Article\"", result))
+  parsed <- jsonlite::fromJSON(result)
+  expect_equal(length(parsed), 1)
+})
+
 
