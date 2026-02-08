@@ -244,3 +244,28 @@ test_that(".bibentry_type_to_citeproc handles diverse base types", {
   )
   expect_equal(.bibentry_type_to_citeproc(misc_entry), "document")
 })
+
+# Task 14: Test empty/malformed data in BibTeX
+
+test_that("bibentry2cp handles missing year with Misc type", {
+  # Misc type doesn't require year, so we can test missing year handling
+  no_year_entry <- bibentry(
+    bibtype = "Misc",
+    title = "Document Without Year"
+  )
+  result <- expect_no_error(bibentry2cp(no_year_entry, format="edb-list"))
+  # Should produce NA for issued date
+  expect_true(is.na(result$item$issued))
+})
+
+test_that("bibentry2cp handles missing authors with Misc type", {
+  # Misc type doesn't require author, so we can test missing author handling
+  no_author_entry <- bibentry(
+    bibtype = "Misc",
+    title = "Document Without Author",
+    year = "2025"
+  )
+  result <- expect_no_error(bibentry2cp(no_author_entry, format="edb-list"))
+  # Should handle gracefully, author list may be empty or NULL
+  expect_true(length(result$author) == 0 || is.null(result$author))
+})

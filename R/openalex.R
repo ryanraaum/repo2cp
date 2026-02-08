@@ -65,6 +65,10 @@
 }
 
 .oa_extract_authors <- function(oa_authorships) {
+  # Handle empty authorships
+  if (length(oa_authorships) == 0) {
+    return(list())
+  }
   # Stupid hack to avoid complaint about undeclared global variables in `check`
   ## These are never used; just here as code check misdirection for the column
   ## names used in the dplyr chain below

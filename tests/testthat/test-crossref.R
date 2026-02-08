@@ -192,3 +192,19 @@ test_that("crossref2cp processes book-chapter type correctly", {
   expect_equal(result$item$type, "chapter")
   expect_equal(result$item$container_title, "Handbook of Testing")
 })
+
+# Task 12: Test empty/malformed data in Crossref
+
+test_that("crossref2cp handles empty author list", {
+  test_data <- crdata$simple_item_rda
+  test_data$author <- list()
+  result <- expect_no_error(crossref2cp(test_data, format="edb-list"))
+  expect_equal(length(result$author), 0)
+})
+
+test_that("crossref2cp handles NULL title", {
+  test_data <- crdata$simple_item_rda
+  test_data$title <- NULL
+  result <- expect_no_error(crossref2cp(test_data, format="edb-list"))
+  expect_true(is.null(result$item$title) || is.na(result$item$title))
+})

@@ -197,3 +197,20 @@ test_that(".oa_uninvert_abstract handles words at multiple positions", {
   result <- .oa_uninvert_abstract(inverted)
   expect_equal(result, "the quick brown the fox")
 })
+
+# Task 13: Test empty/malformed data in OpenAlex
+
+test_that("openalex2cp handles empty authorships", {
+  test_data <- oadata$simple_item_rda
+  test_data$authorships <- list()
+  result <- expect_no_error(openalex2cp(test_data, format="edb-list"))
+  expect_equal(length(result$author), 0)
+})
+
+test_that("openalex2cp handles NULL primary_location", {
+  test_data <- oadata$simple_item_rda
+  test_data$primary_location <- NULL
+  result <- expect_no_error(openalex2cp(test_data, format="edb-list"))
+  # Should still complete without error, but may have missing container info
+  expect_true("item" %in% names(result))
+})
