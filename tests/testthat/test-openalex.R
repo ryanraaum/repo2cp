@@ -86,3 +86,33 @@ test_that(".oa_clean_pages handles various page formats", {
   result3 <- .oa_clean_pages("100", NULL)
   expect_equal(result3, "100")
 })
+
+# Task 4: Test .oa_extract_authors() helper function
+
+test_that(".oa_extract_authors parses simple names correctly", {
+  authorships <- list(
+    list(author = list(display_name = "John Smith")),
+    list(author = list(display_name = "Jane Doe"))
+  )
+  result <- .oa_extract_authors(authorships)
+  expect_equal(length(result), 2)
+  expect_equal(result[[1]]$given, "John")
+  expect_equal(result[[1]]$family, "Smith")
+  expect_equal(result[[2]]$given, "Jane")
+  expect_equal(result[[2]]$family, "Doe")
+})
+
+test_that(".oa_extract_authors handles names with particles", {
+  authorships <- list(
+    list(author = list(display_name = "Ludwig van Beethoven")),
+    list(author = list(display_name = "Leonardo da Vinci"))
+  )
+  result <- .oa_extract_authors(authorships)
+  expect_equal(length(result), 2)
+  # humaniformat should parse particles - check that family name is populated
+  expect_true(nchar(result[[1]]$family) > 0)
+  expect_true(nchar(result[[2]]$family) > 0)
+  # The exact parsing may vary, but should have some structure
+  expect_true("family" %in% names(result[[1]]))
+  expect_true("family" %in% names(result[[2]]))
+})

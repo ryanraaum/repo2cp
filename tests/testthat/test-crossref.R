@@ -90,3 +90,81 @@ test_that(".crossref_date handles partial dates with defaults", {
   result_ym <- .crossref_date(test_data_ym)
   expect_equal(result_ym, as.Date("2023-03-01"))
 })
+
+# Task 1: Test .all_empty() helper function
+
+test_that(".all_empty returns TRUE when all elements have empty target element", {
+  test_list <- list(
+    list(affiliation = list()),
+    list(affiliation = list()),
+    list(affiliation = list())
+  )
+  expect_true(.all_empty(test_list, "affiliation"))
+})
+
+test_that(".all_empty returns FALSE when any element has non-empty target element", {
+  test_list <- list(
+    list(affiliation = list()),
+    list(affiliation = list(name = "Harvard University")),
+    list(affiliation = list())
+  )
+  expect_false(.all_empty(test_list, "affiliation"))
+})
+
+# Task 2: Test .preprocess_author_data() helper function
+
+test_that(".preprocess_author_data converts data.frame to list", {
+  author_df <- data.frame(
+    given = c("John", "Jane"),
+    family = c("Doe", "Smith"),
+    stringsAsFactors = FALSE
+  )
+  result <- .preprocess_author_data(author_df)
+  expect_true(is.list(result))
+  expect_equal(length(result), 2)
+  # purrr::pmap with ~c(...) creates named vectors, not lists
+  expect_equal(result[[1]]["given"], c(given = "John"))
+  expect_equal(result[[1]]["family"], c(family = "Doe"))
+  expect_equal(result[[2]]["given"], c(given = "Jane"))
+  expect_equal(result[[2]]["family"], c(family = "Smith"))
+})
+
+test_that(".preprocess_author_data passes through list unchanged", {
+  author_list <- list(
+    list(given = "John", family = "Doe"),
+    list(given = "Jane", family = "Smith")
+  )
+  result <- .preprocess_author_data(author_list)
+  expect_identical(result, author_list)
+})
+
+# Task 3: Test .crossref_process_author() helper function
+
+test_that(".crossref_process_author filters to valid CSL creator fields", {
+  author_data <- list(
+    given = "John",
+    family = "Doe",
+    invalid_field = "should be removed",
+    ORCID = "0000-0001-2345-6789"
+  )
+  result <- .crossref_process_author(author_data)
+  expect_true("given" %in% names(result))
+  expect_true("family" %in% names(result))
+  expect_false("invalid_field" %in% names(result))
+  # ORCID is NOT a CSL creator field - it's handled separately in .crossref_identifier_data
+  expect_false("orcid" %in% names(result))
+  # Only CSL creator fields should remain
+  expect_true(all(names(result) %in% csl_creator_clean))
+})
+
+test_that(".crossref_process_author converts institutional name to literal", {
+  inst_author <- list(
+    name = "World Health Organization"
+  )
+  result <- .crossref_process_author(inst_author)
+  expect_true("literal" %in% names(result))
+  expect_equal(result$literal, "World Health Organization")
+  expect_false("name" %in% names(result))
+  expect_false("given" %in% names(result))
+  expect_false("family" %in% names(result))
+})
