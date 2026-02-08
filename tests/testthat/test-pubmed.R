@@ -77,3 +77,127 @@ test_that("pubmed2cp defaults missing month and day correctly", {
   expect_true(inherits(result$item$issued, "Date"))
   expect_false(is.na(result$item$issued))
 })
+
+# Task 5: Test PubMed DOI conflict handling
+
+test_that("pubmed2cp uses ArticleIdList DOI when sources conflict", {
+  # XML with different DOI in ArticleIdList vs ELocationID
+  # Current behavior: when DOIs conflict, ArticleIdList DOI takes precedence
+  conflict_doi_xml <- xml2::read_xml('
+    <PubmedArticle>
+      <MedlineCitation>
+        <PMID>12345678</PMID>
+        <Article>
+          <Journal>
+            <Title>Test Journal</Title>
+            <PubDate>
+              <Year>2023</Year>
+            </PubDate>
+          </Journal>
+          <ArticleTitle>Test Article</ArticleTitle>
+          <ELocationID EIdType="doi">10.1234/different.doi</ELocationID>
+          <Language>eng</Language>
+        </Article>
+      </MedlineCitation>
+      <PubmedData>
+        <ArticleIdList>
+          <ArticleId IdType="doi">10.5678/another.doi</ArticleId>
+          <ArticleId IdType="pubmed">12345678</ArticleId>
+        </ArticleIdList>
+      </PubmedData>
+    </PubmedArticle>
+  ')
+  result <- expect_no_error(pubmed2cp(conflict_doi_xml, format="edb-list"))
+  # ArticleIdList DOI is chosen over ELocationID DOI
+  expect_equal(result$item$doi, "10.5678/another.doi")
+})
+
+test_that("pubmed2cp handles matching DOI from multiple sources", {
+  # XML with same DOI in both ArticleIdList and ELocationID
+  matching_doi_xml <- xml2::read_xml('
+    <PubmedArticle>
+      <MedlineCitation>
+        <PMID>12345678</PMID>
+        <Article>
+          <Journal>
+            <Title>Test Journal</Title>
+            <PubDate>
+              <Year>2023</Year>
+            </PubDate>
+          </Journal>
+          <ArticleTitle>Test Article</ArticleTitle>
+          <ELocationID EIdType="doi">10.1234/same.doi</ELocationID>
+          <Language>eng</Language>
+        </Article>
+      </MedlineCitation>
+      <PubmedData>
+        <ArticleIdList>
+          <ArticleId IdType="doi">10.1234/same.doi</ArticleId>
+          <ArticleId IdType="pubmed">12345678</ArticleId>
+        </ArticleIdList>
+      </PubmedData>
+    </PubmedArticle>
+  ')
+  result <- expect_no_error(pubmed2cp(matching_doi_xml, format="edb-list"))
+  expect_equal(result$item$doi, "10.1234/same.doi")
+})
+
+# Task 6: Test PubMed PMID conflict handling
+
+test_that("pubmed2cp uses ArticleIdList PMID when sources conflict", {
+  # XML with different PMID in PMID node vs ArticleIdList
+  # Current behavior: when PMIDs conflict, ArticleIdList PMID takes precedence
+  conflict_pmid_xml <- xml2::read_xml('
+    <PubmedArticle>
+      <MedlineCitation>
+        <PMID>11111111</PMID>
+        <Article>
+          <Journal>
+            <Title>Test Journal</Title>
+            <PubDate>
+              <Year>2023</Year>
+            </PubDate>
+          </Journal>
+          <ArticleTitle>Test Article</ArticleTitle>
+          <Language>eng</Language>
+        </Article>
+      </MedlineCitation>
+      <PubmedData>
+        <ArticleIdList>
+          <ArticleId IdType="pubmed">22222222</ArticleId>
+        </ArticleIdList>
+      </PubmedData>
+    </PubmedArticle>
+  ')
+  result <- expect_no_error(pubmed2cp(conflict_pmid_xml, format="edb-list"))
+  # ArticleIdList PMID is chosen over MedlineCitation PMID
+  expect_equal(result$item$pmid, "22222222")
+})
+
+test_that("pubmed2cp handles matching PMID from multiple sources", {
+  # XML with same PMID in both PMID node and ArticleIdList
+  matching_pmid_xml <- xml2::read_xml('
+    <PubmedArticle>
+      <MedlineCitation>
+        <PMID>12345678</PMID>
+        <Article>
+          <Journal>
+            <Title>Test Journal</Title>
+            <PubDate>
+              <Year>2023</Year>
+            </PubDate>
+          </Journal>
+          <ArticleTitle>Test Article</ArticleTitle>
+          <Language>eng</Language>
+        </Article>
+      </MedlineCitation>
+      <PubmedData>
+        <ArticleIdList>
+          <ArticleId IdType="pubmed">12345678</ArticleId>
+        </ArticleIdList>
+      </PubmedData>
+    </PubmedArticle>
+  ')
+  result <- expect_no_error(pubmed2cp(matching_pmid_xml, format="edb-list"))
+  expect_equal(result$item$pmid, "12345678")
+})

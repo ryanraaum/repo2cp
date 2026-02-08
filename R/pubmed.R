@@ -117,9 +117,13 @@ pubmed2cp <- function(this_xml, format="citeproc-json") {
   }
 
   # NOTE: This is fragile.
+  # Conflict resolution strategy: When DOI values from ArticleIdList and ELocationID
+  # differ, the ArticleIdList DOI takes precedence (second condition below).
+  # This means conflicting DOIs do NOT throw an error - the ArticleIdList value is used.
   if (aidr::this_is_singular(this_doi)) {
     this_doi <- unique(this_doi)
   } else if (aidr::this_exists(this_article_aid_doi) && length(this_article_aid_doi) == 1) {
+    # If ArticleIdList has exactly one DOI, use it (even if it conflicts with ELocationID)
     this_doi <- this_article_aid_doi
   } else if (is.null(this_article_aid_doi) && is.null(this_article_eid_doi)) {
     this_doi <- NA
@@ -136,9 +140,13 @@ pubmed2cp <- function(this_xml, format="citeproc-json") {
   }
 
   # NOTE: This is fragile.
+  # Conflict resolution strategy: When PMID values from MedlineCitation and ArticleIdList
+  # differ, the ArticleIdList PMID takes precedence (second condition below).
+  # This means conflicting PMIDs do NOT throw an error - the ArticleIdList value is used.
   if (aidr::this_is_singular(this_pmid)) {
     this_pmid <- unique(this_pmid)
   } else if (aidr::this_exists(this_article_pmid) && length(this_article_pmid) == 1) {
+    # If ArticleIdList has exactly one PMID, use it (even if it conflicts with MedlineCitation)
     this_pmid <- this_article_pmid
   } else {
     stop("Incompatible PMID values")
