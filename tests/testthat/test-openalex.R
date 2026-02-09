@@ -12,7 +12,7 @@ test_that("openalex2cp edb-list return finishes without error and returns list",
 test_that("openalex2cp edb-list result has the right top level entries", {
   .test_converter_top_level_structure(
     openalex2cp, oadata,
-    c("item", "author", "author_identifier"),
+    c("item", "author", "author_affiliation", "author_identifier"),
     "openalex2cp"
   )
 })
@@ -213,6 +213,60 @@ test_that("openalex2cp handles NULL primary_location", {
   result <- expect_no_error(openalex2cp(test_data, format="edb-list"))
   # Should still complete without error, but may have missing container info
   expect_true("item" %in% names(result))
+})
+
+# Test author affiliation extraction
+
+test_that(".oa_extract_affiliations extracts raw_affiliation_strings correctly", {
+  # Use real test data
+  result <- openalex2cp(oadata$simple_item_rda, format="edb-list")
+
+  # Should have author_affiliation key
+  expect_true("author_affiliation" %in% names(result))
+
+  # Should be a list
+  expect_true(is.list(result$author_affiliation))
+
+  # Should have same length as authors
+  expect_equal(length(result$author_affiliation), length(result$author))
+
+  # First author should have affiliation (based on test data structure)
+  expect_true(length(result$author_affiliation[[1]]) > 0)
+})
+
+test_that(".oa_extract_affiliations handles empty authorships", {
+  test_data <- oadata$simple_item_rda
+  test_data$authorships <- list()
+  result <- openalex2cp(test_data, format="edb-list")
+
+  # Should return empty list
+  expect_equal(length(result$author_affiliation), 0)
+})
+
+test_that(".oa_extract_affiliations handles authors with no affiliations", {
+  # Create test data with authorships but no raw_affiliation_strings
+  test_data <- oadata$simple_item_rda
+  test_data$authorships[[1]]$raw_affiliation_strings <- NULL
+  result <- openalex2cp(test_data, format="edb-list")
+
+  # First author should have NULL affiliation
+  expect_null(result$author_affiliation[[1]])
+})
+
+test_that(".oa_extract_affiliations handles multiple affiliations per author", {
+  # Create test data with multiple affiliations for one author
+  test_data <- oadata$simple_item_rda
+  test_data$authorships[[1]]$raw_affiliation_strings <- list(
+    "University of Illinois at Urbana-Champaign",
+    "National Center for Supercomputing Applications"
+  )
+  result <- openalex2cp(test_data, format="edb-list")
+
+  # First author should have multiple affiliations as character vector
+  expect_equal(length(result$author_affiliation[[1]]), 2)
+  expect_true(is.character(result$author_affiliation[[1]]))
+  expect_equal(result$author_affiliation[[1]][1], "University of Illinois at Urbana-Champaign")
+  expect_equal(result$author_affiliation[[1]][2], "National Center for Supercomputing Applications")
 })
 
 # Task 15: Test name parsing edge cases (OpenAlex)

@@ -91,6 +91,23 @@
   orcids
 }
 
+.oa_extract_affiliations <- function(oa_authorships) {
+  # Handle empty authorships
+  if (length(oa_authorships) == 0) {
+    return(list())
+  }
+  # Extract raw_affiliation_strings for each author
+  affiliations <- purrr::map(oa_authorships, function(authorship) {
+    if (aidr::this_exists(authorship$raw_affiliation_strings)) {
+      # raw_affiliation_strings is a list, unlist to get character vector
+      unlist(authorship$raw_affiliation_strings)
+    } else {
+      NULL
+    }
+  })
+  affiliations
+}
+
 #' Convert openalex json to citeproc csl-data
 #'
 #' @param this_json The json data from openalex.
@@ -128,6 +145,7 @@ openalex2cp <- function(this_json, format="citeproc-json") {
       )
     ),
     author = .oa_extract_authors(this_json$authorships),
+    author_affiliation = .oa_extract_affiliations(this_json$authorships),
     author_identifier = .oa_extract_identifiers(this_json$authorships)
   )
 
