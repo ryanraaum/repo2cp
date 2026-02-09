@@ -123,7 +123,9 @@ crossref2cp <- function(this_data, format="citeproc-json") {
       container_title_short = this_data$`container-title-short`,
       issued = .crossref_date(this_data),
       page = this_data$page,
-      title = this_data$title
+      title = this_data$title,
+      publisher = this_data$publisher,
+      publisher_place = this_data$`publisher-location`
     ),
     author = .crossref_author_data(this_data$author),
     author_affiliation = .crossref_affiliation_data(this_data$author),

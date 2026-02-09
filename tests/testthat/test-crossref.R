@@ -318,6 +318,44 @@ test_that("crossref2cp preserves author data when editors present", {
   expect_true(length(result$author) > 0)
 })
 
+# Task 2: Test publisher extraction
+
+test_that("crossref2cp extracts publisher name", {
+  result <- crossref2cp(crdata$simple_item_json, format="edb-list")
+
+  # Should have publisher field
+  expect_true("publisher" %in% names(result$item))
+  expect_equal(result$item$publisher, "Public Library of Science (PLoS)")
+})
+
+test_that("crossref2cp handles missing publisher", {
+  test_data <- crdata$simple_item_json
+  test_data$publisher <- NULL
+  result <- crossref2cp(test_data, format="edb-list")
+
+  # Should have publisher field as NULL
+  expect_true("publisher" %in% names(result$item))
+  expect_null(result$item$publisher)
+})
+
+test_that("crossref2cp extracts publisher-location when present", {
+  test_data <- crdata$simple_item_json
+  test_data$`publisher-location` <- "San Francisco, CA"
+  result <- crossref2cp(test_data, format="edb-list")
+
+  # Should have publisher_place field
+  expect_true("publisher_place" %in% names(result$item))
+  expect_equal(result$item$publisher_place, "San Francisco, CA")
+})
+
+test_that("crossref2cp handles missing publisher-location", {
+  result <- crossref2cp(crdata$simple_item_json, format="edb-list")
+
+  # Should have publisher_place field as NULL (not present in test data)
+  expect_true("publisher_place" %in% names(result$item))
+  expect_null(result$item$publisher_place)
+})
+
 # Task 16: Test format parameter validation
 
 test_that("crossref2cp throws error for invalid format parameter", {
