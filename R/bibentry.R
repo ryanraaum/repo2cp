@@ -77,16 +77,36 @@
     people = this_bibentry$author
   } else if (creator_type == "editor") {
     people = this_bibentry$editor
+  } else if (creator_type == "translator") {
+    people = this_bibentry$translator
   } else {
     return(NULL)
   }
-  extracted_people = vector("list", length=length(people))
-  for (i in seq_along(people)) {
-    extracted_people[[i]] = list(
-      given = paste(people[i]$given, collapse=" "),
-      family = paste(people[i]$family, collapse=" ")
-    )
+
+  # Handle case where field is missing or empty
+  if (is.null(people) || length(people) == 0) {
+    return(NULL)
   }
+
+  # Check if we have a person object (author/editor) or character (translator in base bibentry)
+  if (inherits(people, "person")) {
+    # Standard person object extraction
+    extracted_people = vector("list", length=length(people))
+    for (i in seq_along(people)) {
+      extracted_people[[i]] = list(
+        given = paste(people[i]$given, collapse=" "),
+        family = paste(people[i]$family, collapse=" ")
+      )
+    }
+  } else if (is.character(people)) {
+    # Character field (translator in base R bibentry) - store as literal
+    extracted_people = list(
+      list(literal = paste(people, collapse="; "))
+    )
+  } else {
+    return(NULL)
+  }
+
   if (aidr::this_exists(extracted_people)) {
     return(extracted_people)
   }
@@ -130,7 +150,14 @@ bibentry2cp <- function(this_bibentry, format="citeproc-json") {
       edition = aidr::this_or_na(this_bibentry$edition)
     ),
     author = .bibentry_extract(this_bibentry, "author"),
-    editor = .bibentry_extract(this_bibentry, "editor")
+    author_affiliation = NULL,
+    author_identifier = NULL,
+    editor = .bibentry_extract(this_bibentry, "editor"),
+    editor_affiliation = NULL,
+    editor_identifier = NULL,
+    translator = .bibentry_extract(this_bibentry, "translator"),
+    translator_affiliation = NULL,
+    translator_identifier = NULL
   )
 
   if (format == "edb-list") { return(res) }

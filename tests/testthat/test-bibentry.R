@@ -77,6 +77,85 @@ test_that("bibentry2cp edb-list format has basic functionality", {
   expect_true("author" %in% names(be_journal_article_data))
 })
 
+test_that("bibentry2cp extracts translator when present", {
+  # Note: base R bibentry stores translator as character, not person object
+  translator_bibentry <- bibentry(
+    bibtype = "Book",
+    title = "Translated Book",
+    author = person(given = "Original", family = "Author"),
+    translator = "Jane Translator",
+    publisher = "Publisher",
+    year = "2025"
+  )
+  result <- bibentry2cp(translator_bibentry, format = "edb-list")
+  expect_true("translator" %in% names(result))
+  expect_equal(length(result$translator), 1)
+  # Translator is stored as literal since bibentry doesn't support person for translator
+  expect_equal(result$translator[[1]]$literal, "Jane Translator")
+})
+
+test_that("bibentry2cp returns NULL translator when missing", {
+  result <- bibentry2cp(article_bibentry, format = "edb-list")
+  expect_true("translator" %in% names(result))
+  expect_null(result$translator)
+})
+
+test_that("bibentry2cp includes all structural consistency keys", {
+  # Test with article that has author but no editor or translator
+  result <- bibentry2cp(article_bibentry, format = "edb-list")
+
+  # Verify all creator types have affiliation and identifier keys
+  expect_true("author_affiliation" %in% names(result))
+  expect_true("author_identifier" %in% names(result))
+  expect_true("editor_affiliation" %in% names(result))
+  expect_true("editor_identifier" %in% names(result))
+  expect_true("translator_affiliation" %in% names(result))
+  expect_true("translator_identifier" %in% names(result))
+
+  # All should be NULL for BibTeX
+  expect_null(result$author_affiliation)
+  expect_null(result$author_identifier)
+  expect_null(result$editor_affiliation)
+  expect_null(result$editor_identifier)
+  expect_null(result$translator_affiliation)
+  expect_null(result$translator_identifier)
+})
+
+test_that("bibentry2cp structure matches other converters", {
+  # Create a bibentry with all creator types
+  # Note: base R bibentry stores translator as character, not person object
+  full_bibentry <- bibentry(
+    bibtype = "Book",
+    title = "Complete Book",
+    author = person(given = "First", family = "Author"),
+    editor = person(given = "Book", family = "Editor"),
+    translator = "Book Translator",
+    publisher = "Publisher",
+    year = "2025"
+  )
+
+  result <- bibentry2cp(full_bibentry, format = "edb-list")
+
+  # Verify expected top-level keys
+  expected_keys <- c("item", "author", "author_affiliation", "author_identifier",
+                     "editor", "editor_affiliation", "editor_identifier",
+                     "translator", "translator_affiliation", "translator_identifier")
+  expect_true(all(expected_keys %in% names(result)))
+
+  # Verify creators are extracted
+  expect_equal(length(result$author), 1)
+  expect_equal(length(result$editor), 1)
+  expect_equal(length(result$translator), 1)
+
+  # Verify affiliation/identifier are NULL (BibTeX doesn't have this data)
+  expect_null(result$author_affiliation)
+  expect_null(result$author_identifier)
+  expect_null(result$editor_affiliation)
+  expect_null(result$editor_identifier)
+  expect_null(result$translator_affiliation)
+  expect_null(result$translator_identifier)
+})
+
 # Edge case and error handling tests
 
 test_that(".bibentry_type_to_citeproc handles known types correctly", {
@@ -141,6 +220,46 @@ test_that(".bibentry_extract returns NULL for missing editors", {
   # Article with no editors
   result <- .bibentry_extract(article_bibentry, "editor")
   expect_null(result)
+})
+
+test_that(".bibentry_extract handles translator extraction", {
+  # Note: base R bibentry stores translator as character, not person object
+  # Create bibentry with translator
+  translator_bibentry <- bibentry(
+    bibtype = "Book",
+    title = "Translated Book",
+    author = person(given = "Original", family = "Author"),
+    translator = "Jane Translator",
+    publisher = "Publisher",
+    year = "2025"
+  )
+  result <- .bibentry_extract(translator_bibentry, "translator")
+  expect_equal(length(result), 1)
+  # Translator is stored as literal since bibentry doesn't support person for translator
+  expect_equal(result[[1]]$literal, "Jane Translator")
+})
+
+test_that(".bibentry_extract returns NULL for missing translators", {
+  # Article with no translator
+  result <- .bibentry_extract(article_bibentry, "translator")
+  expect_null(result)
+})
+
+test_that(".bibentry_extract handles multiple translators", {
+  # Note: base R bibentry stores translator as character, not person object
+  # bibentry automatically collapses multiple character values into a single space-separated string
+  multi_translator_bibentry <- bibentry(
+    bibtype = "Book",
+    title = "Multi-Translated Book",
+    author = person(given = "Original", family = "Author"),
+    translator = c("Jane Translator", "John Smith"),
+    publisher = "Publisher",
+    year = "2025"
+  )
+  result <- .bibentry_extract(multi_translator_bibentry, "translator")
+  expect_equal(length(result), 1)
+  # bibentry collapses multiple values with spaces (not semicolons)
+  expect_equal(result[[1]]$literal, "Jane Translator John Smith")
 })
 
 test_that(".bibentry_container_title handles multiple sources", {
