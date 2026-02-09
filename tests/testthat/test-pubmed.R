@@ -619,3 +619,172 @@ test_that("pubmed2cp includes suffix in editor output", {
   expect_equal(result$editor[[1]]$given, "Chief")
   expect_equal(result$editor[[1]]$suffix, "III")
 })
+
+# Task 4: Test multiple affiliations per author extraction
+
+test_that(".pubmed_one_affiliation_data extracts all affiliations", {
+  # Create test XML with multiple AffiliationInfo elements
+  author_xml <- xml2::read_xml('
+    <Author>
+      <LastName>Smith</LastName>
+      <ForeName>John</ForeName>
+      <AffiliationInfo>
+        <Affiliation>Department of Biology, University of X</Affiliation>
+      </AffiliationInfo>
+      <AffiliationInfo>
+        <Affiliation>Institute for Advanced Study, City Y</Affiliation>
+      </AffiliationInfo>
+    </Author>
+  ')
+  result <- .pubmed_one_affiliation_data(author_xml)
+
+  # Should return character vector with 2 elements
+  expect_true(is.character(result))
+  expect_equal(length(result), 2)
+  expect_equal(result[1], "Department of Biology, University of X")
+  expect_equal(result[2], "Institute for Advanced Study, City Y")
+})
+
+test_that(".pubmed_one_affiliation_data handles single affiliation", {
+  # Author with only one affiliation
+  author_xml <- xml2::read_xml('
+    <Author>
+      <LastName>Doe</LastName>
+      <ForeName>Jane</ForeName>
+      <AffiliationInfo>
+        <Affiliation>Single Institution</Affiliation>
+      </AffiliationInfo>
+    </Author>
+  ')
+  result <- .pubmed_one_affiliation_data(author_xml)
+
+  # Should return character vector with 1 element
+  expect_true(is.character(result))
+  expect_equal(length(result), 1)
+  expect_equal(result[1], "Single Institution")
+})
+
+test_that(".pubmed_one_affiliation_data handles no affiliations", {
+  # Author without any affiliations
+  author_xml <- xml2::read_xml('
+    <Author>
+      <LastName>Anonymous</LastName>
+      <ForeName>Author</ForeName>
+    </Author>
+  ')
+  result <- .pubmed_one_affiliation_data(author_xml)
+
+  # Should return NULL for no affiliations
+  expect_null(result)
+})
+
+test_that("pubmed2cp includes all affiliations per author in output", {
+  # Create complete PubMed XML with multiple affiliations
+  full_xml <- xml2::read_xml('
+    <PubmedArticle>
+      <MedlineCitation>
+        <Article>
+          <Journal>
+            <Title>Test Journal</Title>
+            <PubDate>
+              <Year>2023</Year>
+            </PubDate>
+          </Journal>
+          <ArticleTitle>Test Article with Multiple Affiliations</ArticleTitle>
+          <Language>eng</Language>
+          <AuthorList>
+            <Author>
+              <LastName>Smith</LastName>
+              <ForeName>John</ForeName>
+              <AffiliationInfo>
+                <Affiliation>Department of Biology, University of X</Affiliation>
+              </AffiliationInfo>
+              <AffiliationInfo>
+                <Affiliation>Institute for Advanced Study, City Y</Affiliation>
+              </AffiliationInfo>
+            </Author>
+            <Author>
+              <LastName>Doe</LastName>
+              <ForeName>Jane</ForeName>
+              <AffiliationInfo>
+                <Affiliation>Single Institution</Affiliation>
+              </AffiliationInfo>
+            </Author>
+            <Author>
+              <LastName>Anonymous</LastName>
+              <ForeName>Author</ForeName>
+            </Author>
+          </AuthorList>
+        </Article>
+      </MedlineCitation>
+      <PubmedData>
+        <ArticleIdList>
+          <ArticleId IdType="pubmed">12345678</ArticleId>
+        </ArticleIdList>
+      </PubmedData>
+    </PubmedArticle>
+  ')
+  result <- pubmed2cp(full_xml, format="edb-list")
+
+  # Check that author_affiliation is a list
+  expect_true(is.list(result$author_affiliation))
+  expect_equal(length(result$author_affiliation), 3)
+
+  # First author has 2 affiliations (character vector with 2 elements)
+  expect_true(is.character(result$author_affiliation[[1]]))
+  expect_equal(length(result$author_affiliation[[1]]), 2)
+  expect_equal(result$author_affiliation[[1]][1], "Department of Biology, University of X")
+  expect_equal(result$author_affiliation[[1]][2], "Institute for Advanced Study, City Y")
+
+  # Second author has 1 affiliation
+  expect_true(is.character(result$author_affiliation[[2]]))
+  expect_equal(length(result$author_affiliation[[2]]), 1)
+  expect_equal(result$author_affiliation[[2]][1], "Single Institution")
+
+  # Third author has no affiliations (NULL)
+  expect_null(result$author_affiliation[[3]])
+})
+
+test_that("pubmed2cp includes all affiliations for editors", {
+  # Test that multiple affiliations work for editors too
+  editors_xml <- xml2::read_xml('
+    <PubmedArticle>
+      <MedlineCitation>
+        <Article>
+          <Journal>
+            <Title>Test Book</Title>
+            <PubDate>
+              <Year>2023</Year>
+            </PubDate>
+          </Journal>
+          <ArticleTitle>Book Chapter</ArticleTitle>
+          <Language>eng</Language>
+          <AuthorList Type="editors">
+            <Author>
+              <LastName>Editor</LastName>
+              <ForeName>Chief</ForeName>
+              <AffiliationInfo>
+                <Affiliation>University A</Affiliation>
+              </AffiliationInfo>
+              <AffiliationInfo>
+                <Affiliation>Research Institute B</Affiliation>
+              </AffiliationInfo>
+            </Author>
+          </AuthorList>
+        </Article>
+      </MedlineCitation>
+      <PubmedData>
+        <ArticleIdList>
+          <ArticleId IdType="pubmed">12345678</ArticleId>
+        </ArticleIdList>
+      </PubmedData>
+    </PubmedArticle>
+  ')
+  result <- pubmed2cp(editors_xml, format="edb-list")
+
+  # Check editor has multiple affiliations
+  expect_true("editor_affiliation" %in% names(result))
+  expect_equal(length(result$editor_affiliation[[1]]), 2)
+  expect_equal(result$editor_affiliation[[1]][1], "University A")
+  expect_equal(result$editor_affiliation[[1]][2], "Research Institute B")
+})
