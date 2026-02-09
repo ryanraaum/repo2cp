@@ -130,6 +130,24 @@ crossref2cp <- function(this_data, format="citeproc-json") {
     author_identifier = .crossref_identifier_data(this_data$author)
   )
 
+  # Add editors if present (always include affiliation/identifier keys for consistency)
+  if (aidr::this_exists(this_data$editor)) {
+    res$editor <- .crossref_author_data(this_data$editor)
+    editor_aff <- .crossref_affiliation_data(this_data$editor)
+    res$editor_affiliation <- if (is.null(editor_aff)) list() else editor_aff
+    editor_id <- .crossref_identifier_data(this_data$editor)
+    res$editor_identifier <- if (is.null(editor_id)) list() else editor_id
+  }
+
+  # Add translators if present (always include affiliation/identifier keys for consistency)
+  if (aidr::this_exists(this_data$translator)) {
+    res$translator <- .crossref_author_data(this_data$translator)
+    translator_aff <- .crossref_affiliation_data(this_data$translator)
+    res$translator_affiliation <- if (is.null(translator_aff)) list() else translator_aff
+    translator_id <- .crossref_identifier_data(this_data$translator)
+    res$translator_identifier <- if (is.null(translator_id)) list() else translator_id
+  }
+
   if (format == "edb-list") { return(res) }
 
   if (format %in% c("citeproc-json", "citeproc-list")) {

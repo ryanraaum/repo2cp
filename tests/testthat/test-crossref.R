@@ -209,6 +209,115 @@ test_that("crossref2cp handles NULL title", {
   expect_true(is.null(result$item$title) || is.na(result$item$title))
 })
 
+# Task 1: Test editor extraction
+
+test_that("crossref2cp extracts editors when present", {
+  # Use simple_item_json which has editor field
+  result <- crossref2cp(crdata$simple_item_json, format="edb-list")
+
+  # Should have editor, editor_affiliation, editor_identifier keys
+  expect_true("editor" %in% names(result))
+  expect_true("editor_affiliation" %in% names(result))
+  expect_true("editor_identifier" %in% names(result))
+
+  # Editor should be a list
+  expect_true(is.list(result$editor))
+  expect_true(length(result$editor) > 0)
+
+  # First editor should have family and given names
+  expect_true("family" %in% names(result$editor[[1]]))
+  expect_true("given" %in% names(result$editor[[1]]))
+  expect_equal(result$editor[[1]]$family, "Xu")
+  expect_equal(result$editor[[1]]$given, "Min")
+})
+
+test_that("crossref2cp handles missing editors", {
+  # Use institutional_item_rda which likely has no editors
+  test_data <- crdata$institutional_item_rda
+  test_data$editor <- NULL
+  result <- crossref2cp(test_data, format="edb-list")
+
+  # Should not have editor keys
+  expect_false("editor" %in% names(result))
+  expect_false("editor_affiliation" %in% names(result))
+  expect_false("editor_identifier" %in% names(result))
+})
+
+test_that("crossref2cp handles editors with affiliations", {
+  # Create test data with editor having affiliation
+  test_data <- crdata$simple_item_json
+  test_data$editor <- list(
+    list(
+      given = "Min",
+      family = "Xu",
+      sequence = "first",
+      affiliation = list(
+        list(name = "University of Test")
+      )
+    )
+  )
+  result <- crossref2cp(test_data, format="edb-list")
+
+  # Editor affiliation should be extracted
+  expect_true("editor_affiliation" %in% names(result))
+  expect_true(!is.null(result$editor_affiliation))
+})
+
+test_that("crossref2cp handles editors with ORCID", {
+  # Create test data with editor having ORCID
+  test_data <- crdata$simple_item_json
+  test_data$editor <- list(
+    list(
+      given = "Min",
+      family = "Xu",
+      sequence = "first",
+      affiliation = list(),
+      ORCID = "http://orcid.org/0000-0001-2345-6789"
+    )
+  )
+  result <- crossref2cp(test_data, format="edb-list")
+
+  # Editor identifier should be extracted
+  expect_true("editor_identifier" %in% names(result))
+  expect_true(!is.null(result$editor_identifier))
+})
+
+test_that("crossref2cp handles translator extraction", {
+  # Create test data with translator field
+  test_data <- crdata$simple_item_json
+  test_data$translator <- list(
+    list(
+      given = "Jane",
+      family = "Translator",
+      sequence = "first",
+      affiliation = list()
+    )
+  )
+  result <- crossref2cp(test_data, format="edb-list")
+
+  # Should have translator key
+  expect_true("translator" %in% names(result))
+
+  # Translator should have correct data
+  expect_equal(result$translator[[1]]$family, "Translator")
+  expect_equal(result$translator[[1]]$given, "Jane")
+
+  # Affiliation and identifier keys should exist even if NULL (when no data)
+  # This matches the behavior for authors with empty affiliations/identifiers
+  expect_true("translator_affiliation" %in% names(result))
+  expect_true("translator_identifier" %in% names(result))
+})
+
+test_that("crossref2cp preserves author data when editors present", {
+  # Ensure adding editors doesn't break author extraction
+  result <- crossref2cp(crdata$simple_item_json, format="edb-list")
+
+  # Should still have author data
+  expect_true("author" %in% names(result))
+  expect_true(is.list(result$author))
+  expect_true(length(result$author) > 0)
+})
+
 # Task 16: Test format parameter validation
 
 test_that("crossref2cp throws error for invalid format parameter", {
