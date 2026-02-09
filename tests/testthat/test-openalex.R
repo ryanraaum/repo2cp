@@ -336,6 +336,49 @@ test_that("openalex2cp handles missing PMCID", {
   expect_null(result$item$pmcid)
 })
 
+# Test publisher extraction
+
+test_that("openalex2cp extracts publisher correctly", {
+  # Test with simple_item_rda
+  result <- openalex2cp(oadata$simple_item_rda, format="edb-list")
+
+  # Should have publisher field
+  expect_true("publisher" %in% names(result$item))
+
+  # Publisher should be extracted from host_organization_name
+  expect_equal(result$item$publisher, "International Society for Computational Biology")
+  expect_true(is.character(result$item$publisher))
+})
+
+test_that("openalex2cp extracts publisher from special volume article", {
+  # Test with different publisher
+  result <- openalex2cp(oadata$special_volume_item_rda, format="edb-list")
+
+  # Should have publisher field
+  expect_true("publisher" %in% names(result$item))
+  expect_equal(result$item$publisher, "American Mathematical Society")
+})
+
+test_that("openalex2cp handles missing publisher", {
+  # Create test data without publisher
+  test_data <- oadata$simple_item_rda
+  test_data$primary_location$source$host_organization_name <- NULL
+  result <- openalex2cp(test_data, format="edb-list")
+
+  # Should have publisher field as NULL
+  expect_null(result$item$publisher)
+})
+
+test_that("openalex2cp handles missing primary_location gracefully for publisher", {
+  # Create test data without primary_location.source
+  test_data <- oadata$simple_item_rda
+  test_data$primary_location$source <- NULL
+  result <- expect_no_error(openalex2cp(test_data, format="edb-list"))
+
+  # Should still complete, publisher will be NULL
+  expect_null(result$item$publisher)
+})
+
 # Task 15: Test name parsing edge cases (OpenAlex)
 
 test_that(".oa_extract_authors handles names with suffixes", {

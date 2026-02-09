@@ -157,6 +157,7 @@ openalex2cp <- function(this_json, format="citeproc-json") {
       volume = this_json$biblio$volume,
       issue = this_json$biblio$issue,
       container_title = this_json$primary_location$source$display_name,
+      publisher = this_json$primary_location$source$host_organization_name,
       issued = lubridate::ymd(this_json$publication_date),
       page_first = this_json$biblio$first_page,
       page = .oa_clean_pages(this_json$biblio$first_page, this_json$biblio$last_page),
