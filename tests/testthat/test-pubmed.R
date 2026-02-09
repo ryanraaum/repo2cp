@@ -323,3 +323,174 @@ test_that("pubmed2cp includes author_identifier in output", {
   # Second author has no identifiers
   expect_equal(length(result$author_identifier[[2]]), 0)
 })
+
+# Task 2: Test AuthorList/@Type detection and editor handling
+
+test_that("pubmed2cp uses 'author' keys by default (no Type attribute)", {
+  # Create PubMed XML without Type attribute (default behavior)
+  default_xml <- xml2::read_xml('
+    <PubmedArticle>
+      <MedlineCitation>
+        <Article>
+          <Journal>
+            <Title>Test Journal</Title>
+            <PubDate>
+              <Year>2023</Year>
+            </PubDate>
+          </Journal>
+          <ArticleTitle>Test Article</ArticleTitle>
+          <Language>eng</Language>
+          <AuthorList>
+            <Author>
+              <LastName>Smith</LastName>
+              <ForeName>John</ForeName>
+            </Author>
+          </AuthorList>
+        </Article>
+      </MedlineCitation>
+      <PubmedData>
+        <ArticleIdList>
+          <ArticleId IdType="pubmed">12345678</ArticleId>
+        </ArticleIdList>
+      </PubmedData>
+    </PubmedArticle>
+  ')
+  result <- pubmed2cp(default_xml, format="edb-list")
+
+  # Should have author keys, not editor keys
+  expect_true("author" %in% names(result))
+  expect_true("author_affiliation" %in% names(result))
+  expect_true("author_identifier" %in% names(result))
+  expect_false("editor" %in% names(result))
+  expect_false("editor_affiliation" %in% names(result))
+  expect_false("editor_identifier" %in% names(result))
+})
+
+test_that("pubmed2cp uses 'author' keys when Type='authors'", {
+  # Create PubMed XML with Type="authors" (explicit)
+  authors_xml <- xml2::read_xml('
+    <PubmedArticle>
+      <MedlineCitation>
+        <Article>
+          <Journal>
+            <Title>Test Journal</Title>
+            <PubDate>
+              <Year>2023</Year>
+            </PubDate>
+          </Journal>
+          <ArticleTitle>Test Article</ArticleTitle>
+          <Language>eng</Language>
+          <AuthorList Type="authors">
+            <Author>
+              <LastName>Smith</LastName>
+              <ForeName>John</ForeName>
+            </Author>
+          </AuthorList>
+        </Article>
+      </MedlineCitation>
+      <PubmedData>
+        <ArticleIdList>
+          <ArticleId IdType="pubmed">12345678</ArticleId>
+        </ArticleIdList>
+      </PubmedData>
+    </PubmedArticle>
+  ')
+  result <- pubmed2cp(authors_xml, format="edb-list")
+
+  # Should have author keys, not editor keys
+  expect_true("author" %in% names(result))
+  expect_true("author_affiliation" %in% names(result))
+  expect_true("author_identifier" %in% names(result))
+  expect_false("editor" %in% names(result))
+})
+
+test_that("pubmed2cp uses 'editor' keys when Type='editors'", {
+  # Create PubMed XML with Type="editors" (book chapter)
+  editors_xml <- xml2::read_xml('
+    <PubmedArticle>
+      <MedlineCitation>
+        <Article>
+          <Journal>
+            <Title>Test Book</Title>
+            <PubDate>
+              <Year>2023</Year>
+            </PubDate>
+          </Journal>
+          <ArticleTitle>Book Chapter Title</ArticleTitle>
+          <Language>eng</Language>
+          <AuthorList Type="editors">
+            <Author>
+              <LastName>Editor</LastName>
+              <ForeName>Chief</ForeName>
+            </Author>
+            <Author>
+              <LastName>Associate</LastName>
+              <ForeName>Editor</ForeName>
+            </Author>
+          </AuthorList>
+        </Article>
+      </MedlineCitation>
+      <PubmedData>
+        <ArticleIdList>
+          <ArticleId IdType="pubmed">12345678</ArticleId>
+        </ArticleIdList>
+      </PubmedData>
+    </PubmedArticle>
+  ')
+  result <- pubmed2cp(editors_xml, format="edb-list")
+
+  # Should have editor keys, not author keys
+  expect_false("author" %in% names(result))
+  expect_false("author_affiliation" %in% names(result))
+  expect_false("author_identifier" %in% names(result))
+  expect_true("editor" %in% names(result))
+  expect_true("editor_affiliation" %in% names(result))
+  expect_true("editor_identifier" %in% names(result))
+
+  # Check editor data is populated correctly
+  expect_equal(length(result$editor), 2)
+  expect_equal(result$editor[[1]]$family, "Editor")
+  expect_equal(result$editor[[1]]$given, "Chief")
+  expect_equal(result$editor[[2]]$family, "Associate")
+  expect_equal(result$editor[[2]]$given, "Editor")
+})
+
+test_that("pubmed2cp handles editors with identifiers", {
+  # Test that editor_identifier works correctly
+  editors_with_orcid_xml <- xml2::read_xml('
+    <PubmedArticle>
+      <MedlineCitation>
+        <Article>
+          <Journal>
+            <Title>Test Book</Title>
+            <PubDate>
+              <Year>2023</Year>
+            </PubDate>
+          </Journal>
+          <ArticleTitle>Book Chapter Title</ArticleTitle>
+          <Language>eng</Language>
+          <AuthorList Type="editors">
+            <Author>
+              <LastName>Editor</LastName>
+              <ForeName>Chief</ForeName>
+              <Identifier Source="ORCID">0000-0001-2345-6789</Identifier>
+            </Author>
+          </AuthorList>
+        </Article>
+      </MedlineCitation>
+      <PubmedData>
+        <ArticleIdList>
+          <ArticleId IdType="pubmed">12345678</ArticleId>
+        </ArticleIdList>
+      </PubmedData>
+    </PubmedArticle>
+  ')
+  result <- pubmed2cp(editors_with_orcid_xml, format="edb-list")
+
+  # Check editor_identifier structure
+  expect_true("editor_identifier" %in% names(result))
+  expect_equal(length(result$editor_identifier), 1)
+  expect_equal(length(result$editor_identifier[[1]]), 1)
+  expect_equal(result$editor_identifier[[1]][[1]]$id_type, "orcid")
+  expect_equal(result$editor_identifier[[1]][[1]]$id_value, "0000-0001-2345-6789")
+})

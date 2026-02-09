@@ -136,6 +136,16 @@ pubmed2cp <- function(this_xml, format="citeproc-json") {
   # complex extractions
   this_authors <- xml2::xml_find_all(this_xml, ".//Author")
 
+  # Check AuthorList/@Type attribute to determine if these are editors or authors
+  author_list_type <- xml2::xml_find_first(this_xml, ".//AuthorList") |>
+    xml2::xml_attr("Type")
+  # Determine creator type: "editors" → "editor", otherwise "author"
+  creator_type <- ifelse(
+    !is.na(author_list_type) && tolower(author_list_type) == "editors",
+    "editor",
+    "author"
+  )
+
   this_doi <- c()
   if (aidr::this_exists(this_article_aid_doi)) {
     this_doi <- c(this_doi, this_article_aid_doi)
@@ -207,6 +217,7 @@ pubmed2cp <- function(this_xml, format="citeproc-json") {
     article_pages <- NULL
   }
 
+  # Build result with dynamic creator keys based on AuthorList/@Type
   res <- list(
     item = list(
       type = "article-journal",
@@ -223,11 +234,13 @@ pubmed2cp <- function(this_xml, format="citeproc-json") {
       page = article_pages,
       page_first = this_article_startpage,
       title = this_article_title
-    ),
-    author = purrr::map(this_authors, .pubmed_one_author_data),
-    author_affiliation = purrr::map(this_authors, .pubmed_one_affiliation_data),
-    author_identifier = purrr::map(this_authors, .pubmed_author_identifiers)
+    )
   )
+
+  # Add creator data with appropriate keys (author/editor)
+  res[[creator_type]] <- purrr::map(this_authors, .pubmed_one_author_data)
+  res[[paste0(creator_type, "_affiliation")]] <- purrr::map(this_authors, .pubmed_one_affiliation_data)
+  res[[paste0(creator_type, "_identifier")]] <- purrr::map(this_authors, .pubmed_author_identifiers)
 
   if (format == "edb-list") { return(res) }
   stop("citeproc-json return not implemented")
