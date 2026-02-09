@@ -3,9 +3,10 @@
   one_au <- list(
     given = xml2::xml_find_all(one_xml, ".//ForeName") |> xml_text_or_null(),
     family = xml2::xml_find_all(one_xml, ".//LastName") |> xml_text_or_null(),
-    literal = xml2::xml_find_all(one_xml, ".//CollectiveName") |> xml_text_or_null()
-    # initials = xml_find_all(one_xml, ".//Initials") |> xml_text(),
-    # affiliation = xml_find_all(one_xml, ".//Affiliation") |> xml_text_or_null()
+    literal = xml2::xml_find_all(one_xml, ".//CollectiveName") |> xml_text_or_null(),
+    suffix = xml2::xml_find_all(one_xml, ".//Suffix") |> xml_text_or_null()
+    # Note: Initials extraction commented out - not a valid CSL field
+    # and not supported by erudiciondb item_persons table
   )
   one_au[lengths(one_au) != 0]
 }

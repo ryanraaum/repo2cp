@@ -494,3 +494,128 @@ test_that("pubmed2cp handles editors with identifiers", {
   expect_equal(result$editor_identifier[[1]][[1]]$id_type, "orcid")
   expect_equal(result$editor_identifier[[1]][[1]]$id_value, "0000-0001-2345-6789")
 })
+
+# Task 3: Test Author/Suffix extraction (Initials not extracted - not a CSL field)
+
+test_that(".pubmed_one_author_data extracts suffix correctly", {
+  # Create test XML with suffix
+  author_xml <- xml2::read_xml('
+    <Author>
+      <LastName>King</LastName>
+      <ForeName>Martin Luther</ForeName>
+      <Suffix>Jr</Suffix>
+    </Author>
+  ')
+  result <- .pubmed_one_author_data(author_xml)
+  expect_equal(result$family, "King")
+  expect_equal(result$given, "Martin Luther")
+  expect_equal(result$suffix, "Jr")
+})
+
+test_that(".pubmed_one_author_data handles authors without suffix", {
+  # Author with only basic name fields
+  author_xml <- xml2::read_xml('
+    <Author>
+      <LastName>Doe</LastName>
+      <ForeName>Jane</ForeName>
+    </Author>
+  ')
+  result <- .pubmed_one_author_data(author_xml)
+  expect_equal(result$family, "Doe")
+  expect_equal(result$given, "Jane")
+  # suffix should not be present (filtered out by lengths != 0)
+  expect_false("suffix" %in% names(result))
+})
+
+test_that("pubmed2cp includes suffix in author output", {
+  # Create complete PubMed XML with suffix
+  full_xml <- xml2::read_xml('
+    <PubmedArticle>
+      <MedlineCitation>
+        <Article>
+          <Journal>
+            <Title>Test Journal</Title>
+            <PubDate>
+              <Year>2023</Year>
+            </PubDate>
+          </Journal>
+          <ArticleTitle>Test Article with Suffix</ArticleTitle>
+          <Language>eng</Language>
+          <AuthorList>
+            <Author>
+              <LastName>King</LastName>
+              <ForeName>Martin Luther</ForeName>
+              <Suffix>Jr</Suffix>
+            </Author>
+            <Author>
+              <LastName>Smith</LastName>
+              <ForeName>John</ForeName>
+            </Author>
+            <Author>
+              <LastName>Doe</LastName>
+              <ForeName>Jane</ForeName>
+            </Author>
+          </AuthorList>
+        </Article>
+      </MedlineCitation>
+      <PubmedData>
+        <ArticleIdList>
+          <ArticleId IdType="pubmed">12345678</ArticleId>
+        </ArticleIdList>
+      </PubmedData>
+    </PubmedArticle>
+  ')
+  result <- pubmed2cp(full_xml, format="edb-list")
+
+  # First author has suffix
+  expect_equal(result$author[[1]]$family, "King")
+  expect_equal(result$author[[1]]$given, "Martin Luther")
+  expect_equal(result$author[[1]]$suffix, "Jr")
+
+  # Second and third authors have no suffix
+  expect_equal(result$author[[2]]$family, "Smith")
+  expect_equal(result$author[[2]]$given, "John")
+  expect_false("suffix" %in% names(result$author[[2]]))
+
+  expect_equal(result$author[[3]]$family, "Doe")
+  expect_equal(result$author[[3]]$given, "Jane")
+  expect_false("suffix" %in% names(result$author[[3]]))
+})
+
+test_that("pubmed2cp includes suffix in editor output", {
+  # Test that suffix works for editors too
+  editors_xml <- xml2::read_xml('
+    <PubmedArticle>
+      <MedlineCitation>
+        <Article>
+          <Journal>
+            <Title>Test Book</Title>
+            <PubDate>
+              <Year>2023</Year>
+            </PubDate>
+          </Journal>
+          <ArticleTitle>Book Chapter</ArticleTitle>
+          <Language>eng</Language>
+          <AuthorList Type="editors">
+            <Author>
+              <LastName>Editor</LastName>
+              <ForeName>Chief</ForeName>
+              <Suffix>III</Suffix>
+            </Author>
+          </AuthorList>
+        </Article>
+      </MedlineCitation>
+      <PubmedData>
+        <ArticleIdList>
+          <ArticleId IdType="pubmed">12345678</ArticleId>
+        </ArticleIdList>
+      </PubmedData>
+    </PubmedArticle>
+  ')
+  result <- pubmed2cp(editors_xml, format="edb-list")
+
+  # Check editor has suffix
+  expect_equal(result$editor[[1]]$family, "Editor")
+  expect_equal(result$editor[[1]]$given, "Chief")
+  expect_equal(result$editor[[1]]$suffix, "III")
+})
