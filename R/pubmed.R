@@ -14,6 +14,34 @@
   xml2::xml_find_all(one_xml, ".//Affiliation") |> xml_text_or_null()
 }
 
+.pubmed_author_identifiers <- function(one_xml) {
+  # Extract all Identifier elements for this author
+  identifier_nodes <- xml2::xml_find_all(one_xml, ".//Identifier")
+
+  if (length(identifier_nodes) == 0) {
+    return(list())
+  }
+
+  # Extract id_type from Source attribute and id_value from text content
+  identifiers <- purrr::map(identifier_nodes, function(id_node) {
+    id_type <- xml2::xml_attr(id_node, "Source")
+    id_value <- xml2::xml_text(id_node)
+
+    # Clean ORCID URLs - extract just the identifier portion
+    if (!is.na(id_type) && tolower(id_type) == "orcid") {
+      # Remove https://orcid.org/ prefix if present
+      id_value <- stringr::str_replace(id_value, "^https?://orcid\\.org/", "")
+    }
+
+    list(
+      id_type = tolower(id_type),  # Convert to lowercase for consistency
+      id_value = id_value
+    )
+  })
+
+  identifiers
+}
+
 #' Convert pubmed xml to citeproc csl-data
 #'
 #' @param this_xml The xml data from pubmed.
@@ -197,7 +225,8 @@ pubmed2cp <- function(this_xml, format="citeproc-json") {
       title = this_article_title
     ),
     author = purrr::map(this_authors, .pubmed_one_author_data),
-    author_affiliation = purrr::map(this_authors, .pubmed_one_affiliation_data)
+    author_affiliation = purrr::map(this_authors, .pubmed_one_affiliation_data),
+    author_identifier = purrr::map(this_authors, .pubmed_author_identifiers)
   )
 
   if (format == "edb-list") { return(res) }

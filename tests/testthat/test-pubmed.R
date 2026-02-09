@@ -209,3 +209,117 @@ test_that("pubmed2cp throws error for non-edb-list format", {
   expect_error(pubmed2cp(test_xml, format="citeproc-json"),
                "citeproc-json return not implemented")
 })
+
+# Task 1: Test author identifier extraction (ORCID and other identifiers)
+
+test_that(".pubmed_author_identifiers extracts ORCID correctly", {
+  # Create test XML with ORCID identifier
+  author_xml <- xml2::read_xml('
+    <Author>
+      <LastName>Smith</LastName>
+      <ForeName>John</ForeName>
+      <Identifier Source="ORCID">https://orcid.org/0000-0001-2345-6789</Identifier>
+    </Author>
+  ')
+  result <- .pubmed_author_identifiers(author_xml)
+  expect_equal(length(result), 1)
+  expect_equal(result[[1]]$id_type, "orcid")
+  expect_equal(result[[1]]$id_value, "0000-0001-2345-6789")  # URL prefix should be removed
+})
+
+test_that(".pubmed_author_identifiers handles ORCID without URL prefix", {
+  # Test with ORCID that's already just the identifier
+  author_xml <- xml2::read_xml('
+    <Author>
+      <LastName>Smith</LastName>
+      <ForeName>John</ForeName>
+      <Identifier Source="ORCID">0000-0001-2345-6789</Identifier>
+    </Author>
+  ')
+  result <- .pubmed_author_identifiers(author_xml)
+  expect_equal(length(result), 1)
+  expect_equal(result[[1]]$id_type, "orcid")
+  expect_equal(result[[1]]$id_value, "0000-0001-2345-6789")
+})
+
+test_that(".pubmed_author_identifiers extracts multiple identifiers per author", {
+  # Create test XML with multiple identifiers
+  author_xml <- xml2::read_xml('
+    <Author>
+      <LastName>Smith</LastName>
+      <ForeName>John</ForeName>
+      <Identifier Source="ORCID">https://orcid.org/0000-0001-2345-6789</Identifier>
+      <Identifier Source="ResearcherID">ABC-1234-2020</Identifier>
+    </Author>
+  ')
+  result <- .pubmed_author_identifiers(author_xml)
+  expect_equal(length(result), 2)
+  expect_equal(result[[1]]$id_type, "orcid")
+  expect_equal(result[[1]]$id_value, "0000-0001-2345-6789")
+  expect_equal(result[[2]]$id_type, "researcherid")
+  expect_equal(result[[2]]$id_value, "ABC-1234-2020")
+})
+
+test_that(".pubmed_author_identifiers returns empty list for author with no identifiers", {
+  # Author without any Identifier elements
+  author_xml <- xml2::read_xml('
+    <Author>
+      <LastName>Smith</LastName>
+      <ForeName>John</ForeName>
+    </Author>
+  ')
+  result <- .pubmed_author_identifiers(author_xml)
+  expect_equal(length(result), 0)
+  expect_true(is.list(result))
+})
+
+test_that("pubmed2cp includes author_identifier in output", {
+  # Create complete PubMed XML with author identifier
+  full_xml <- xml2::read_xml('
+    <PubmedArticle>
+      <MedlineCitation>
+        <Article>
+          <Journal>
+            <Title>Test Journal</Title>
+            <PubDate>
+              <Year>2023</Year>
+            </PubDate>
+          </Journal>
+          <ArticleTitle>Test Article with ORCID</ArticleTitle>
+          <Language>eng</Language>
+          <AuthorList>
+            <Author>
+              <LastName>Smith</LastName>
+              <ForeName>John</ForeName>
+              <Identifier Source="ORCID">0000-0001-2345-6789</Identifier>
+            </Author>
+            <Author>
+              <LastName>Doe</LastName>
+              <ForeName>Jane</ForeName>
+            </Author>
+          </AuthorList>
+        </Article>
+      </MedlineCitation>
+      <PubmedData>
+        <ArticleIdList>
+          <ArticleId IdType="pubmed">12345678</ArticleId>
+        </ArticleIdList>
+      </PubmedData>
+    </PubmedArticle>
+  ')
+  result <- pubmed2cp(full_xml, format="edb-list")
+
+  # Check that author_identifier is present
+  expect_true("author_identifier" %in% names(result))
+
+  # Check structure: list with 2 elements (one per author)
+  expect_equal(length(result$author_identifier), 2)
+
+  # First author has one identifier
+  expect_equal(length(result$author_identifier[[1]]), 1)
+  expect_equal(result$author_identifier[[1]][[1]]$id_type, "orcid")
+  expect_equal(result$author_identifier[[1]][[1]]$id_value, "0000-0001-2345-6789")
+
+  # Second author has no identifiers
+  expect_equal(length(result$author_identifier[[2]]), 0)
+})
