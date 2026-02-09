@@ -269,6 +269,73 @@ test_that(".oa_extract_affiliations handles multiple affiliations per author", {
   expect_equal(result$author_affiliation[[1]][2], "National Center for Supercomputing Applications")
 })
 
+# Test PMID and PMCID extraction
+
+test_that(".oa_clean_pmid extracts PMID from URL correctly", {
+  # Test with full URL
+  pmid_url <- "https://pubmed.ncbi.nlm.nih.gov/36656910"
+  result <- .oa_clean_pmid(pmid_url)
+  expect_equal(result, "36656910")
+})
+
+test_that(".oa_clean_pmid handles NULL pmid", {
+  result <- .oa_clean_pmid(NULL)
+  expect_null(result)
+})
+
+test_that(".oa_clean_pmcid extracts PMCID from URL correctly", {
+  # Test with full URL
+  pmcid_url <- "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9970057"
+  result <- .oa_clean_pmcid(pmcid_url)
+  expect_equal(result, "PMC9970057")
+})
+
+test_that(".oa_clean_pmcid handles NULL pmcid", {
+  result <- .oa_clean_pmcid(NULL)
+  expect_null(result)
+})
+
+test_that("openalex2cp extracts PMID correctly", {
+  # Test data has PMID
+  result <- openalex2cp(oadata$simple_item_rda, format="edb-list")
+
+  # Should have pmid field
+  expect_true("pmid" %in% names(result$item))
+
+  # PMID should be extracted and cleaned
+  expect_equal(result$item$pmid, "36656910")
+})
+
+test_that("openalex2cp handles missing PMID", {
+  test_data <- oadata$simple_item_rda
+  test_data$ids$pmid <- NULL
+  result <- openalex2cp(test_data, format="edb-list")
+
+  # Should have pmid field as NULL
+  expect_null(result$item$pmid)
+})
+
+test_that("openalex2cp extracts PMCID correctly when present", {
+  # Add PMCID to test data
+  test_data <- oadata$simple_item_rda
+  test_data$ids$pmcid <- "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9970057"
+  result <- openalex2cp(test_data, format="edb-list")
+
+  # Should have pmcid field
+  expect_true("pmcid" %in% names(result$item))
+
+  # PMCID should be extracted with PMC prefix
+  expect_equal(result$item$pmcid, "PMC9970057")
+})
+
+test_that("openalex2cp handles missing PMCID", {
+  # Test data doesn't have PMCID by default
+  result <- openalex2cp(oadata$simple_item_rda, format="edb-list")
+
+  # Should have pmcid field as NULL
+  expect_null(result$item$pmcid)
+})
+
 # Task 15: Test name parsing edge cases (OpenAlex)
 
 test_that(".oa_extract_authors handles names with suffixes", {

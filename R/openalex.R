@@ -91,6 +91,26 @@
   orcids
 }
 
+.oa_clean_pmid <- function(pmid_url) {
+  # Extract PMID from URL like "https://pubmed.ncbi.nlm.nih.gov/36656910"
+  # Return just the ID number
+  if (!aidr::this_exists(pmid_url)) {
+    return(NULL)
+  }
+  # Extract the numeric ID at the end of the URL
+  stringr::str_extract(pmid_url, "[0-9]+$")
+}
+
+.oa_clean_pmcid <- function(pmcid_url) {
+  # Extract PMCID from URL like "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9970057"
+  # Return with PMC prefix like "PMC9970057"
+  if (!aidr::this_exists(pmcid_url)) {
+    return(NULL)
+  }
+  # Extract PMC followed by numbers
+  stringr::str_extract(pmcid_url, "PMC[0-9]+")
+}
+
 .oa_extract_affiliations <- function(oa_authorships) {
   # Handle empty authorships
   if (length(oa_authorships) == 0) {
@@ -132,6 +152,8 @@ openalex2cp <- function(this_json, format="citeproc-json") {
                                   this_json$primary_location$version),
       language = this_json$language,
       doi = .clean_doi(this_json$doi),
+      pmid = .oa_clean_pmid(this_json$ids$pmid),
+      pmcid = .oa_clean_pmcid(this_json$ids$pmcid),
       volume = this_json$biblio$volume,
       issue = this_json$biblio$issue,
       container_title = this_json$primary_location$source$display_name,
