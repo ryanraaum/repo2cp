@@ -102,6 +102,16 @@ bibtex2csl <- .create_bibtex_to_csl_mapping()
 
 bibtex2csl_withsubtypes <- .create_bibtex_to_csl_withsubtypes_list()
 
+## ---
+.create_pubmed_to_csl_type_mapping <- function() {
+  pubmed2csl_data <- readr::read_csv("data-raw/pubmed2csldata.csv", col_types = "cc")
+  pubmed2csl <- pubmed2csl_data$csl
+  names(pubmed2csl) <- pubmed2csl_data$pubmed
+  pubmed2csl
+}
+
+pubmed2csl <- .create_pubmed_to_csl_type_mapping()
+
 ## --- save everything for internal data use
 
 usethis::use_data(csl_core, csl_core_clean,
@@ -113,4 +123,5 @@ usethis::use_data(csl_core, csl_core_clean,
                   csl2clean, clean2csl,
                   crossref2csl, language3to2,
                   bibtex2csl, bibtex2csl_withsubtypes,
+                  pubmed2csl,
                   internal=TRUE, overwrite = TRUE)

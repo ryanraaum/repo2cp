@@ -788,3 +788,184 @@ test_that("pubmed2cp includes all affiliations for editors", {
   expect_equal(result$editor_affiliation[[1]][1], "University A")
   expect_equal(result$editor_affiliation[[1]][2], "Research Institute B")
 })
+
+# Task 5: Test publication type mapping
+
+test_that(".pubmed_type_to_csl maps Journal Article correctly", {
+  # Journal Article should map to article-journal
+  test_xml <- xml2::read_xml('
+    <PubmedArticle>
+      <MedlineCitation>
+        <Article>
+          <PublicationTypeList>
+            <PublicationType UI="D016428">Journal Article</PublicationType>
+          </PublicationTypeList>
+        </Article>
+      </MedlineCitation>
+    </PubmedArticle>
+  ')
+  result <- .pubmed_type_to_csl(test_xml)
+  expect_equal(result, "article-journal")
+})
+
+test_that(".pubmed_type_to_csl maps Review correctly", {
+  # Review should map to review (not article-journal)
+  test_xml <- xml2::read_xml('
+    <PubmedArticle>
+      <MedlineCitation>
+        <Article>
+          <PublicationTypeList>
+            <PublicationType UI="D016454">Review</PublicationType>
+          </PublicationTypeList>
+        </Article>
+      </MedlineCitation>
+    </PubmedArticle>
+  ')
+  result <- .pubmed_type_to_csl(test_xml)
+  expect_equal(result, "review")
+})
+
+test_that(".pubmed_type_to_csl maps Meta-Analysis correctly", {
+  # Meta-Analysis should also map to review
+  test_xml <- xml2::read_xml('
+    <PubmedArticle>
+      <MedlineCitation>
+        <Article>
+          <PublicationTypeList>
+            <PublicationType UI="D017418">Meta-Analysis</PublicationType>
+          </PublicationTypeList>
+        </Article>
+      </MedlineCitation>
+    </PubmedArticle>
+  ')
+  result <- .pubmed_type_to_csl(test_xml)
+  expect_equal(result, "review")
+})
+
+test_that(".pubmed_type_to_csl maps Book correctly", {
+  # Book should map to book
+  test_xml <- xml2::read_xml('
+    <PubmedArticle>
+      <MedlineCitation>
+        <Article>
+          <PublicationTypeList>
+            <PublicationType UI="D016428">Book</PublicationType>
+          </PublicationTypeList>
+        </Article>
+      </MedlineCitation>
+    </PubmedArticle>
+  ')
+  result <- .pubmed_type_to_csl(test_xml)
+  expect_equal(result, "book")
+})
+
+test_that(".pubmed_type_to_csl maps Book Chapter correctly", {
+  # Book Chapter should map to chapter
+  test_xml <- xml2::read_xml('
+    <PubmedArticle>
+      <MedlineCitation>
+        <Article>
+          <PublicationTypeList>
+            <PublicationType UI="D016422">Book Chapter</PublicationType>
+          </PublicationTypeList>
+        </Article>
+      </MedlineCitation>
+    </PubmedArticle>
+  ')
+  result <- .pubmed_type_to_csl(test_xml)
+  expect_equal(result, "chapter")
+})
+
+test_that(".pubmed_type_to_csl defaults to article-journal for missing type", {
+  # No PublicationTypeList should default to article-journal
+  test_xml <- xml2::read_xml('
+    <PubmedArticle>
+      <MedlineCitation>
+        <Article>
+          <ArticleTitle>Test</ArticleTitle>
+        </Article>
+      </MedlineCitation>
+    </PubmedArticle>
+  ')
+  result <- .pubmed_type_to_csl(test_xml)
+  expect_equal(result, "article-journal")
+})
+
+test_that(".pubmed_type_to_csl defaults to article-journal for unmapped type", {
+  # Unknown/unmapped types should default to article-journal
+  test_xml <- xml2::read_xml('
+    <PubmedArticle>
+      <MedlineCitation>
+        <Article>
+          <PublicationTypeList>
+            <PublicationType>Unknown Publication Type</PublicationType>
+          </PublicationTypeList>
+        </Article>
+      </MedlineCitation>
+    </PubmedArticle>
+  ')
+  result <- .pubmed_type_to_csl(test_xml)
+  expect_equal(result, "article-journal")
+})
+
+test_that(".pubmed_type_to_csl uses first PublicationType when multiple present", {
+  # When multiple types present, should use the first (primary) one
+  # Review is first, so should map to review
+  test_xml <- xml2::read_xml('
+    <PubmedArticle>
+      <MedlineCitation>
+        <Article>
+          <PublicationTypeList>
+            <PublicationType UI="D016454">Review</PublicationType>
+            <PublicationType UI="D016428">Journal Article</PublicationType>
+          </PublicationTypeList>
+        </Article>
+      </MedlineCitation>
+    </PubmedArticle>
+  ')
+  result <- .pubmed_type_to_csl(test_xml)
+  expect_equal(result, "review")
+})
+
+test_that("pubmed2cp sets type correctly from PublicationType", {
+  # Test that pubmed2cp integration correctly extracts and maps type
+  # Create full PubMed XML with Review type
+  review_xml <- xml2::read_xml('
+    <PubmedArticle>
+      <MedlineCitation>
+        <Article>
+          <Journal>
+            <Title>Test Journal</Title>
+            <PubDate>
+              <Year>2023</Year>
+            </PubDate>
+          </Journal>
+          <ArticleTitle>Test Review Article</ArticleTitle>
+          <Language>eng</Language>
+          <PublicationTypeList>
+            <PublicationType UI="D016454">Review</PublicationType>
+          </PublicationTypeList>
+          <AuthorList>
+            <Author>
+              <LastName>Smith</LastName>
+              <ForeName>John</ForeName>
+            </Author>
+          </AuthorList>
+        </Article>
+      </MedlineCitation>
+      <PubmedData>
+        <ArticleIdList>
+          <ArticleId IdType="pubmed">12345678</ArticleId>
+        </ArticleIdList>
+      </PubmedData>
+    </PubmedArticle>
+  ')
+  result <- pubmed2cp(review_xml, format="edb-list")
+  expect_equal(result$item$type, "review")
+})
+
+test_that("pubmed2cp sets type to article-journal for existing test data", {
+  # Verify that simple_item_xml (with Journal Article type) returns article-journal
+  result <- pubmed2cp(pmdata$simple_item_xml, format="edb-list")
+  expect_equal(result$item$type, "article-journal")
+})

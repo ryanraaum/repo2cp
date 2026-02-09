@@ -43,6 +43,30 @@
   identifiers
 }
 
+.pubmed_type_to_csl <- function(this_xml) {
+  # Extract the first (primary) PublicationType
+  pub_type <- xml2::xml_find_first(this_xml, ".//PublicationTypeList//PublicationType") |>
+    xml_text_or_null()
+
+  # If no PublicationType found, default to article-journal
+  if (is.null(pub_type) || length(pub_type) == 0) {
+    return("article-journal")
+  }
+
+  # Look up in mapping table (use names() to check if key exists)
+  if (pub_type %in% names(pubmed2csl)) {
+    csl_type <- pubmed2csl[[pub_type]]
+    # If mapping value is NA, default to article-journal
+    if (is.na(csl_type)) {
+      return("article-journal")
+    }
+    return(csl_type)
+  }
+
+  # If not found in mapping, default to article-journal
+  "article-journal"
+}
+
 #' Convert pubmed xml to citeproc csl-data
 #'
 #' @param this_xml The xml data from pubmed.
@@ -221,7 +245,7 @@ pubmed2cp <- function(this_xml, format="citeproc-json") {
   # Build result with dynamic creator keys based on AuthorList/@Type
   res <- list(
     item = list(
-      type = "article-journal",
+      type = .pubmed_type_to_csl(this_xml),
       language = .convert_language(this_article_language),
       abstract = this_article_abstract,
       doi = this_doi,

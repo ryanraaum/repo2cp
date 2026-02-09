@@ -1,0 +1,28 @@
+pubmed,csl
+Journal Article,article-journal
+Review,review
+Systematic Review,review
+Meta-Analysis,review
+Editorial,article-journal
+Letter,article-journal
+Comment,article-journal
+Case Reports,article-journal
+Clinical Trial,article-journal
+Randomized Controlled Trial,article-journal
+Comparative Study,article-journal
+Observational Study,article-journal
+Book,book
+Book Chapter,chapter
+News,article-newspaper
+Biography,article-journal
+Historical Article,article-journal
+Preprint,article
+Retracted Publication,article-journal
+Published Erratum,article-journal
+Expression of Concern,article-journal
+Guideline,report
+Practice Guideline,report
+Technical Report,report
+Consensus Development Conference,report
+Dataset,dataset
+Video-Audio Media,motion_picture
