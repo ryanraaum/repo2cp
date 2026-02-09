@@ -969,3 +969,202 @@ test_that("pubmed2cp sets type to article-journal for existing test data", {
   result <- pubmed2cp(pmdata$simple_item_xml, format="edb-list")
   expect_equal(result$item$type, "article-journal")
 })
+
+# Task 6: Test MedlinePgn pagination fallback
+
+test_that("pubmed2cp uses MedlinePgn when StartPage and EndPage are missing", {
+  # Test with only MedlinePgn present (no StartPage/EndPage)
+  medlinepgn_xml <- xml2::read_xml('
+    <PubmedArticle>
+      <MedlineCitation>
+        <Article>
+          <Journal>
+            <Title>Test Journal</Title>
+            <PubDate>
+              <Year>2023</Year>
+            </PubDate>
+          </Journal>
+          <ArticleTitle>Article with MedlinePgn Only</ArticleTitle>
+          <Language>eng</Language>
+          <Pagination>
+            <MedlinePgn>e1234567</MedlinePgn>
+          </Pagination>
+          <PublicationTypeList>
+            <PublicationType UI="D016428">Journal Article</PublicationType>
+          </PublicationTypeList>
+          <AuthorList>
+            <Author>
+              <LastName>Smith</LastName>
+              <ForeName>John</ForeName>
+            </Author>
+          </AuthorList>
+        </Article>
+      </MedlineCitation>
+      <PubmedData>
+        <ArticleIdList>
+          <ArticleId IdType="pubmed">12345678</ArticleId>
+        </ArticleIdList>
+      </PubmedData>
+    </PubmedArticle>
+  ')
+  result <- pubmed2cp(medlinepgn_xml, format="edb-list")
+  expect_equal(result$item$page, "e1234567")
+})
+
+test_that("pubmed2cp uses MedlinePgn for page range fallback", {
+  # Test with MedlinePgn containing a page range
+  medlinepgn_range_xml <- xml2::read_xml('
+    <PubmedArticle>
+      <MedlineCitation>
+        <Article>
+          <Journal>
+            <Title>Test Journal</Title>
+            <PubDate>
+              <Year>2023</Year>
+            </PubDate>
+          </Journal>
+          <ArticleTitle>Article with Page Range in MedlinePgn</ArticleTitle>
+          <Language>eng</Language>
+          <Pagination>
+            <MedlinePgn>123-45</MedlinePgn>
+          </Pagination>
+          <PublicationTypeList>
+            <PublicationType UI="D016428">Journal Article</PublicationType>
+          </PublicationTypeList>
+          <AuthorList>
+            <Author>
+              <LastName>Doe</LastName>
+              <ForeName>Jane</ForeName>
+            </Author>
+          </AuthorList>
+        </Article>
+      </MedlineCitation>
+      <PubmedData>
+        <ArticleIdList>
+          <ArticleId IdType="pubmed">87654321</ArticleId>
+        </ArticleIdList>
+      </PubmedData>
+    </PubmedArticle>
+  ')
+  result <- pubmed2cp(medlinepgn_range_xml, format="edb-list")
+  expect_equal(result$item$page, "123-45")
+})
+
+test_that("pubmed2cp prefers StartPage/EndPage over MedlinePgn", {
+  # When both StartPage/EndPage and MedlinePgn are present, StartPage should take precedence
+  both_present_xml <- xml2::read_xml('
+    <PubmedArticle>
+      <MedlineCitation>
+        <Article>
+          <Journal>
+            <Title>Test Journal</Title>
+            <PubDate>
+              <Year>2023</Year>
+            </PubDate>
+          </Journal>
+          <ArticleTitle>Article with Both Page Fields</ArticleTitle>
+          <Language>eng</Language>
+          <Pagination>
+            <StartPage>100</StartPage>
+            <EndPage>110</EndPage>
+            <MedlinePgn>100-10</MedlinePgn>
+          </Pagination>
+          <PublicationTypeList>
+            <PublicationType UI="D016428">Journal Article</PublicationType>
+          </PublicationTypeList>
+          <AuthorList>
+            <Author>
+              <LastName>Test</LastName>
+              <ForeName>Author</ForeName>
+            </Author>
+          </AuthorList>
+        </Article>
+      </MedlineCitation>
+      <PubmedData>
+        <ArticleIdList>
+          <ArticleId IdType="pubmed">11111111</ArticleId>
+        </ArticleIdList>
+      </PubmedData>
+    </PubmedArticle>
+  ')
+  result <- pubmed2cp(both_present_xml, format="edb-list")
+  # Should use StartPage-EndPage, not MedlinePgn
+  expect_equal(result$item$page, "100-110")
+})
+
+test_that("pubmed2cp returns NULL page when no pagination fields present", {
+  # Test with no pagination fields at all
+  no_pages_xml <- xml2::read_xml('
+    <PubmedArticle>
+      <MedlineCitation>
+        <Article>
+          <Journal>
+            <Title>Test Journal</Title>
+            <PubDate>
+              <Year>2023</Year>
+            </PubDate>
+          </Journal>
+          <ArticleTitle>Article with No Pagination</ArticleTitle>
+          <Language>eng</Language>
+          <PublicationTypeList>
+            <PublicationType UI="D016428">Journal Article</PublicationType>
+          </PublicationTypeList>
+          <AuthorList>
+            <Author>
+              <LastName>Anonymous</LastName>
+              <ForeName>Author</ForeName>
+            </Author>
+          </AuthorList>
+        </Article>
+      </MedlineCitation>
+      <PubmedData>
+        <ArticleIdList>
+          <ArticleId IdType="pubmed">99999999</ArticleId>
+        </ArticleIdList>
+      </PubmedData>
+    </PubmedArticle>
+  ')
+  result <- pubmed2cp(no_pages_xml, format="edb-list")
+  expect_null(result$item$page)
+})
+
+test_that("pubmed2cp uses StartPage only when EndPage missing", {
+  # Test that StartPage alone takes precedence over MedlinePgn
+  startpage_only_xml <- xml2::read_xml('
+    <PubmedArticle>
+      <MedlineCitation>
+        <Article>
+          <Journal>
+            <Title>Test Journal</Title>
+            <PubDate>
+              <Year>2023</Year>
+            </PubDate>
+          </Journal>
+          <ArticleTitle>Article with StartPage Only</ArticleTitle>
+          <Language>eng</Language>
+          <Pagination>
+            <StartPage>42</StartPage>
+            <MedlinePgn>42-50</MedlinePgn>
+          </Pagination>
+          <PublicationTypeList>
+            <PublicationType UI="D016428">Journal Article</PublicationType>
+          </PublicationTypeList>
+          <AuthorList>
+            <Author>
+              <LastName>Test</LastName>
+              <ForeName>Author</ForeName>
+            </Author>
+          </AuthorList>
+        </Article>
+      </MedlineCitation>
+      <PubmedData>
+        <ArticleIdList>
+          <ArticleId IdType="pubmed">22222222</ArticleId>
+        </ArticleIdList>
+      </PubmedData>
+    </PubmedArticle>
+  ')
+  result <- pubmed2cp(startpage_only_xml, format="edb-list")
+  # Should use StartPage alone, not MedlinePgn
+  expect_equal(result$item$page, "42")
+})

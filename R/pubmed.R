@@ -128,6 +128,9 @@ pubmed2cp <- function(this_xml, format="citeproc-json") {
   this_article_endpage <-
     xml2::xml_find_all(this_xml, ".//Article//Pagination//EndPage") |>
     xml_text_or_null()
+  this_article_medlinepgn <-
+    xml2::xml_find_all(this_xml, ".//Article//Pagination//MedlinePgn") |>
+    xml_text_or_null()
   this_article_abstract <-
     xml2::xml_find_all(this_xml, ".//Article//Abstract//AbstractText") |>
     xml_text_or_null()
@@ -238,6 +241,8 @@ pubmed2cp <- function(this_xml, format="citeproc-json") {
     article_pages <- glue::glue("{this_article_startpage}-{this_article_endpage}")
   } else if (aidr::this_exists(this_article_startpage)) {
     article_pages <- this_article_startpage
+  } else if (aidr::this_exists(this_article_medlinepgn)) {
+    article_pages <- this_article_medlinepgn
   } else {
     article_pages <- NULL
   }
